@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/mainstyles.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/bank/login}">
+                <img src="/login.png" alt="Login" style="height: 50px;">
+            </a>
+        </div>
+        <div class="center">
+            <div class="centered">
+                <img src="/pig.png" alt="Pig" style="height: 50px;">
+				<span class="judy-text">Judy</span>
+            </div>
+        </div>
+        <div class="right">
+            <a th:href="@{/bank/category}">
+                <img src="/list.png" alt="Category" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+</body>
+</html>

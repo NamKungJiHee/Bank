@@ -1,0 +1,24 @@
+.navbar {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    background-color:white;
+    padding: 10px;
+}
+
+.left, .center, .right {
+    display: flex;
+    align-items: center; 
+}
+
+.centered {
+    display: flex;
+    align-items: center; 
+}
+
+.judy-text {
+    font-family: 'Indie Flower', sans-serif; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    margin-left: 5px; 
+}

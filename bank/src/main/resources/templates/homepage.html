@@ -9,6 +9,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <nav class="navbar">
@@ -29,5 +30,36 @@
             </a>
         </div>
     </nav>
+	<section class="friendly">
+		<img src="/group.png" alt="MainPicture"  class="main-picture">
+		<div class="friendly-text">모임의 금융관리, 이제 더 쉬워집니다.</div>
+		<div class="start-round">
+			<a th:href="@{/bank/signup}" class="start">시작하기</a>
+		</div>
+	</section>
+	<article>
+		<div class="graybackground">
+		<div class="whitebackground">
+		<span class="accountline">
+			<a th:href="@{/bank/inquiryaccount}">
+               <img src="/glass.png" alt="Account" class="glass">
+        	</a>
+			<h1 class="accountletter">계좌 조회</h1>
+		</span>
+		<span class="accountline">
+			<a th:href="@{/bank/transfer}">
+		       <img src="/send.png" alt="Send" class="send">
+			</a>
+			<h1 class="sendletter">이체</h1>
+		</span>
+		<span>
+			<a th:href="@{/bank/event}">
+		       <img src="/events.jpg" alt="Event" class="event">
+			</a>
+			<h1 class="eventletter">이벤트</h1>
+		</span>
+		</div>
+		</div>
+	</article>
 </body>
 </html>

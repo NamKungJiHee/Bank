@@ -1,24 +1,139 @@
-.navbar {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    background-color:white;
-    padding: 10px;
+body {
+    margin: 0;
+    font-family: 'Indie Flower', cursive;
 }
 
-.left, .center, .right {
+/* Navbar 설정 */
+
+.navbar {
     display: flex;
-    align-items: center; 
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 100px;
+    background-color: white;
+}
+
+.left, .right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.center {
+    flex: 2;
+    text-align: center;
 }
 
 .centered {
     display: flex;
-    align-items: center; 
+    align-items: center;
+    justify-content: center;
 }
 
 .judy-text {
-    font-family: 'Indie Flower', sans-serif; 
-    font-size: 1.2em; 
-    font-weight: bold; 
-    margin-left: 5px; 
+    font-size: 1.5em;
+    margin-left: 10px;
+}
+
+.friendly {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 10px 0 10px;
+}
+
+/* MainPage 사진 */
+
+.main-picture {
+	height: auto;
+ 	width: 70%;
+ 	opacity: 75%;
+}
+
+.friendly-text {
+	position: absolute;
+	top: 17%;
+	left: 20%;
+	color: white;
+	font-size: large;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.start {
+	top: 21%;
+	left: 25%;
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 700;
+	font-size: 14px;
+ 	display: inline-block; 
+}
+
+.start-round {
+	top: 22%;
+	left: 25%;
+	position: absolute;
+	text-align: center;
+	width: 100px;
+	height: 40px;
+	line-height: 50px;
+	background: transparent;
+	border: solid 2px lightgray;
+	border-radius: 45%;
+    justify-content: center;
+    align-items: center;
+	display: flex;
+}
+
+/* 목록 나열 */
+
+.graybackground {
+    background-color: lightgray;
+    padding: 20px 0px 20px 0px;
+    text-align: center;
+    width: 69%;
+    position: absolute;
+	left: 50%; 
+    transform: translateX(-50%); 
+}
+
+.whitebackground {
+    background-color: white;
+	padding: 5%;
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+}
+
+.accountline {
+	 border-right: 2px solid lightgray; 
+	 padding-right: 10%;
+}
+
+/* 모바일용 */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .left, .right {
+        flex: none;
+        margin: 5px 0;
+        justify-content: center;
+    }
+
+    .center {
+        flex: none;
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    .centered {
+        flex-direction: column;
+    }
+
+    .judy-text {
+        margin: 10px 0 0 0;
+    }
 }

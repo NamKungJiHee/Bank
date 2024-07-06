@@ -11,6 +11,7 @@ body {
     align-items: center;
     padding: 0 100px;
     background-color: white;
+    padding-top: 15px;
 }
 
 .left, .right {
@@ -69,6 +70,10 @@ body {
  	display: inline-block; 
 }
 
+.start-round a {
+	text-decoration: none;
+}
+
 .start-round {
 	top: 22%;
 	left: 25%;
@@ -85,30 +90,111 @@ body {
 	display: flex;
 }
 
-/* 목록 나열 */
+/* article 첫번째 부분 */
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+        margin: auto;
+}
 
 .graybackground {
     background-color: lightgray;
     padding: 20px 0px 20px 0px;
     text-align: center;
     width: 69%;
-    position: absolute;
-	left: 50%; 
-    transform: translateX(-50%); 
+    position: relative;
 }
 
 .whitebackground {
     background-color: white;
-	padding: 5%;
+    padding: 5%;
     display: flex;
-    justify-content: space-around; 
+    justify-content: space-around;
     align-items: center;
+    height: 70px;
 }
 
 .accountline {
-	 border-right: 2px solid lightgray; 
-	 padding-right: 10%;
+    border-right: 2px solid lightgray;
+    padding-right: 10%;
 }
+
+.glass, .send, .event {
+    width: 50%;
+    height: 50%;
+}
+
+.accountletter, .sendletter, .eventletter {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+/* article 두번째 부분 */
+
+.makeaccountline {
+    background-color: white;
+    border-left: 5px solid lightskyblue;
+    padding: 20px;
+    display: inline-block;
+    text-align: center;
+    width: 95.5%;
+    margin-top: 20px;
+}
+
+.makeAccount {
+    font-family: Arial, Helvetica, sans-serif;
+    color: lightskyblue;
+    text-align: center;
+}
+
+.makeaccountline a {
+    text-decoration: none;
+}
+
+/* article 세번째 부분 */
+
+.goaccount {
+    background-color: white;
+    border-left: 5px solid lightpink;
+    padding: 20px;
+    display: inline-block;
+    text-align: center;
+    width: 95.5%;
+    margin-top: 20px; 
+}
+
+.goAccount {
+	font-family: Arial, Helvetica, sans-serif;
+    color: lightpink;
+    text-align: center;
+}
+
+.goaccount a {
+	text-decoration: none;
+}
+
+/* footer */
+
+.bankfooter {
+	background-color: darkgrey;
+	text-align: center;
+	padding: 2px 0;
+	width: 69%;
+	margin: auto;
+	height: 20px;
+	}
+	
+.bankfooter h5 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	font-size: 15px;
+	margin: 0;
+	text-align: right;
+	padding-right: 5%;
+		}
 
 /* 모바일용 */
 @media (max-width: 600px) {

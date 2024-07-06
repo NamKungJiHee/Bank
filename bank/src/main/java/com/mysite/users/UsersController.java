@@ -34,8 +34,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/bank")
 public class UsersController {
 
-//	@GetMapping("/main")
-//	public String homepage() {
-//		return "homepage";
-//	}
+	@GetMapping("/login")
+	public String login() {
+		return "login_form";
+	}
 }

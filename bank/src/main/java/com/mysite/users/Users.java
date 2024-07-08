@@ -20,7 +20,7 @@ import lombok.Setter;
 public class Users {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="user_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="users_seq")
 	private Long userId;
 	
 	@Column(unique=true)

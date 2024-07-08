@@ -31,42 +31,31 @@
 	background-color: lightcyan;
 }
 
-.id {
+.id, .pwd {
+    margin-bottom: 20px;
+    border-width: 2px;
+}
+
+.id input {
 	position: absolute;
 	top: 30%;
-	transform: translateX(75%);
-    width: 40%; 
+	transform: translateX(74%);
+	width: 40%; 
     height: 50px;
-	background: transparent;
-	border: solid 2px lightgray;
-    justify-content: center;
-    align-items: center;
+    font-size: 20px;
+	border-width: 2px;
+	border-color: lightgrey;
 }
 
-.id h2 {
-	padding-left: 5%;
-    padding-top: 5px;
-    margin: 0; 
-	color: lightgrey;
-}
-
-.pwd {
+.pwd input {
 	position: absolute;
-	top: 45%;
-	transform: translateX(75%);
-    width: 40%; 
+	top: 43%;
+	transform: translateX(74%);
+	width: 40%; 
     height: 50px;
-	background: transparent;
-	border: solid 2px lightgray;
-    justify-content: center;
-    align-items: center;
-}
-
-.pwd h2 {
-	padding-left: 5%;
-    padding-top: 5px;
-    margin: 0; 
-	color: lightgrey;
+    font-size: 20px;
+	border-width: 2px;
+	border-color: lightgrey;
 }
 
 .login-btn {
@@ -102,7 +91,6 @@
 	top: 75%;
 	left: 50%; 
     transform: translateX(-50%);  
-    
 }
 
 .idpwdlist {

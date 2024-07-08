@@ -1,4 +1,4 @@
-package com.mysite.users;
+package com.mysite.bank.users;
 
 import java.util.Collection;
 import java.util.HashSet;

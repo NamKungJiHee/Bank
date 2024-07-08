@@ -1,4 +1,4 @@
-package com.mysite.users;
+package com.mysite.bank.users;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

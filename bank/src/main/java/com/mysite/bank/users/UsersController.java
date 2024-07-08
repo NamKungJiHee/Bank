@@ -1,4 +1,4 @@
-package com.mysite.users;
+package com.mysite.bank.users;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mysite.bank.users.UserCreateForm;
+
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/bank")
@@ -37,5 +39,10 @@ public class UsersController {
 	@GetMapping("/login")
 	public String login() {
 		return "login_form";
+	}
+	
+	@GetMapping("/signup")
+	public String signup(UserCreateForm userCreateForm) {
+		return "signup_form";
 	}
 }

@@ -26,28 +26,32 @@
     </nav>
 	<section>
 		<div class="bar"></div>
+		<form th:action="@{/bank/login}" method="post">
 		<div>
 			<div class="id">
-				<h2>아이디</h2>
+				<label for="userId" class="userId"></label>
+				<input type="text" name="userid" id="userId" placeholder="아이디">
 			</div>
 			<div class="pwd">
-				<h2>비밀번호</h2>
-			</div>
-			<button class="login-btn">로그인</button>
+				<label for="userPwd" class="userPwd"></label>
+				<input type="text" name="userpwd" id="userPwd" placeholder="비밀번호">
+			</div>		
+			<button type="submit" class="login-btn">로그인</button>
 		</div>
+		</form>
 		<h4 class="or">_________________________________ 또는 _________________________________</h4>
 		<a href="/oauth2/authorization/kakao" id="loginKakao" class="loginkakao">
 			<img src="/kakao.png" alt="Kakao" class="kakao">
 		</a>
 		<div class="idpwdlist">
 			<span>
-				<a th:href="@{/bank/findid}" id="findid">아이디 찾기</a>
+				<a th:href="@{/bank/findid}" id="findid">아이디찾기</a>
 			</span>
 			<span>
-				<a th:href="@{/bank/findpwd}" id="findpwd">비밀번호 찾기</a>
+				<a th:href="@{/bank/findpwd}" id="findpwd">비밀번호찾기</a>
 			</span>
 			<span>
-				<a th:href="@{/bank/modifypwd}" id="modifypwd">비밀번호 변경</a>
+				<a th:href="@{/bank/modifypwd}" id="modifypwd">비밀번호변경</a>
 			</span>
 		</div>
 	</section>

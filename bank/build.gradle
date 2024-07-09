@@ -30,14 +30,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	//implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
-	
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	 implementation 'org.springframework.security:spring-security-crypto'
 }
 
 tasks.named('test') {

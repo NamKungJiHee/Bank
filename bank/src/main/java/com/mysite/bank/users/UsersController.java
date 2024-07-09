@@ -24,6 +24,7 @@ import java.net.URL;
 import java.security.Principal;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +36,8 @@ import com.mysite.bank.users.UserCreateForm;
 @Controller
 @RequestMapping("/bank")
 public class UsersController {
-
+	private final UserService userService;
+	
 	@GetMapping("/login")
 	public String login() {
 		return "login_form";
@@ -45,4 +47,36 @@ public class UsersController {
 	public String signup(UserCreateForm userCreateForm) {
 		return "signup_form";
 	}
+	
+	@PostMapping("/signup")
+	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "signup_form";
+		}
+		if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
+			bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
+			return "signup_form";
+		}
+		try {
+		userService.create(userCreateForm.getUserName(), userCreateForm.getUserNickname(), userCreateForm.getEmail(), userCreateForm.getPassword1());
+		} catch(DataIntegrityViolationException e) {
+			e.printStackTrace();
+			bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+			return "signup_form";
+		} catch(Exception e) {
+			e.printStackTrace();
+			bindingResult.reject("signupFailed", e.getMessage());
+			return "signup_form";
+		}
+		return "redirect:/";
+	}
+	
+	// 중복ID 체크
+	@GetMapping("/checkusername")
+    public ResponseEntity<Boolean> checkUsername(@RequestParam("username") String username) {
+		boolean isAvailable = userService.isUsernameAvailable(username);
+		return ResponseEntity.ok(isAvailable);
+	}
+	
+	
 }

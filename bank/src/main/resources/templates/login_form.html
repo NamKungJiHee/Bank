@@ -28,13 +28,16 @@
 		<div class="bar"></div>
 		<form th:action="@{/bank/login}" method="post">
 		<div>
+			<div th:if="${param.error}">
+                 <p class="errorMessage">잘못된 사용자 이름 또는 비밀번호입니다.</p>
+             </div>
 			<div class="id">
 				<label for="userId" class="userId"></label>
-				<input type="text" name="userid" id="userId" placeholder="아이디">
+				<input type="text" name="username" id="userId" placeholder="아이디">
 			</div>
 			<div class="pwd">
 				<label for="userPwd" class="userPwd"></label>
-				<input type="text" name="userpwd" id="userPwd" placeholder="비밀번호">
+				<input type="password" name="password" id="userPwd" placeholder="비밀번호">
 			</div>		
 			<button type="submit" class="login-btn">로그인</button>
 		</div>

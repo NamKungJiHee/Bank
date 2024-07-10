@@ -24,6 +24,11 @@
 				<span class="judy-text">Judy</span>
             </div>
         </div>
+		<div>
+		<span th:if="${#authorization.expression('isAuthenticated()')}">
+	        <span th:text="${#authentication.name} + ' 님'" style="font-family:Arial, Helvetica, sans-serif;"></span>
+		</span>
+		</div>
         <div class="right">
             <a th:href="@{/bank/category}">
                 <img src="/list.png" alt="Category" style="height: 50px;">

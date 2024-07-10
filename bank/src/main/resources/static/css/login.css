@@ -22,6 +22,15 @@
 
 /* Section 설정 */
 
+.errorMessage {
+	position: absolute;
+	color: red;
+	font-weight: bold;
+	left: 50%; 
+    transform: translateX(-50%); 
+    top: 50%;
+}
+
 .bar {
 	position: absolute;
 	top: 12%;

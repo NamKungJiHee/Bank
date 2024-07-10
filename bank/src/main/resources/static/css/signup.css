@@ -31,6 +31,14 @@
 	background-color: lightcyan;
 }
 
+.alert {
+	color: orangered;
+	font-weight: bold;
+	position: absolute;
+	top: 20%;
+	transform: translateX(225%);
+}
+
 .block-0 {
 	position: absolute;
 	top: 20%;

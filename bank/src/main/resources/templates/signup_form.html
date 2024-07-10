@@ -27,6 +27,7 @@
 	<section>
 		<div class="bar"></div>
 		<form id="signupForm" th:action="@{/bank/signup}" th:object="${userCreateForm}" method="post">
+			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 			<div class="block-0">
 			<div class="block-1">
 				<label id="usernameForm" for="userName" class="form-label">아이디</label>

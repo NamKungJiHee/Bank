@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/findid.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/}">
+                <img src="/homepic.png" alt="Home" style="height: 50px;">
+            </a>
+        </div>
+		<div class="center">
+            <h1>아이디찾기</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/bank/category}">
+                <img src="/list.png" alt="Category" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+	<section>
+		<div class="bar"></div>
+		<form th:action="@{/bank/findid}" method="post">
+		<div>
+			<div th:if="${param.error}">
+                 <p class="errorMessage">존재하지 않는 아이디입니다.</p>
+             </div>
+			<div class="email">
+				<label for="userEmail" class="userEmail"></label>
+				<input type="text" name="email" id="email" placeholder="이메일">
+			</div>
+			<button type="submit" class="login-btn">확인하기</button>
+		</div>
+		</form>
+	</section>
+	<div class="text-info" th:if="${username != null}">
+      사용자님의 ID는 
+       <span class="text-id" th:text="${username}"></span>
+	  입니다.
+    </div>  
+	<footer class="bankfooter">
+		<h5>Judy Bank</h5>
+	</footer>
+</body>
+</html>

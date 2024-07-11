@@ -38,6 +38,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	 implementation 'org.springframework.security:spring-security-crypto'
+	 runtimeOnly 'ch.qos.logback:logback-classic:1.2.6'
 }
 
 tasks.named('test') {

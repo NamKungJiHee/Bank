@@ -1,0 +1,128 @@
+/* Navbar 설정 */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 100px;
+    background-color: white;
+    padding-top: 15px;
+}
+
+.left, .right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.center {
+    flex: 2;
+    text-align: center;
+}
+
+/* Section 설정 */
+
+.bar {
+	position: absolute;
+	top: 12%;
+	transform: translateX(20%);
+    width: 70%; 
+    height: 50px;
+	background-color: lightcyan;
+}
+
+.email {
+    margin-bottom: 20px;
+    border-width: 2px;
+}
+
+.email input {
+	position: absolute;
+	top: 30%;
+	transform: translateX(74%);
+	width: 40%; 
+    height: 50px;
+    font-size: 20px;
+	border-width: 2px;
+	border-color: lightgrey;
+}
+
+.text-info {
+	font-weight: bold;
+	position: absolute;
+	left: 50%; 
+    transform: translateX(-50%); 
+	top: 43%;
+}
+
+.text-id {
+	color: orange;
+}
+
+.login-btn {
+	position: absolute;
+	top: 50%;
+    width: 9%; 
+    height: 6%;
+	background: cadetblue;
+	color: white; 
+	left: 50%; 
+    transform: translateX(-50%); 
+    border-radius: 45%;
+    border: none; 
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* footer */
+
+.bankfooter {
+	background-color: darkgrey;
+	text-align: center;
+	padding: 2px 0;
+	width: 69%;
+	margin: auto;
+	height: 20px;
+	position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+	}
+	
+.bankfooter h5 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	font-size: 15px;
+	margin: 0;
+	text-align: right;
+	padding-right: 5%;
+		}
+
+/* 모바일용 */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .left, .right {
+        flex: none;
+        margin: 5px 0;
+        justify-content: center;
+    }
+
+    .center {
+        flex: none;
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    .centered {
+        flex-direction: column;
+    }
+
+    .judy-text {
+        margin: 10px 0 0 0;
+    }
+}

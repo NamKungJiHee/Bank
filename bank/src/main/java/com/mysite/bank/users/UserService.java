@@ -2,6 +2,7 @@ package com.mysite.bank.users;
 
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,13 @@ public class UserService {
 		this.usersRepository.save(user);
 		return user;
 	}
-
+	
+   public String findEmail(String email) {
+	      Optional<Users> _siteUser = this.usersRepository.findByEmail(email);
+	      if (!_siteUser.isPresent()) {
+	         throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
+	      }
+	      String username = _siteUser.get().getUserName();
+	      return username;
+	   }
 }

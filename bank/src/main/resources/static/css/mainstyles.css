@@ -43,6 +43,23 @@ body {
     padding: 10px 10px 0 10px;
 }
 
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.username {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.logout-link {
+    text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: cadetblue;
+}
+
 /* MainPage 사진 */
 
 .main-picture {

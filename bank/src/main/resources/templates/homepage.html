@@ -24,10 +24,11 @@
 				<span class="judy-text">Judy</span>
             </div>
         </div>
-		<div>
-		<span th:if="${#authorization.expression('isAuthenticated()')}">
-	        <span th:text="${#authentication.name} + ' 님'" style="font-family:Arial, Helvetica, sans-serif;"></span>
-		</span>
+		<div class="container">
+		    <span th:if="${#authorization.expression('isAuthenticated()')}">
+		        <span th:text="${#authentication.principal.nickname} + '님'" class="username"></span>
+		        <a class="nav-link logout-link" sec:authorize="isAuthenticated()" th:href="@{/bank/logout}">로그아웃</a>
+		    </span>
 		</div>
         <div class="right">
             <a th:href="@{/bank/category}">

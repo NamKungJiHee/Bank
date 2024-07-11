@@ -88,9 +88,12 @@ public class UsersController {
 	@PostMapping("/findid")
 	   public String findid(Model model, @RequestParam("email") String email) {
 	      String username = this.userService.findEmail(email);
-	      if (username != null) 
-	          model.addAttribute("username", username);
-	          return "findid_form";   
+	      if (username != null) {
+	            model.addAttribute("username", username);
+	        } else {
+	            model.addAttribute("error", "존재하지 않는 이메일입니다. 다시 확인해주세요.");
+	        }
+        return "findid_form";
 	}
 	
 }

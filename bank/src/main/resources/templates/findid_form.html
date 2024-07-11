@@ -28,9 +28,6 @@
 		<div class="bar"></div>
 		<form th:action="@{/bank/findid}" method="post">
 		<div>
-			<div th:if="${param.error}">
-                 <p class="errorMessage">존재하지 않는 아이디입니다.</p>
-             </div>
 			<div class="email">
 				<label for="userEmail" class="userEmail"></label>
 				<input type="text" name="email" id="email" placeholder="이메일">
@@ -44,6 +41,9 @@
        <span class="text-id" th:text="${username}"></span>
 	  입니다.
     </div>  
+	<div th:if="${error}" class="errorMessage">
+	  	<p th:text="${error}"></p>
+	</div>
 	<footer class="bankfooter">
 		<h5>Judy Bank</h5>
 	</footer>

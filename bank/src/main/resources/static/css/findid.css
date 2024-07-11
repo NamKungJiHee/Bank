@@ -75,6 +75,15 @@
     align-items: center;
 }
 
+.errorMessage {
+	font-weight: bold;
+	position: absolute;
+	left: 50%; 
+    transform: translateX(-50%); 
+	top: 40%;
+	color: orange;
+}
+
 /* footer */
 
 .bankfooter {

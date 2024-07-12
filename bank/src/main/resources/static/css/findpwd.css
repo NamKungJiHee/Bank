@@ -79,6 +79,25 @@
     align-items: center;
 }
 
+/* Modal */
+.modal-content {
+	background-color: lightsteelblue;
+	width: 40%;
+	height: 18%;
+	text-align: center;
+	border-radius: 1%;
+	position: absolute;
+	left: 50%; 
+    transform: translateX(-47%); 
+    top: 15%;
+}
+
+.btn {
+	background: whitesmoke;
+	border-radius: 5%;
+	border: none;
+}
+
 /* footer */
 
 .bankfooter {

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/findpwd.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/}">
+                <img src="/homepic.png" alt="Home" style="height: 50px;">
+            </a>
+        </div>
+		<div class="center">
+            <h1>비밀번호찾기</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/bank/category}">
+                <img src="/list.png" alt="Category" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+	<section>
+		<div class="bar"></div>
+		<input type="hidden" name="isSuccess"  id="isSuccess"  th:value="${isSuccess}">
+		<form th:action="@{/bank/findpwd}" method="post">
+		<div>
+			<div class="userId">
+				<label for="userId" class="form-label"></label>
+	            <input type="text" name="userId" id="userId" placeholder="사용자 ID">
+			</div>
+			<div class="email">
+				<label for="userEmail" class="userEmail"></label>
+				<input type="text" name="email" id="email" placeholder="이메일">
+			</div>
+			<button type="submit" class="login-btn">확인하기</button>
+		</div>
+		</form>
+		
+	</section>
+	<div id="modalContainer" class="modal" tabindex="-1">
+			    <div class="modal-dialog">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h5 class="modal-title" style="text-align: center;">이메일 전송완료</h5>
+			          <button style="text-align: center;" id="closeModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        </div>
+			        <div class="modal-body">
+			          <p>회원님의 임시 비밀번호를 이메일로 보냈습니다.</p>
+			        </div>
+			        <div class="modal-footer">
+			          <button style="text-align: center;" id="confirmButton" type="button" class="btn btn-primary">확인</button>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+	<script>
+		const modal=document.getElementById("modalContainer");
+		const confirmButton=document.getElementById("confirmButton");
+		const closeModalButton=document.getElementById("closeModal");
+		const isSuccess=document.getElementById("isSuccess").value;
+		   if(isSuccess == "true"){modal.style.display = 'block';}
+		confirmButton.addEventListener('click', () => {
+			modal.style.display = 'none';
+		});
+		closeModalButton.addEventListener('click', () => {
+			modal.style.display = 'none';
+		});
+	</script>
+	<footer class="bankfooter">
+		<h5>Judy Bank</h5>
+	</footer>
+</body>
+</html>

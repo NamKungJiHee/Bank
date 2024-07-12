@@ -96,4 +96,11 @@ public class UsersController {
         return "findid_form";
 	}
 	
+	//비밀번호 찾기
+   @GetMapping("/findpwd")
+   public String findpwd() {
+	   return "findpwd_form";
+   }
+   
+
 }

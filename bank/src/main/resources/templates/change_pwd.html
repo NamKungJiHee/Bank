@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/changepwd.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/}">
+                <img src="/homepic.png" alt="Home" style="height: 50px;">
+            </a>
+        </div>
+		<div class="center">
+            <h1>비밀번호 변경</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/bank/category}">
+                <img src="/list.png" alt="Category" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+	<section>
+		<div class="bar"></div>
+		<h6 class="pwdInfo"><span style="color: coral;">이전에 사용한 적 없는 비밀번호</span><span style="color: black;">가 안전합니다.</span></h6>
+		   <form th:action="@{/bank/changepwd}" th:object="${userPwdForm}" method="post">
+		<div>
+			<div class="userName">
+				<label for="username" class="form-label"></label>
+				<input type="text" th:field="*{username}" class="form-control" placeholder="사용자 ID">
+			</div>
+			<div class="tempPwd">
+				<label for="password" class="form-label"></label>
+				<input type="password" th:field="*{password}" class="form-control" placeholder="현재 비밀번호">
+			</div>
+			<div class="newPwd">
+				<label for="newPassword1" class="form-label"></label>
+	   			<input type="password" th:field="*{newPassword1}" class="form-control" placeholder="새 비밀번호">
+			</div>
+			<div class="newPwdcheck">
+				<label for="newPassword2" class="form-label"></label>
+				<input type="password" th:field="*{newPassword2}" class="form-control" placeholder="새 비밀번호 확인">
+			</div>
+			<button type="submit" class="login-btn">확인하기</button>
+		</div>
+		</form>
+	</section>
+	<script>
+	const cancel_elements = document.getElementsByClassName("cancel");
+		Array.from(cancel_elements).forEach(function(element) {
+			element.addEventListener('click', function() {
+				if(confirm("정말로 취소하시겠습니까?")) {
+					location.href=this.dataset.uri;
+			};
+		});
+	});
+	</script>
+	<footer class="bankfooter">
+		<h5>Judy Bank</h5>
+	</footer>
+</body>
+</html>

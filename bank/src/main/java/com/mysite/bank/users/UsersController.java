@@ -32,12 +32,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysite.bank.users.UserCreateForm;
+import com.mysite.bank.users.UserPwdForm;
+import com.mysite.bank.email.MailService;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/bank")
 public class UsersController {
 	private final UserService userService;
+	private final MailService mailService;
 	
 	@GetMapping("/login")
 	public String login() {
@@ -102,5 +105,26 @@ public class UsersController {
 	   return "findpwd_form";
    }
    
-
+   //비밀번호 변경
+   @GetMapping("/changepwd")
+   public String changepwd(UserPwdForm userPwdForm) {
+	   return "change_pwd";
+   }
+   
+   @PostMapping("/changepwd")
+	public String changepwd(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("newPassword1") String newPassword1, @RequestParam("newPassword2") String newPassword2, @Valid UserPwdForm userPwdForm, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "change_pwd";
+		}
+		if (!userPwdForm.getNewPassword1().equals(userPwdForm.getNewPassword2())) {
+			bindingResult.rejectValue("newPassword2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
+			return "change_pwd";
+		}
+		if (!this.userService.checkPassword(username, password)) {
+	        return "change_pwd";
+	    }
+		this.mailService.updateNewPassword(username, password, newPassword1);
+		return "redirect:/";
+	}
+  
 }

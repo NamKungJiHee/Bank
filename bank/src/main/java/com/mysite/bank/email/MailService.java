@@ -96,11 +96,13 @@ public class MailService {
 		
 		Long userId = this.usersRepository.findByUserName(userName).get().getUserId();
 		String userEmail = this.usersRepository.findByUserName(userName).get().getEmail();
+		String userNickname = this.usersRepository.findByUserName(userName).get().getUserNickname();
 		Users user = new Users();
 		user.setUserId(userId);
 		user.setPassword(passwordEncoder.encode(newPassword));
 		user.setUserName(userName);
 		user.setEmail(userEmail);
+		user.setUserNickname(userNickname);
 		this.usersRepository.save(user);
 	}
 }

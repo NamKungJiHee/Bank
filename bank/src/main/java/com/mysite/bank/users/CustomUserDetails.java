@@ -17,7 +17,7 @@ public class CustomUserDetails implements UserDetails {
         this.nickname = nickname;
         this.authorities = authorities;
     }
-
+    
     public String getNickname() {
         return nickname;
     }

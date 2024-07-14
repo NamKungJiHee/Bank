@@ -1,13 +1,22 @@
 package com.mysite.bank.users;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Optional;
 
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.mysite.bank.users.UsersRepository;
+import com.mysite.bank.users.Users;
 import com.mysite.bank.IncorrectPasswordException;
 import com.mysite.bank.UserNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -67,4 +76,40 @@ public class UserService {
 	        throw new UserNotFoundException("해당 사용자 이름으로 등록된 사용자가 없습니다.");
 	    }
 	}
+   
+   // 카카오 로그인
+   private final ApplicationEnvironmentConfig envConfig;
+   
+   public String getKakaoAuthorizeUrl(String type) throws URISyntaxException, MalformedURLException, UnsupportedEncodingException {
+
+       String baseUrl = "https://kauth.kakao.com/oauth/authorize";
+       String clientId = envConfig.getKakaoClientId();
+       String redirectUrl = envConfig.getKakaoRedirectUrl();
+
+       String encodedRedirectUrl = URLEncoder.encode(redirectUrl, "UTF-8");
+       
+       UriComponents uriComponents = UriComponentsBuilder
+               .fromUriString(baseUrl)
+         
+               .queryParam("client_id", clientId)
+               .queryParam("redirect_uri", encodedRedirectUrl)
+               .queryParam("response_type", "code")
+               .build();
+	        return uriComponents.toUriString();
+	    }
+   
+   public Optional<Users> findByEmail(String email) {
+       return usersRepository.findByEmail(email);
+   }
+   
+   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+       Optional<Users> userOptional = usersRepository.findByUserName(username); 
+       Users user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+       return new CustomUserDetails(
+               user.getUserName(),
+               "", 
+               user.getUserNickname(),
+               AuthorityUtils.createAuthorityList("ROLE_USER") // 권한
+       );
+   }
 }

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/catelist.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="center">
+            <img src="/homepic.png" alt="Home" style="height: 50px;">
+            <h1>JUDY 모바일 홈페이지 방문을 환영합니다.</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+    <section>
+        <div class="bar"></div>
+        <div class="login-container">
+            <a th:href="@{/bank/login}">
+                <button type="submit" class="login-btn">
+                    <img src="/login.png" alt="로그인" style="vertical-align: middle; height: 20px;">
+                    로그인
+                </button>
+            </a>
+            <a th:href="@{/bank/signup}">
+                <button type="submit" class="login-btn">
+                    <img src="/signin.png" alt="회원가입" style="vertical-align: middle; height: 20px;">
+                    회원가입
+                </button>
+            </a>
+        </div>
+        <div class="container">
+            <div class="selectAccount selected" style="transform: translateX(160%); position: fixed; top: 25.2%; padding-top:1%;">
+                <span id="accountCheck">
+                    <img src="/glass.png" alt="계좌조회" style="width: 50%; margin-left: 15%;">
+                    <h3 style="margin-left: 15%;">계좌조회</h3>
+                </span>
+            </div>
+            <div class="account-info active" id="accountInfo">
+                <h1>계좌조회</h1>
+                <div class="underline" style="border-bottom: 3px solid lightgrey; margin: 5px 0; max-width:100%;"></div>
+                <a th:href="@{/bank/accountInfo}">
+                    <ul style="list-style-type:disc; padding-left: 20px;">
+                        <li>내 계좌정보</li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="sendAccount unselected" style="transform: translateX(160%); position: fixed; top: 43%; padding-top:1%;">
+                <span id="sendAccount">
+                    <img src="/send.png" alt="이체" style="width: 50%; margin-left: 17%;">
+                    <h3 style="margin-left: 25%;">이체</h3>
+                </span>
+            </div>
+            <div class="send-info" id="sendInfo">
+                <h1>이체</h1>
+                <div class="underline" style="border-bottom: 3px solid lightgrey; margin: 5px 0; max-width:100%;"></div>
+                <a th:href="@{/bank/sendSelect}">
+                    <ul style="list-style-type:disc; padding-left: 20px;">
+                        <li>이체하기</li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+		<div class="container">
+           <div class="Event unselected" style="transform: translateX(160%); position: fixed; top: 61%; padding-top:1%;">
+               <span id="event">
+                   <img src="/events.jpg" alt="이벤트" style="width: 50%; margin-left: 15%;">
+	                   <h3 style="margin-left: 17%;">이벤트</h3>
+               </span>
+       </div>
+       <div class="event-info" id="eventInfo">
+           <h1>이벤트</h1>
+	           <div class="underline" style="border-bottom: 3px solid lightgrey; margin: 5px 0; max-width:100%;"></div>
+	               <a th:href="@{/bank/roulette}">
+	                   <ul style="list-style-type:disc; padding-left: 20px;">
+	                       <li>룰렛돌리기</li>
+	                   </ul>
+	               </a>
+	           </div>
+       </div>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+    <script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    var accountCheck = document.getElementById('accountCheck');
+		    var sendAccount = document.getElementById('sendAccount');
+		    var accountInfo = document.getElementById('accountInfo');
+		    var sendInfo = document.getElementById('sendInfo');
+		
+		    // 디폴트로 계좌조회 정보 표시
+		    accountInfo.classList.add('active');
+		    accountCheck.classList.add('selected');
+		
+		    accountCheck.addEventListener('click', function() {
+		        accountInfo.classList.add('active');
+		        sendInfo.classList.remove('active');
+		        accountCheck.classList.add('selected');
+		        sendAccount.classList.add('unselected');
+		    });
+		
+		    sendAccount.addEventListener('click', function() {
+		        accountInfo.classList.remove('active');
+		        sendInfo.classList.add('active');
+		        sendAccount.classList.add('selected');
+		        sendAccount.classList.remove('unselected');
+		        accountCheck.classList.remove('selected');
+		        accountCheck.classList.add('unselected');
+		    });
+		});
+    </script>
+</body>
+</html>

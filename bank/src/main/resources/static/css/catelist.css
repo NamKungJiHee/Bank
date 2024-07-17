@@ -30,11 +30,11 @@
 /* Section 설정 */
 
 .bar {
-	position: absolute;
+	position: fixed;
 	top: 0%;
 	transform: translateX(20%);
     width: 70%; 
-    height: 200px;
+    height: 165px;
 	background-color: powderblue;
 	z-index: -1;
 }
@@ -68,19 +68,22 @@
 	margin-right: 10%;
 }
 
-.account-info, .send-info, .event-info {
+.account-info, .send-info, .event-info, .group-info, .check-info {
 	position: fixed;
-	top: 27%;
-	transform: translateX(420%);
-	display: none;
-	width: 110px; 
+	top: 22%;
+	transform: translateX(240%);
+	width: 12%; 
     height: auto; 
 }
 
 .active {
     display: block;
 }
-        
+   
+.inactive {
+	display: none;
+}   
+  
 a {
     text-decoration: none;
     color: black;
@@ -100,7 +103,7 @@ a {
 	background-color: darkgrey;
 	text-align: center;
 	padding: 2px 0;
-	width: 69%;
+	width: 71%;
 	margin: auto;
 	height: 20px;
 	position: fixed;

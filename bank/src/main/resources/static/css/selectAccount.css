@@ -11,7 +11,7 @@
 .center {
     display: flex; 
     align-items: center; 
-    transform: translateX(40%);
+    transform: translateX(110%);
 }
 
 .center img {
@@ -20,23 +20,11 @@
 
 .center h1 {
     margin: 0; 
-    color: white
 }
+
 
 .right img{
 	transform: translateX(-390%);
-}
-
-.username {
-	font-weight: bold;
-	font-size: 20px;
-	color:indianred;
-}
-
-.loginInfo {
-	position: fixed;
-	top: 14%;
-	transform: translateX(670%);
 }
 
 /* Section 설정 */
@@ -51,62 +39,24 @@
 	z-index: -1;
 }
 
+.username {
+	font-weight: bold;
+	color: indianred;
+}
+
 .login-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px; 
-    margin-top: 20px; 
+	width: 30%;
+	height: auto;
+	transform: translateX(66%);
 }
 
-.login-btn {
-    width: 150px; 
-    height: 50px; 
-    background: cadetblue;
-    color: white; 
-    border: none; 
-    font-size: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 45%;
-    font-weight: bold;
-}
-
-.login-container a {
-	text-decoration: none;
-}
-
-.login-container img {
-	margin-right: 10%;
-}
-
-.account-info, .send-info, .event-info, .group-info, .check-info {
+.background {
+	background: lightgrey;
+	width: 130vh;
+	height: 76vh;
+	transform: translateX(20%);
 	position: fixed;
-	top: 22%;
-	transform: translateX(240%);
-	width: 12%; 
-    height: auto; 
-}
-
-.active {
-    display: block;
-}
-   
-.inactive {
-	display: none;
-}   
-  
-a {
-    text-decoration: none;
-    color: black;
-}
-
-.selected {
-    background-color: lightgrey;
-}
-
-.unselected {
-    background-color: darkgrey;
+	top: 21%;
 }
 
 /* footer */
@@ -115,13 +65,13 @@ a {
 	background-color: darkgrey;
 	text-align: center;
 	padding: 2px 0;
-	width: 71%;
+	width: 70%;
 	margin: auto;
 	height: 20px;
 	position: fixed;
     bottom: 0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50.7%);
 	}
 	
 .bankfooter h5 {

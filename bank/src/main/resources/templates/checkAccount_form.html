@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/checkAccount.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+		<h2>당신의 금융 생활을 더 편리하게, 입출금 통장 개설</h2>
+		<div class="open-img" style="width: 150px; height: 150px; border: 1px solid lightslategray; border-radius: 70%; overflow: hidden; transform: translateX(162%); margin-top: 4%;">
+		    <img src="/open.png" alt="Open" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+        <h4 style="font-weight: bold; color: white; transform: translateX(-53%); margin-top: 33%;">24시간 언제든지 입금과 출금이 가능합니다!</h4>
+		<div class="start-container">
+            <a th:href="@{/bank/agreement}">
+                <button type="submit" class="start-btn">
+                    시작하기
+                </button>
+            </a>
+		</div>
+	</nav>
+    <section>
+		<div class="mobile-img" style="width: 150px; height: 150px; border: 1px solid lightslategray; border-radius: 70%; overflow: hidden; transform: translateX(270%); margin-top: 2%;">
+		    <img src="/mobile.png" alt="Mobile" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+		<h3 class="accountInfo"><span style="font-weight: bold;">복잡 </span><span style="font-weight: bold; color: dodgerblue;">No</span><span style="font-weight: bold;">, 어려움</span><span style="font-weight: bold; color: dodgerblue;"> No</span></h3>
+		<h3 class="accountInfo-1"><span style="font-weight: bold; color: tomato;">초간단 초고속</span><span style="font-weight: bold;">으로 개설해보세요~</span></h3>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+</body>
+</html>

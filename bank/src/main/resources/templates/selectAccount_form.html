@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/selectAccount.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="center">
+            <img src="/glass.png" alt="Glass" style="height: 50px;">
+            <h1>내 계좌정보</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+    <section>
+        <div class="bar"></div>
+        <div class="login-container">
+			<span th:if="${#authorization.expression('isAuthenticated()')}">
+		        <span th:text="${#authentication.principal.nickname} + ' 님의 계좌'" class="username"></span>
+		    </span>
+        </div>
+		<div class="background"></div>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+    <script>
+
+    </script>
+</body>
+</html>

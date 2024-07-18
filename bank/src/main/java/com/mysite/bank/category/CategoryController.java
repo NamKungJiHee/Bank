@@ -13,9 +13,21 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/bank")
 public class CategoryController {
+	
 	@GetMapping("/category")
 	public String categoryList() {
 		return "category_form";
+	}
+	
+	@GetMapping("/accountInfo")
+	public String selectAccountInfo() {
+		return "selectAccount_form";
+	}
+	
+	// 입출금통장 개설
+	@GetMapping("/checkingAccount")
+	public String checkingAccount() {
+		return "checkAccount_form";
 	}
 }
 

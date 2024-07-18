@@ -36,6 +36,11 @@
                 </button>
             </a>
         </div>
+		<div class="loginInfo">
+		<span th:if="${#authorization.expression('isAuthenticated()')}">
+		    <span th:text="${#authentication.principal.nickname} + ' 님'" class="username"></span>
+		</span>
+		</div>
 		<div class="container">
             <div class="menu-item selectAccount selected" id="accountCheck" style="transform: translateX(160%); position: fixed; top: 20.9%; padding-top:1%;">
                 <span>

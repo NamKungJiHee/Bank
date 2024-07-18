@@ -1,0 +1,106 @@
+/* Navbar 설정 */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: darkseagreen;
+    width: 70%;
+    height: 70vh;
+	transform: translateX(20%);
+}
+
+.right img{
+	transform: translateX(120vh);
+	position:absolute;
+	top: 2vh;
+}
+
+.navbar h2 {
+	color: white;
+	font-weight: bold;
+	position: absolute;
+	top: 20%;
+	transform: translateX(33vh);
+}
+
+.start-btn {
+	position: absolute;
+	top: 85%;
+    width: 11%; 
+    height: 8%;
+	background: cadetblue;
+	color: white; 
+	left: 50%; 
+    transform: translateX(-50%); 
+    border-radius: 45%;
+    border: none; 
+    font-size: 18px;
+}
+
+/* Section 설정 */
+
+.accountInfo {
+	position: absolute;
+	top: 75%;
+	transform: translateX(350%);
+}
+
+.accountInfo-1 {
+	position: absolute;
+	top: 80%;
+	transform: translateX(230%);
+	margin-top: 2%;
+}
+
+/* footer */
+
+.bankfooter {
+	background-color: darkgrey;
+	text-align: center;
+	padding: 2px 0;
+	width: 70%;
+	margin: auto;
+	height: 20px;
+	position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50.7%);
+	}
+	
+.bankfooter h5 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	font-size: 15px;
+	margin: 0;
+	text-align: right;
+	padding-right: 5%;
+		}
+
+/* 모바일용 */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .left, .right {
+        flex: none;
+        margin: 5px 0;
+        justify-content: center;
+    }
+
+    .center {
+        flex: none;
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    .centered {
+        flex-direction: column;
+    }
+
+    .judy-text {
+        margin: 10px 0 0 0;
+    }
+}

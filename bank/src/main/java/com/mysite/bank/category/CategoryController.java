@@ -29,5 +29,15 @@ public class CategoryController {
 	public String checkingAccount() {
 		return "checkAccount_form";
 	}
+	
+	@GetMapping("/agreement")
+	public String agreement() {
+		return "agreement_form";
+	}
+	
+	@GetMapping("/agreementsetting")
+	public String agreementSetting() {
+		return "agreementSet_form";
+	}
 }
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/agreementset.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>계좌 개설</h2>
+    </nav>
+    <section>
+        <div class="condition">
+            <div class="question-3">
+                <input type="radio" style="width: 30px; height:30px; margin-left: 17px; margin-right: 10px;" name="checkCondition" value="yes" /><h4>상품 이용약관</h4>
+            </div>
+            <div class="line"></div>
+      
+        </div>
+        <div class="next-container">
+            <button type="button" class="next-btn" onclick="checkAnswers()">
+                다음
+            </button>
+        </div>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+    <script>
+
+    </script>
+</body>
+</html>

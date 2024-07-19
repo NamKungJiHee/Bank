@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/agreement.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>계좌 개설</h2>
+    </nav>
+    <section>
+        <div class="info-message" style="font-weight: bold; text-align: center; margin-top: 45px; font-size: 20px;">
+           아래 내용을 확인해주세요.
+       </div>
+       <div class="question-container">
+            <div class="question-1">
+            쥬디뱅크와 거래하시는 금융상품이 고객님 본인소유인가요?
+            </div>
+            <div id="checked1">
+            <input type="radio" id="yes1" name="check1" value="yes" /> 예
+            <input type="radio" id="no1" name="check1" value="no" /> 아니오
+            </div>
+            <div class="question-2">
+            대한민국에만 납세의무가 있으신가요?
+            </div>
+            <div id="checked2">
+            <input type="radio" name="check2" value="yes" /> 예
+            <input type="radio" name="check2" value="no" /> 아니오
+            </div>
+        </div>
+        <div class="condition">
+            <div class="question-3">
+                <input type="radio" style="width: 30px; height:30px; margin-left: 17px; margin-right: 10px;" name="checkCondition" value="yes" /><h4>상품 이용약관</h4>
+            </div>
+            <div class="line"></div>
+            <div class="term">
+               <span><img src="/check.png" alt="Checked"></span><span>예금거래기본약관</span>
+            </div>
+            <div class="term">
+               <span><img src="/check.png" alt="Checked"></span><span>입출금이자유로운예금 약관</span>
+           </div>
+        </div>
+        <div class="next-container">
+            <button type="button" class="next-btn" onclick="checkAnswers()">
+                다음
+            </button>
+        </div>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+    <script>
+        function checkAnswers() {
+             var question1 = document.querySelector('input[name="check1"]:checked');
+             var question2 = document.querySelector('input[name="check2"]:checked');
+             var condition = document.querySelector('input[name="checkCondition"]:checked');
+
+             if (question1 && question2 && condition) {
+                 if (question1.value === 'yes' && question2.value === 'yes') {
+                     window.location.href = "/bank/agreementsetting";
+                 } else {
+                     alert("모두 동의하셔야합니다.");
+                 }
+             } else {
+                 alert("모두 동의하셔야합니다.");
+             }
+         }
+    </script>
+</body>
+</html>

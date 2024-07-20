@@ -17,10 +17,62 @@
 
 /* Section 설정 */
 
+.pwd-container {
+	background: lightblue;
+	width: 30%;
+	height: 25vh;
+	transform: translateX(120%);
+	margin-top: 3%;
+  	box-shadow: 0 5px 4px -4px black;
+}
 
+.pwd-present {
+	position: absolute;
+	top: 15%;
+	margin-left: 50%;
+}
 
+.pwd-present2 {
+	position: absolute;
+	top: 40%;
+	margin-left: 40%;
+}
 
+.pwd {
+	margin-top: 7%;
+	text-align: center;
+	vertical-align: middle;
+}
 
+.line {
+	width: 50%;
+	height: 2px;
+	background: lightgrey;
+	margin-top: 3%;
+    transform: translateX(50%);
+}
+
+.button {
+	position: absolute;
+	width: 10%;
+	height: 3vh;
+	border: 2px solid lightgrey;
+	text-align: center;
+	padding-top: 5px;
+	font-weight: bold;
+}
+
+.check-btn {
+	position: absolute;
+	width: 11%;
+	height: 4.1vh;
+	border: 2px solid lightgrey;
+	text-align: center;
+	padding-top: 5px;
+	font-weight: bold;
+	background: transparent;
+	font-size: 16px;
+}
 
 
 .next-btn {

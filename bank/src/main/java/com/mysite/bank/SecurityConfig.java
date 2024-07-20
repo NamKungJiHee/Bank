@@ -20,6 +20,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
             		.requestMatchers("/bank/accountInfo").authenticated()
+            		.requestMatchers("/bank/checkingAccount").authenticated()
             		.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
             .csrf((csrf) -> csrf
                 .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))

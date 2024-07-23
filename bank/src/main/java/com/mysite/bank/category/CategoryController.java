@@ -2,8 +2,11 @@ package com.mysite.bank.category;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mysite.bank.accountinfo.AccountInfoService;
 import com.mysite.bank.email.MailService;
 import com.mysite.bank.users.UserService;
 
@@ -13,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/bank")
 public class CategoryController {
+	private final AccountInfoService accountInfoService;
 	
 	@GetMapping("/category")
 	public String categoryList() {
@@ -38,6 +42,14 @@ public class CategoryController {
 	@GetMapping("/agreementsetting")
 	public String agreementSetting() {
 		return "agreementSet_form";
+	}
+	
+	// 통장 비밀번호
+	@PostMapping("/accountpwd")
+	public String accountPwd(@RequestParam("accountpwd") Long accountpwd ) {
+		accountInfoService.create(accountpwd);
+		
+		return "redirect:/";
 	}
 }
 

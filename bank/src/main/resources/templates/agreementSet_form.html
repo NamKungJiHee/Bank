@@ -22,10 +22,11 @@
                 <h3>쥬디뱅크 입출금통장</h3>
             </div>
         <h3 style="text-align: center; vertical-align: middle; margin-top: 10%;">통장 비밀번호를 입력하세요.</h3>
-        </div>
+        </div>           
+		<form id="pwdForm" th:action="@{/bank/accountpwd}" method="post" enctype="multipart/form-data">          
         <div class="pwd">
-            <label for="accountPwd" class="accountPwd"></label>
-            <input type="password" name="accountpwd" id="accountPwd" placeholder="비밀번호 입력" style="width: 25%; height: 4vh;" required>
+            <label for="accountpwd" class="accountPwd"></label>
+            <input type="password" name="accountpwd" id="accountpwd" placeholder="비밀번호 입력" style="width: 25%; height: 4vh;" required>
         </div>
         <div class="line"></div>
         <div class="Identification" style="margin-left: 30%;">
@@ -34,22 +35,23 @@
         </div>
         <h3 style="margin-left: 50%; position: absolute; top: 67%;">신분증을 준비해주세요.</h3>
         
-        <form method="post" enctype="multipart/form-data">
-            <div class="button" style="transform: translateX(85vh); top: 78%;">
-                <label for="chooseFile">
-                    찾기
-                </label>
-            </div>
-            <input type="file" id="chooseFile" name="chooseFile" accept="image/*" style="visibility: hidden;">
-        </form>
-        <button type="button" class="check-btn" onclick="checkId()" style="transform: translateX(110vh); top: 78%;">
+        <div class="button" style="transform: translateX(85vh); top: 78%;">
+            <label for="chooseFile">
+                찾기
+            </label>
+        </div>
+        <input type="file" id="chooseFile" name="chooseFile" accept="image/*" style="visibility: hidden;">
+        
+        <button type="button" class="check-btn" onclick="checkId()" style="transform: translateX(81vh); top: 78%;">
             확인
         </button>
+		
         <div class="next-container">
-            <button type="button" class="next-btn" onclick="checkAnswers()">
+            <button id="next" type="submit" class="next-btn" onclick="return checkAnswers()">
                 다음
             </button>
         </div>
+		</form>
     </section>
     <footer class="bankfooter">
         <h5>Judy Bank</h5>
@@ -66,7 +68,7 @@
        }
 
        function checkAnswers() {
-           var password = document.getElementById('accountPwd').value;
+           var password = document.getElementById('accountpwd').value;
            var fileInput = document.getElementById('chooseFile');
 
            if (password === "") {
@@ -78,10 +80,17 @@
                alert("신분증을 등록해주세요.");
                return false;
            }
+			return true
+			
 
+			
            // 계좌 생성 로직 추가
-		   
+   
        }
+	   var button = document.getElementById('next');
+	   button.addEventListener('click', () => {
+	   	alert('계좌 개설이 완료되었습니다.');
+	   })
     </script>
 </body>
 </html>

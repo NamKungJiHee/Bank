@@ -1,11 +1,18 @@
 package com.mysite.bank.category;
 
+import java.security.Principal;
+import java.util.List;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
 
+import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoService;
 import com.mysite.bank.email.MailService;
 import com.mysite.bank.users.UserService;
@@ -24,9 +31,12 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/accountInfo")
-	public String selectAccountInfo() {
-		return "selectAccount_form";
-	}
+    public String selectAccountInfo(Model model, Principal principal) {
+        String userName = principal.getName(); 
+        List<AccountInfo> accountInfos = accountInfoService.findAccountsByUsername(userName);
+        model.addAttribute("accountInfos", accountInfos);
+        return "selectAccount_form";
+    }
 	
 	// 입출금통장 개설
 	@GetMapping("/checkingAccount")
@@ -45,11 +55,12 @@ public class CategoryController {
 	}
 	
 	// 통장 비밀번호
-	@PostMapping("/accountpwd")
-	public String accountPwd(@RequestParam("accountpwd") Long accountpwd ) {
-		accountInfoService.create(accountpwd);
-		
-		return "redirect:/";
-	}
+	 @PostMapping("/accountpwd")
+	    public String accountPwd(@RequestParam("accountpwd") Long accountpwd, Principal principal, Model model) {
+	        String userName = principal.getName(); 
+	        AccountInfo accountInfo = accountInfoService.create(accountpwd, userName);
+	        
+	        return "redirect:/";
+	    }
 }
 

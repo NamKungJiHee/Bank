@@ -59,6 +59,41 @@
 	top: 21%;
 }
 
+.account-container {
+	width: 30%;
+	height: 8vh;
+	background: aliceblue;
+	position: absolute;
+	transform: translateX(107%);
+	top: 25%;
+}
+
+.img {
+	width: 11%;
+	height: auto;
+	margin-top: 2%;
+	margin-left: 3%;
+}
+
+.accountNumber {
+	font-weight: bold;
+	margin-left: 10px;
+	padding-top: 10px;
+}
+
+.balance {
+	font-weight: bold;
+	position: absolute;
+	top: 240%;
+	left: 80%;
+}
+
+.isGroupAccount {
+	position: absolute;
+	top: 113%;
+	left: 80%;
+}
+
 /* footer */
 
 .bankfooter {

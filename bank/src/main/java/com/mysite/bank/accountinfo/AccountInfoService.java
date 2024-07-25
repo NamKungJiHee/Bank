@@ -3,6 +3,7 @@ package com.mysite.bank.accountinfo;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,8 +64,6 @@ public class AccountInfoService {
         List<UserAccounts> userAccounts = userAccountsRepository.findByUser_UserName(userName);
         return userAccounts.stream()
                            .map(UserAccounts::getAccountInfo)
-                           .toList();
+                           .collect(Collectors.toList());
     }
-    
-
 }

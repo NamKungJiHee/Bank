@@ -11,7 +11,7 @@
 .center {
     display: flex; 
     align-items: center; 
-    transform: translateX(110%);
+    transform: translateX(80vh);
 }
 
 .center img {
@@ -22,80 +22,39 @@
     margin: 0; 
 }
 
-
 .right img{
 	transform: translateX(-390%);
 }
 
 /* Section 설정 */
 
-.bar {
+.account-info, .send-info, .event-info, .group-info, .check-info {
 	position: fixed;
-	top: 0%;
-	transform: translateX(20%);
-    width: 70%; 
-    height: 165px;
-	background-color: powderblue;
-	z-index: -1;
+	top: 22%;
+	transform: translateX(240%);
+	width: 12%; 
+    height: auto; 
 }
 
-.username {
-	font-weight: bold;
-	color: indianred;
+.active {
+    display: block;
+}
+   
+.inactive {
+	display: none;
+}   
+  
+a {
+    text-decoration: none;
+    color: black;
 }
 
-.login-container {
-	width: 30%;
-	height: auto;
-	transform: translateX(66%);
+.selected {
+    background-color: lightgrey;
 }
 
-.background {
-	background: lightgrey;
-	width: 130vh;
-	height: 76vh;
-	transform: translateX(20%);
-	position: fixed;
-	top: 21%;
-}
-
-.account-container {
-	width: 30%;
-	height: 8vh;
-	background: aliceblue;
-	position: absolute;
-	transform: translateX(107%);
-	top: 25%;
-	display: flex;
-	flex-direction: column;
-}
-
-.img {
-	width: 11%;
-	height: auto;
-	margin-top: 2%;
-	margin-left: 3%;
-}
-
-.accountNumber {
-	font-weight: bold;
-	margin-left: 10px;
-	padding-top: 10px;
-	width: 30%;
-	height: 20vh;
-}
-
-.balance {
-	font-weight: bold;
-	position: absolute;
-	top: 240%;
-	left: 80%;
-}
-
-.isGroupAccount {
-	position: absolute;
-	top: 113%;
-	left: 80%;
+.unselected {
+    background-color: darkgrey;
 }
 
 /* footer */
@@ -104,13 +63,13 @@
 	background-color: darkgrey;
 	text-align: center;
 	padding: 2px 0;
-	width: 70%;
+	width: 71%;
 	margin: auto;
 	height: 20px;
 	position: fixed;
     bottom: 0;
     left: 50%;
-    transform: translateX(-50.7%);
+    transform: translateX(-50%);
 	}
 	
 .bankfooter h5 {

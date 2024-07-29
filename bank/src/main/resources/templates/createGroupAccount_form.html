@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/createGroupAccount.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+		<h2>함께하는 즐거움, 모임통장에서 시작하세요!</h2>
+		<div class="money-img" style="width: 150px; height: 150px; border: 1px solid lightslategray; border-radius: 70%; overflow: hidden; transform: translateX(240%); margin-top: 4%;">
+		    <img src="/moneys.png" alt="Money" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+		<p><h4 style="font-weight: bold; color: white; margin-top: 31%;">지금 바로 모임통장을 개설하고,</h4></p><br>
+		<p><h4 style="font-weight: bold; color: white; margin-top: 37%; position:absolute; left: 33%;">함께하는 모든 순간을 더 즐겁게 만들어보세요!</h4></p>
+		<div class="start-container">
+            <a th:href="@{/bank/selectAccount}">
+                <button type="submit" class="start-btn">
+                    시작하기
+                </button>
+            </a>
+		</div>
+	</nav>
+    <section>
+		<div class="benefit-img" style="width: 150px; height: 150px; border: 1px solid lightslategray; border-radius: 70%; overflow: hidden; transform: translateX(270%); margin-top: 2%;">
+		    <img src="/benefit.png" alt="Benefit" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+		<h3 class="accountInfo"><span style="font-weight: bold;">아직도 </span><span style="font-weight: bold; color: dodgerblue;">시작</span><span style="font-weight: bold;">안하셨나요?</span></h3>
+		<h3 class="accountInfo-1"><span style="font-weight: bold;">푸짐한 </span><span style="font-weight: bold; color: tomato;">선물</span><span style="font-weight: bold;">받아가세요~</span></h3>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+</body>
+</html>

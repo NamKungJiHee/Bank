@@ -21,6 +21,7 @@ public class SecurityConfig {
             .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
             		.requestMatchers("/bank/accountInfo").authenticated()
             		.requestMatchers("/bank/checkingAccount").authenticated()
+            		.requestMatchers("/bank/roulette").authenticated()
             		.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
             .csrf(csrf -> csrf.disable())
             	// .csrf((csrf) -> csrf

@@ -22,8 +22,9 @@ public class SecurityConfig {
             		.requestMatchers("/bank/accountInfo").authenticated()
             		.requestMatchers("/bank/checkingAccount").authenticated()
             		.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-            .csrf((csrf) -> csrf
-                .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
+            .csrf(csrf -> csrf.disable())
+            	// .csrf((csrf) -> csrf
+                // .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
             .headers((headers) -> headers
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(
                     XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))

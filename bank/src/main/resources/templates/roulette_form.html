@@ -23,7 +23,7 @@
     <section>
 		<div class="roulette">
 		  <canvas width=380; height=380;></canvas>  
-		  <button onclick="rotate()">Start</button>
+		  <button id="number" onclick="rotate()" th:disabled="${hasParticipated}">Start</button>
 		</div>
 		<h3 style="color:indianred; position: absolute; left: 45%;">*1인 1회만 사용 가능</h3>
     </section>
@@ -31,6 +31,7 @@
         <h5>Judy Bank</h5>
     </footer>
     <script>
+		var button = document.getElementById("number");
 		const $c = document.querySelector("canvas");
 		const ctx = $c.getContext(`2d`);
 		
@@ -93,11 +94,40 @@
 		    $c.style.transform = `rotate(-${rotate}deg)`;
 		    $c.style.transition = `1.5s`;
 		    
-		    setTimeout(() => alert(`${product[ran]} 이벤트가 당첨되었습니다!!`), 2000);
-		  }, 1);
-		};
+			setTimeout(() => {
+                    alert(`${product[ran]} 이벤트가 당첨되었습니다!!`);
+                    // AJAX 요청을 통해 서버로 데이터 전송
+                    sendDataToServer(product[ran]);
+                }, 2000);
+            }, 1);
+        };
+					
+		const sendDataToServer = (selectedProduct) => {
+           fetch('/bank/saveResult', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify({ result: selectedProduct })
+           })
+           .then(response => response.json())
+           .then(data => console.log(data))
+           .catch(error => console.error('Error:', error));
+       };
+		       
 		
 		newMake();
+		
+		/* 횟수 제한 */
+		number = 1;
+		button.addEventListener('click', () => {
+			number -= 1;
+
+			if (number == 0) {
+				button.style.display = 'none';
+			}
+		})
+	
     </script>
 </body>
 </html>

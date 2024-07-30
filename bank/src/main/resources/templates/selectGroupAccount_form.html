@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/selectGroupAccount.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+		<span>
+		<div class="pig-img" style="width: 90px; height: 90px; position: absolute; top:20%; left: 15%; border-radius: 70%; overflow: hidden;">
+			    <img src="/pig.png" alt="Pig" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+		</span>
+		<h2><span style="font-weight: bold; color: white">당신의 모임통장을 책임질 </span><span style="font-weight: bold; color: indianred">계좌</span><span style="font-weight: bold; color: white">를 골라주세요!</span></h2>
+		<p><h4 style="font-weight: bold; margin-top: 16%; position:absolute; left: 23%;">계좌를 선택해주세요</h4></p>
+	</nav>
+    <section>
+		<div class="selectAccount-container">
+			<div class="originaccount">
+				<a th:href="@{/bank/accountInfo}">
+					<h3 class="originAccount">기존 계좌 사용하기</h3>
+				</a>
+			</div>
+			<div class="goaccount">
+				<a th:href="@{/bank/checkingAccount}">
+					<h3 class="goAccount">새 계좌로 시작하기</h3>
+				</a>
+			</div>
+        </div>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+</body>
+</html>

@@ -98,6 +98,26 @@
 	left: 80%;
 }
 
+.select-btn {
+	position: absolute;
+	top: 23vh;
+    width: 27%; 
+    height: 45%;
+	background: cadetblue;
+	color: white; 
+	left: 50%; 
+    transform: translateX(65%); 
+    border-radius: 45%;
+    border: none; 
+    font-size: 18px;
+	z-index: 1;
+}
+
+button:active {
+  background: papayawhip;
+  color: #f9f9f9;
+}
+
 /* footer */
 
 .bankfooter {

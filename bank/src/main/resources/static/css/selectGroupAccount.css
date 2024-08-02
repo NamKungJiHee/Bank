@@ -50,16 +50,55 @@
 }
 
 .originAccount {
-	position: absolute;
-	top: 50%;
-	left: 40%;
+	position: relative;
+	top: 25%;
+	left: 35%;
 }
 
 .goAccount {
+	position: relative;
+	top: 25%;
+	left: 35%;
+}
+
+.originaccount {
 	position: absolute;
-	top: 70%;
-	left: 29%;
 	width: 40%;
+	height: 15vh;
+	top: 48%;
+	transform: translateX(80%);
+	background: whitesmoke;
+	box-shadow: 0 4px 4px -4px black;
+}
+
+.bluebar {
+	position: absolute;
+	background: lightskyblue;
+	width: 1%;
+	height: 15%;
+	top: 48%;
+	transform: translateX(60.5vh);
+	z-index: 1;
+}
+
+.goaccount {
+	position: absolute;
+	width: 40%;
+	height: 15vh;
+	top: 72%;
+	transform: translateX(80%);
+	background: whitesmoke;
+	box-shadow: 0 4px 4px -4px black;
+}
+
+.pinkbar {
+	position: absolute;
+	background: lightpink;
+	width: 1%;
+	height: 15%;
+	top: 72%;
+	transform: translateX(60.5vh);
+	z-index: 1;
 }
 
 /* footer */

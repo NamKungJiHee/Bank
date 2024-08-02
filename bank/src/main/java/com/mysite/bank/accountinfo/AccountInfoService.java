@@ -66,4 +66,16 @@ public class AccountInfoService {
                            .map(UserAccounts::getAccountInfo)
                            .collect(Collectors.toList());
     }
+    
+    @Transactional
+    public void updateIsGroupaccount(Long accountId) {
+        Optional<AccountInfo> optionalAccountInfo = accountInfoRepository.findById(accountId);
+        if (!optionalAccountInfo.isPresent()) {
+            throw new RuntimeException("Account not found");
+        }
+        AccountInfo accountInfo = optionalAccountInfo.get();
+        accountInfo.setIsGroupaccount(1L);
+        accountInfoRepository.save(accountInfo);
+    }
+
 }

@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/bank")
 public class GroupController {
 	private final AccountInfoService accountInfoService;
+	private final GroupService groupService;
 	
 	@GetMapping("/creategroupAccount")
 	public String createGroupAccount() {
@@ -50,14 +51,22 @@ public class GroupController {
 	}
 	
 	// 계좌 선택하기
-	 @PostMapping("/selectAccount")
-    public String selectAccount(@RequestParam("accountId") Long accountId) {
+	@PostMapping("/selectAccount")
+    public String selectAccount(@RequestParam("accountId") Long accountId, Model model) {
         accountInfoService.updateIsGroupaccount(accountId);
-        return "redirect:/bank/groupName"; 
+        model.addAttribute("accountId", accountId); 
+//        return "redirect:/bank/groupName";     # redirect 시 model로 저장한 값이 파라미터로 안넘어감.
+        return "groupname_form";
     }
 	 
 	@GetMapping("/groupName")
 	public String groupName() {
 		return "groupname_form";
+	}
+	
+	@PostMapping("/groupName")
+	public String saveGroupName(@RequestParam("groupname") String groupName, @RequestParam("accountId") Long accountId) {
+		groupService.save(groupName, accountId);
+	    return "selectLocker_form";
 	}
 }

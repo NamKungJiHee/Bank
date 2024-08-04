@@ -70,26 +70,26 @@ public class CategoryController {
 	
 	// 통장 비밀번호
 	 @PostMapping("/accountpwd")
-	    public String accountPwd(@RequestParam("accountpwd") Long accountpwd, Principal principal, Model model, HttpServletRequest request) {
-	        String userName = principal.getName(); 
-	        AccountInfo accountInfo = accountInfoService.create(accountpwd, userName);
+	 public String accountPwd(@RequestParam("accountpwd") Long accountpwd, Principal principal, Model model, HttpServletRequest request) {
+		 String userName = principal.getName(); 
+		 AccountInfo accountInfo = accountInfoService.create(accountpwd, userName);
 	        
-	        HttpSession session = request.getSession();
-
-	        // 세션에서 URL 리스트 가져오기
-	        List<String> urlList = (List<String>) session.getAttribute("urlList");
-
-	        // 2가지 루트
-	        // 1. selectAccount(모임통장 만들기) url을 거쳤다면, /bank/accountInfo로
-	        // 2. 그 이외의 경우, 홈으로 redirect
-	        String redirectUrl;
-	        if (urlList != null && urlList.contains(request.getRequestURL().toString().replace("accountpwd", "selectAccount"))) {
-	            redirectUrl = "redirect:/bank/accountInfo";
-	        } else {
-	            redirectUrl = "redirect:/";
-	        }
-
-	        return redirectUrl;
-	 }
+		 HttpSession session = request.getSession();
+	
+		 // 세션에서 URL 리스트 가져오기
+		 List<String> urlList = (List<String>) session.getAttribute("urlList");
+	
+		 // 2가지 루트
+		 // 1. selectAccount(모임통장 만들기) url을 거쳤다면, /bank/accountInfo로
+		 // 2. 그 이외의 경우, 홈으로 redirect
+		 String redirectUrl;
+		 if (urlList != null && urlList.contains(request.getRequestURL().toString().replace("accountpwd", "selectAccount"))) {
+	        redirectUrl = "redirect:/bank/accountInfo";
+		 } else {
+	        redirectUrl = "redirect:/";
+		 }
+	
+		 return redirectUrl;
+		 }
 }
 

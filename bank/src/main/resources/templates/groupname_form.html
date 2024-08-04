@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/groupName.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+		<span>
+		<div class="pig-img" style="width: 90px; height: 90px; position: absolute; top:20%; left: 15%; border-radius: 70%; overflow: hidden;">
+			    <img src="/pig.png" alt="Pig" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+		</span>
+		<h2><span style="font-weight: bold; color: white">우리 모임의 </span><span style="font-weight: bold; color: indianred">이름</span><span style="font-weight: bold; color: white">을 지어주세요!</span></h2>
+		<p><h4 style="font-weight: bold; margin-top: 16%; position:absolute; left: 23%;">모임원들과 함께 볼 모임이름을 정해주세요.</h4></p>
+	</nav>
+    <section>
+		<form id="groupNameForm" th:action="@{/bank/groupName}" method="post">          
+	        <div class="groupName-container">
+	            <label for="groupname" class="groupName"></label>
+	            <input type="text" name="groupname" id="groupname" required>
+	        </div>
+			<input type="hidden" name="accountId" th:value="${accountId}">
+			<button type="submit" class="next-btn">
+			    다음
+			</button>
+		</form>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+</body>
+</html>

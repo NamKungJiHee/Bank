@@ -1,4 +1,4 @@
-package com.mysite.groupaccountmembers;
+package com.mysite.bank.groupaccountmembers;
 
 import com.mysite.bank.groupaccounts.GroupAccount;
 import com.mysite.bank.users.Users;
@@ -33,3 +33,4 @@ public class GroupAccountMembers {
     @JoinColumn(name = "groupAccountId", nullable = false)
     private GroupAccount groupAccountId;
 }
+

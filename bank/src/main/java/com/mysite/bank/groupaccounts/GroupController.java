@@ -1,5 +1,6 @@
 package com.mysite.bank.groupaccounts;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +66,9 @@ public class GroupController {
 	}
 	
 	@PostMapping("/groupName")
-	public String saveGroupName(@RequestParam("groupname") String groupName, @RequestParam("accountId") Long accountId) {
-		groupService.save(groupName, accountId);
+	public String saveGroupName(@RequestParam("groupname") String groupName, @RequestParam("accountId") Long accountId, Principal principal) {
+		String userName = principal.getName(); 
+		groupService.save(groupName, accountId, userName);
 	    return "selectLocker_form";
 	}
 }

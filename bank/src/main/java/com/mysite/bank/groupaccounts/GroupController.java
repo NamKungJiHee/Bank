@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysite.bank.accountinfo.AccountInfoService;
 
@@ -52,12 +53,12 @@ public class GroupController {
 	}
 	
 	// 계좌 선택하기
-	@PostMapping("/selectAccount")
-    public String selectAccount(@RequestParam("accountId") Long accountId, Model model) {
+	@PostMapping("/chooseAccount")
+    public String selectAccount(@RequestParam("accountId") Long accountId, RedirectAttributes redirectAttributes) {
         accountInfoService.updateIsGroupaccount(accountId);
-        model.addAttribute("accountId", accountId); 
-//        return "redirect:/bank/groupName";     # redirect 시 model로 저장한 값이 파라미터로 안넘어감.
-        return "groupname_form";
+        redirectAttributes.addFlashAttribute("accountId", accountId);
+        return "redirect:/bank/groupName";     // # redirect 시 model로 저장한 값은 파라미터로 안넘어감.
+//        return "groupname_form";
     }
 	 
 	@GetMapping("/groupName")
@@ -65,10 +66,23 @@ public class GroupController {
 		return "groupname_form";
 	}
 	
-	@PostMapping("/groupName")
+	@PostMapping("/chooseGroupName")
 	public String saveGroupName(@RequestParam("groupname") String groupName, @RequestParam("accountId") Long accountId, Principal principal) {
 		String userName = principal.getName(); 
 		groupService.save(groupName, accountId, userName);
-	    return "selectLocker_form";
+	    return "redirect:/bank/selectLocker";
 	}
+	
+	@GetMapping("/selectLocker")
+	public String selectLocker() {
+		return "selectLocker_form";
+	}
+	
+	@GetMapping("/lockerInfo")
+	public String lockerInfo() {
+		return "lockerInfo_form";
+	}
+	
+	// safeLocker type db저장
+
 }

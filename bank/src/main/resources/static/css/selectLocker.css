@@ -1,0 +1,161 @@
+/* Navbar 설정 */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:antiquewhite;
+    width: 70%;
+    height: 70vh;
+	transform: translateX(20%);
+	position: absolute;
+    top: 0;
+    left: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    z-index: 0;
+}
+
+.right img{
+	transform: translateX(120vh);
+	position:absolute;
+	top: 2vh;
+}
+
+.navbar h2 {
+	color: white;
+	font-weight: bold;
+	position: absolute;
+	top: 20%;
+	transform: translateX(33vh);
+}
+
+/* Section 설정 */
+
+.lockerPremium-btn {
+	position: absolute;
+	width: 40%;
+	height: 9vh;
+	background: whitesmoke;
+	box-shadow: 0 4px 4px -4px black;
+	border: none;
+	top: 46%;
+	transform: translateX(75%);
+}
+
+.bluebar {
+	position: absolute;
+    background: lightskyblue;
+    width: 7px;
+    height: 9vh;
+    top: 46%;
+    transform: translateX(57vh);
+    z-index: 1;
+}
+
+.lockerFlex-btn {
+	position: absolute;
+	width: 40%;
+	height: 9vh;
+	background: whitesmoke;
+	box-shadow: 0 4px 4px -4px black;
+	border: none;
+	top: 58%;
+	transform: translateX(75%);
+}
+
+.pinkbar {
+	position: absolute;
+    background: lightpink;
+    width: 7px;
+    height: 9vh;
+    top: 58%;
+    transform: translateX(57vh);
+    z-index: 1;
+}
+
+.lockerNone-btn {
+	position: absolute;
+	width: 40%;
+	height: 9vh;
+	background: whitesmoke;
+	box-shadow: 0 4px 4px -4px black;
+	border: none;
+	top: 70%;
+	transform: translateX(75%);
+}
+
+.greenbar {
+	position: absolute;
+	background: lightgreen;
+	width: 7px;
+	height: 9vh;
+	top: 70%;
+	transform: translateX(57vh);
+	z-index: 1;
+}
+
+.next-btn {
+	position: absolute;
+	top: 85%;
+	width: 9%; 
+	height: 6%;
+	background: cadetblue;
+	color: white; 
+	left: 50%; 
+	transform: translateX(-50%); 
+	border-radius: 45%;
+	border: none; 
+	font-size: 18px;
+}
+
+/* footer */
+
+.bankfooter {
+	background-color: darkgrey;
+	text-align: center;
+	padding: 2px 0;
+	width: 70%;
+	margin: auto;
+	height: 20px;
+	position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50.7%);
+	}
+	
+.bankfooter h5 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	font-size: 15px;
+	margin: 0;
+	text-align: right;
+	padding-right: 5%;
+		}
+
+/* 모바일용 */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .left, .right {
+        flex: none;
+        margin: 5px 0;
+        justify-content: center;
+    }
+
+    .center {
+        flex: none;
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    .centered {
+        flex-direction: column;
+    }
+
+    .judy-text {
+        margin: 10px 0 0 0;
+    }
+}

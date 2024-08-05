@@ -31,29 +31,31 @@ public class GroupService {
 	        this.groupAccountMembersRepository = groupAccountMembersRepository;
 	    }
 
-	    @Transactional
-	    public void save(String groupName, Long accountId, String userName) {
-	        
-	    	Optional<Users> optionalUser = usersRepository.findByUserName(userName);
-	        if (!optionalUser.isPresent()) {
-	            throw new RuntimeException("User not found");
-	        }
-	        Users user = optionalUser.get();
-	    	
-	    	AccountInfo accountInfo = accountInfoRepository.findById(accountId)
-	                .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
-	        GroupAccount groupAccount = new GroupAccount();
-	        groupAccount.setGroupName(groupName);
-	        groupAccount.setAccountInfo(accountInfo);
-	        groupAccount.setBalance(0L);
-	        groupAccount.setSafelockerType("default");
-	        groupAccount.setSafelockerThreshold(0L);
-	        groupAccount.setAlertThreshold(0L);
-	        groupAccountRepository.save(groupAccount);
-	        
-	        GroupAccountMembers groupAccountMembers = new GroupAccountMembers();
-	        groupAccountMembers.setUser(user);
-	        groupAccountMembers.setGroupAccountId(groupAccount);
-	        groupAccountMembersRepository.save(groupAccountMembers);
+    @Transactional
+    public void save(String groupName, Long accountId, String userName) {
+        
+    	Optional<Users> optionalUser = usersRepository.findByUserName(userName);
+        if (!optionalUser.isPresent()) {
+            throw new RuntimeException("User not found");
+        }
+        Users user = optionalUser.get();
+    	
+    	AccountInfo accountInfo = accountInfoRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+        GroupAccount groupAccount = new GroupAccount();
+        groupAccount.setGroupName(groupName);
+        groupAccount.setAccountInfo(accountInfo);
+        groupAccount.setBalance(0L);
+        groupAccount.setSafelockerType("default");
+        groupAccount.setSafelockerThreshold(0L);
+        groupAccount.setAlertThreshold(0L);
+        groupAccountRepository.save(groupAccount);
+        
+        GroupAccountMembers groupAccountMembers = new GroupAccountMembers();
+        groupAccountMembers.setUser(user);
+        groupAccountMembers.setGroupAccountId(groupAccount);
+        groupAccountMembersRepository.save(groupAccountMembers);
 	    }
+    
+   
 }

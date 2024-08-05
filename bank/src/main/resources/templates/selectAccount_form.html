@@ -51,7 +51,7 @@
                 <span style="font-weight: bold; position: absolute; left: 25%; transform: translateX(-50%); top: 27%;">Judy뱅크</span>
                 <div class="account-info-container">
                     <div class="account-info">
-                        <form id="selectAccount" th:action="@{/bank/selectAccount}" method="post">
+                        <form id="selectAccount" th:action="@{/bank/chooseAccount}" method="post">
                             <input type="hidden" th:name="accountId" th:value="${accountInfo.accountId}" />
                             <div class="accountNumber" th:text="${accountInfo.accountNum}"></div>
                             <div class="balance" th:text="${accountInfo.balance}"></div>

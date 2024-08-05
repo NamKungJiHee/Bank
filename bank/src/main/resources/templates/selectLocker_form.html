@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <link rel="stylesheet" href="/css/selectLocker.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="right">
+            <a href="/">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+        <span>
+        <div class="pig-img" style="width: 90px; height: 90px; position: absolute; top:20%; left: 15%; border-radius: 70%; overflow: hidden;">
+                <img src="/pig.png" alt="Pig" style="width: 90%; height: 100%; object-fit: cover;">
+        </div>
+        </span>
+        <h2><span style="font-weight: bold; color: indianred">SafeLocker</span><span style="font-weight: bold; color: white">을 선택해주세요!!</span></h2>
+        <p><h4 style="position:absolute; left: 23%;">SafeLocker은</h4></p>
+        <div style="position: absolute; left: 23%; top: 50%;"><h4><span>모임 목적에 맞춰 선택 가능한 </span><span style="font-weight: bold; color: dodgerblue">맞춤형 </span><span>금융 상품입니다.</span></h4></div>
+        <a href="/bank/lockerInfo">
+            <img src="/question.png" alt="Question" style="width: 5%; height: 35px; position: absolute; top: 52%; left: 63%;">
+        </a>
+    </nav>
+    <section>
+        <div class="bluebar"></div>
+        <div class="pinkbar"></div>
+        <div class="greenbar"></div>
+        <div class="selectLocker-container">
+            <div class="selectPremium">
+                <button onclick="selectLocker('Premium')" class="lockerPremium-btn">SafeLocker Premium</button>
+            </div>
+            <div class="selectFlex">
+                <button onclick="selectLocker('Flex')" class="lockerFlex-btn">SafeLocker Flex</button>
+            </div>
+            <div class="selectNone">
+                <button onclick="selectLocker('None')" class="lockerNone-btn">선택 안함</button>
+            </div>
+        </div>
+        <form id="setLockerForm" th:action="@{/bank/selectlockerType}" method="post">
+            <input type="hidden" name="lockerType" id="lockerType">
+            <button type="submit" class="next-btn">다음</button>
+        </form>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+	<script src="selectLocker.js"></script>
+</body>
+</html>

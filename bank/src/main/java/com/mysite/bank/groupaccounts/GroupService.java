@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoRepository;
+import com.mysite.bank.event.Event;
+import com.mysite.bank.event.EventRepository;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembers;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembersRepository;
 import com.mysite.bank.useraccounts.UserAccountsRepository;
@@ -23,13 +25,15 @@ public class GroupService {
     private final AccountInfoRepository accountInfoRepository;
     private final UsersRepository usersRepository;
     private final GroupAccountMembersRepository groupAccountMembersRepository;
+    private final EventRepository eventRepository;
     
-	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository) {
+	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository, EventRepository eventRepository) {
 	        this.groupAccountRepository = groupAccountRepository;
 	        this.accountInfoRepository = accountInfoRepository;
 	        this.usersRepository = usersRepository;
 	        this.groupAccountMembersRepository = groupAccountMembersRepository;
-	    }
+	        this.eventRepository = eventRepository;
+	 }
 
     @Transactional
     public void save(String groupName, Long accountId, String userName) {
@@ -80,5 +84,17 @@ public class GroupService {
 	   groupAccount.setSafelockerThreshold(transferThreshold);
 	   groupAccount.setAlertThreshold(alertThreshold);
 	   groupAccountRepository.save(groupAccount);
+   }
+   
+   public String eventResult(String userName) {
+	   
+	   Optional<Users> optionalUser = usersRepository.findByUserName(userName);
+       if (!optionalUser.isPresent()) {
+           throw new RuntimeException("User not found");
+       }
+       Users user = optionalUser.get();
+       Event event = eventRepository.findByUser_UserName(userName).get();
+       String eventName = event.getEventName();
+       return eventName;
    }
 }

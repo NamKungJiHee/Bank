@@ -101,9 +101,17 @@ public class GroupController {
 	}
 	
 	@PostMapping("/setStandard")
-	public String setStandard(@RequestParam("moveSafeLocker") Long moveSafeLocker, @RequestParam("alertSafeLocker") Long alertSafeLocker, @SessionAttribute("accountId") Long accountId) {
-		
+	public String setStandard(@RequestParam("moveSafeLocker") Long moveSafeLocker, @RequestParam("alertSafeLocker") Long alertSafeLocker, @SessionAttribute("accountId") Long accountId) {	
 		groupService.lockerStandard(moveSafeLocker, alertSafeLocker, accountId);
 		return "redirect:/bank/applyEvent";
+	}
+	
+	@GetMapping("/applyEvent")
+	public String applyEvent(Model model, Principal principal) {
+		String userName = principal.getName(); 
+		
+		String eventName = groupService.eventResult(userName);
+		model.addAttribute("eventName", eventName);
+		return "applyEvent_form";
 	}
 }

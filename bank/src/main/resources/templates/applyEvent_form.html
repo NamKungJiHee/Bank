@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/applyEvent.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+		<span>
+		<div class="pig-img" style="width: 90px; height: 90px; position: absolute; top:20%; left: 15%; border-radius: 70%; overflow: hidden;">
+			    <img src="/pig.png" alt="Pig" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+		</span>
+		<h2 style="font-weight: bold; color: indianred; position: absolute; left: 5%;">혜택 팡팡~!!</h2>
+		<h2 style="font-weight:normal; color:black; position: absolute; top: 27%; left: 11%;">혹시 선물을 받으셨나요??</h2>
+	</nav>
+    <section>
+		<form id="watchAccount" th:action="@{/bank/watchAccount}" method="post">    
+			<select class="option">
+				<option th:value="${eventName}" th:text="${eventName}"></option>
+			</select>
+			<input type="hidden" name="accountId" th:value="${accountId}">
+			<button type="submit" class="next-btn">
+			    다음
+			</button>
+			<div style="position: absolute; top: 49%; left: 34%; width: 30%;">
+			<h2><span style="font-size: small; font-weight: bold; color: indianred; position: absolute; left: 5%;">*</span><span style="font-size: small; font-weight: normal; color: black; position: absolute; left: 8%;">쿠폰이 있는 경우에만 적용</span></h2>
+			</div>
+		</form>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+</body>
+</html>

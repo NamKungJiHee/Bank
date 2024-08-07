@@ -57,5 +57,28 @@ public class GroupService {
         groupAccountMembersRepository.save(groupAccountMembers);
 	    }
     
+   public void saveLocker(String lockerType, Long accountId) {
+	   
+	   AccountInfo accountInfo = accountInfoRepository.findById(accountId)
+               .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+	   
+	   GroupAccount groupAccount = groupAccountRepository.findByAccountInfo(accountInfo)
+			   .orElseThrow(() -> new IllegalArgumentException("Invalid groupAccount"));
+	   
+	   groupAccount.setSafelockerType(lockerType);
+	   groupAccountRepository.save(groupAccount);
+	   
+   }
    
+   public void lockerStandard(Long transferThreshold, Long alertThreshold, Long accountId) {
+	   AccountInfo accountInfo = accountInfoRepository.findById(accountId)
+               .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+	   
+	   GroupAccount groupAccount = groupAccountRepository.findByAccountInfo(accountInfo)
+			   .orElseThrow(() -> new IllegalArgumentException("Invalid groupAccount"));
+	   
+	   groupAccount.setSafelockerThreshold(transferThreshold);
+	   groupAccount.setAlertThreshold(alertThreshold);
+	   groupAccountRepository.save(groupAccount);
+   }
 }

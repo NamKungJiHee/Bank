@@ -42,7 +42,8 @@
             </div>
         </div>
         <form id="setLockerForm" th:action="@{/bank/selectlockerType}" method="post">
-            <input type="hidden" name="lockerType" id="lockerType">
+			<input type="hidden" id="lockerType" name="lockerType">
+          	<input type="hidden" name="accountId" th:value="${session.accountId}">
             <button type="submit" class="next-btn">다음</button>
         </form>
     </section>

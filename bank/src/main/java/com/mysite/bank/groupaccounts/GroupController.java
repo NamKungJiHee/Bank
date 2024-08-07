@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysite.bank.accountinfo.AccountInfoService;
@@ -67,14 +68,18 @@ public class GroupController {
 	}
 	
 	@PostMapping("/chooseGroupName")
-	public String saveGroupName(@RequestParam("groupname") String groupName, @RequestParam("accountId") Long accountId, Principal principal) {
+	public String saveGroupName(@RequestParam("groupname") String groupName, @RequestParam("accountId") Long accountId, Principal principal,  HttpSession session) {
 		String userName = principal.getName(); 
 		groupService.save(groupName, accountId, userName);
+		
+		session.setAttribute("accountId", accountId);
+		
 	    return "redirect:/bank/selectLocker";
 	}
 	
 	@GetMapping("/selectLocker")
-	public String selectLocker() {
+	public String selectLocker(@SessionAttribute("accountId") Long accountId) {
+
 		return "selectLocker_form";
 	}
 	
@@ -84,5 +89,21 @@ public class GroupController {
 	}
 	
 	// safeLocker type db저장
-
+	@PostMapping("selectlockerType")
+	public String saveLockerType(@RequestParam("lockerType") String lockerType, @SessionAttribute("accountId") Long accountId) {
+		groupService.saveLocker(lockerType, accountId);
+		return "redirect:/bank/setBalance";
+	}
+	
+	@GetMapping("/setBalance")
+	public String setBalance() {
+		return "setLockerBalance_form";
+	}
+	
+	@PostMapping("/setStandard")
+	public String setStandard(@RequestParam("moveSafeLocker") Long moveSafeLocker, @RequestParam("alertSafeLocker") Long alertSafeLocker, @SessionAttribute("accountId") Long accountId) {
+		
+		groupService.lockerStandard(moveSafeLocker, alertSafeLocker, accountId);
+		return "redirect:/bank/applyEvent";
+	}
 }

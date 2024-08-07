@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/setLockerBalance.css}">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+		<span>
+		<div class="pig-img" style="width: 90px; height: 90px; position: absolute; top:20%; left: 15%; border-radius: 70%; overflow: hidden;">
+			    <img src="/pig.png" alt="Pig" style="width: 90%; height: 100%; object-fit: cover;">
+		</div>
+		</span>
+		<h2><span style="font-weight: bold; color: indianred">SafeLocker </span><span style="font-weight: bold; color: white">금액 설정해주세요!!</span></h2>
+	</nav>
+    <section>
+		<form id="setStandard" th:action="@{/bank/setStandard}" method="post">    
+			<p><h4 style="font-weight: bold; margin-top: 16%; position:absolute; left: 27%;">설정한 금액이 모임통장에 쌓이면, 자동으로 이자혜택이 있는 SafeLocker로 이동합니다.</h4></p>      
+	        <div class="setStandard-container">
+	            <label for="moveSafeLocker" class="moveSafeLocker"></label>
+	            <input type="text" name="moveSafeLocker" id="moveSafeLocker" required>
+				<h5 style="position: absolute; top: 40%; left: 58%; font-weight: normal;">(원)</h5>
+	        </div>
+			<p><h4 style="font-weight: bold; margin-top: 28%; position:absolute; left: 27%;">설정한 금액이 SafeLocker에 쌓이면, 알림 서비스가 작동합니다.</h4></p>      
+			<div class="alert-container">
+			    <label for="alertSafeLocker" class="alertSafeLocker"></label>
+			    <input type="text" name="alertSafeLocker" id="alertSafeLocker" required>
+				<h5 style="position: absolute; top: 63%; left: 58%; font-weight: normal;">(원)</h5>
+			</div>
+			<input type="hidden" name="accountId" th:value="${accountId}">
+			<button type="submit" class="next-btn">
+			    다음
+			</button>
+		</form>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+</body>
+</html>

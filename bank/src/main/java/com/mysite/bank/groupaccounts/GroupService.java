@@ -1,5 +1,7 @@
 package com.mysite.bank.groupaccounts;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -97,4 +99,27 @@ public class GroupService {
        String eventName = event.getEventName();
        return eventName;
    }
+   
+   // 모임통장에 필요한 모든 정보들 불러오기
+	public Map<String, Object> groupAccountInfo(Long accountId) {
+		
+	    AccountInfo accountInfo = accountInfoRepository.findById(accountId)
+	            .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+	    
+	    GroupAccount groupAccount = groupAccountRepository.findByAccountInfo(accountInfo)
+	            .orElseThrow(() -> new IllegalArgumentException("Invalid groupAccount"));
+	    
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("groupName", groupAccount.getGroupName());
+	    result.put("groupBalance", groupAccount.getBalance());
+	    result.put("safeLockerType", groupAccount.getSafelockerType());
+	    result.put("safeLockerThreshold", groupAccount.getSafelockerThreshold());
+	    result.put("alertThreshold", groupAccount.getAlertThreshold());
+	    result.put("accountNum", accountInfo.getAccountNum());
+	
+	    return result;
+	}
 }
+
+
+

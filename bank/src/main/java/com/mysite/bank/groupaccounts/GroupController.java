@@ -3,6 +3,7 @@ package com.mysite.bank.groupaccounts;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -113,5 +114,26 @@ public class GroupController {
 		String eventName = groupService.eventResult(userName);
 		model.addAttribute("eventName", eventName);
 		return "applyEvent_form";
+	}
+	
+	@PostMapping("/watchAccount")
+	public String watchAccount() {
+		return "redirect:/bank/groupAccountInfo";
+	}
+	
+	// 내 모임통장 보기
+	@GetMapping("/groupAccountInfo")
+	public String groupAccountInfo(Model model, @SessionAttribute("accountId") Long accountId) {
+		
+		Map<String, Object> result = groupService.groupAccountInfo(accountId);
+		
+		model.addAttribute("groupName", result.get("groupName"));
+		model.addAttribute("groupBalance", result.get("groupBalance"));
+		model.addAttribute("safeLockerType", result.get("safeLockerType"));
+		model.addAttribute("safeLockerThreshold", result.get("safeLockerThreshold"));
+		model.addAttribute("alertThreshold", result.get("alertThreshold"));
+		model.addAttribute("accountNum", result.get("accountNum"));
+		
+		return "accountInfo_form";
 	}
 }

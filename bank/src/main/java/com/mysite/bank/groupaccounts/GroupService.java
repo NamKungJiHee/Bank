@@ -13,6 +13,8 @@ import com.mysite.bank.event.Event;
 import com.mysite.bank.event.EventRepository;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembers;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembersRepository;
+import com.mysite.bank.safelockers.SafeLockers;
+import com.mysite.bank.safelockers.SafeLockersRepository;
 import com.mysite.bank.useraccounts.UserAccountsRepository;
 import com.mysite.bank.users.Users;
 import com.mysite.bank.users.UsersRepository;
@@ -28,13 +30,15 @@ public class GroupService {
     private final UsersRepository usersRepository;
     private final GroupAccountMembersRepository groupAccountMembersRepository;
     private final EventRepository eventRepository;
+    private final SafeLockersRepository safeLockersRepository;
     
-	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository, EventRepository eventRepository) {
+	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository, EventRepository eventRepository, SafeLockersRepository safeLockersRepository) {
 	        this.groupAccountRepository = groupAccountRepository;
 	        this.accountInfoRepository = accountInfoRepository;
 	        this.usersRepository = usersRepository;
 	        this.groupAccountMembersRepository = groupAccountMembersRepository;
 	        this.eventRepository = eventRepository;
+	        this.safeLockersRepository = safeLockersRepository;
 	 }
 
     @Transactional
@@ -76,7 +80,7 @@ public class GroupService {
 	   
    }
    
-   public void lockerStandard(Long transferThreshold, Long alertThreshold, Long accountId) {
+   public void lockerStandard(Long transferThreshold, Long alertThreshold, Long accountId, String userName) {
 	   AccountInfo accountInfo = accountInfoRepository.findById(accountId)
                .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
 	   
@@ -85,7 +89,29 @@ public class GroupService {
 	   
 	   groupAccount.setSafelockerThreshold(transferThreshold);
 	   groupAccount.setAlertThreshold(alertThreshold);
+	   
 	   groupAccountRepository.save(groupAccount);
+	   
+	   Optional<Users> optionalUser = usersRepository.findByUserName(userName);
+       if (!optionalUser.isPresent()) {
+           throw new RuntimeException("User not found");
+       }
+       Users user = optionalUser.get();
+	   
+	   SafeLockers safeLockers = new SafeLockers();
+	   safeLockers.setUser(user);
+	   safeLockers.setGroupAccountId(groupAccount);
+	   safeLockers.setCurrentBalanceWithInterest(0L);
+
+	   if (groupAccount.getSafelockerType().equals("Flex")) {
+		   safeLockers.setInterestRate(1.5);
+	   } else if (groupAccount.getSafelockerType().equals("Premium")) {
+		   safeLockers.setInterestRate(2.5);
+	   } else {
+		   safeLockers.setInterestRate(0.0);
+	   }
+	   safeLockersRepository.save(safeLockers);
+	   
    }
    
    public String eventResult(String userName) {
@@ -109,6 +135,9 @@ public class GroupService {
 	    GroupAccount groupAccount = groupAccountRepository.findByAccountInfo(accountInfo)
 	            .orElseThrow(() -> new IllegalArgumentException("Invalid groupAccount"));
 	    
+	    SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
+	    		.orElseThrow(() -> new IllegalArgumentException("Invalid safeLockers"));
+	    
 	    Map<String, Object> result = new HashMap<>();
 	    result.put("groupName", groupAccount.getGroupName());
 	    result.put("groupBalance", groupAccount.getBalance());
@@ -116,7 +145,8 @@ public class GroupService {
 	    result.put("safeLockerThreshold", groupAccount.getSafelockerThreshold());
 	    result.put("alertThreshold", groupAccount.getAlertThreshold());
 	    result.put("accountNum", accountInfo.getAccountNum());
-	
+	    result.put("currentBalance", safeLockers.getCurrentBalanceWithInterest());
+	    
 	    return result;
 	}
 }

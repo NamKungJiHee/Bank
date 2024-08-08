@@ -44,7 +44,10 @@
 			<a href="@{/bank/specific}">
 				<button type="button" class="next-btn2">자세히</button>
 			</a>
-			<h5 th:value="${safeLockerType}" th:text="${safeLockerType}" style="margin-top: 0px; margin-bottom: 0px;"></h5>
+			<div class="locker-container">
+			<h5 th:value="${safeLockerType}" th:text="${safeLockerType}" style="margin-top: 0px; transform: translate(13%, -330%);"></h5>
+			<h5 style="margin-top: 0px; transform: translate(42%, -540%);"><span th:value="${currentBalance}" th:text="${currentBalance}" style="margin-top: 0px; color: seagreen;" ></span><span> 원</span></h5>
+			</div>
 		</div>
 	</section>
 	<footer class="bankfooter">

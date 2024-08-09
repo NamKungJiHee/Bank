@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/withdrawGroupAccount.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/}">
+                <img src="/homepic.png" alt="Home" style="height: 50px;">
+            </a>
+        </div>
+		<div class="center">
+            <h1>내 모임통장 보기</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/bank/category}">
+                <img src="/list.png" alt="Category" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+	<section>
+		<div class="bar"></div>
+		<div class="background"></div>
+		<div class="entire-container">
+		<div class="withdraw-container">
+			<h4>출금하기</h4>
+			<h4 th:value="${lockerType}" th:text="${lockerType}" style="margin-top: 0px; margin-bottom: 0px;"></h4>
+			<div class="currentBalance" style="transform: translate(46%, 0%);">
+			<h4><span th:value="${currentBalance}" th:text="${currentBalance}" style="margin-top: 0px; color: seagreen;"></span><span> 원</span></h4>
+			</div>
+			<form th:action="@{/bank/updateBalance}" method="post">
+				<label for="withdrawBalance" class="withdrawBalance"></label>
+	         	<input type="text" name="withdrawBalance" id="withdrawBalance" placeholder="출금금액 입력" style="width: 45%; height: 4vh; position:absolute; left: 33%;" required>
+				<div class="btn">
+				<button type="submit">출금하기</button>
+				</div>
+			</form>
+		</div>
+		</div>
+	</section>
+	<footer class="bankfooter">
+		<h5>Judy Bank</h5>
+	</footer>
+	<script src="/js/signup.js"></script>
+</body>
+</html>

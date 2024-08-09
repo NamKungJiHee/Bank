@@ -39,10 +39,10 @@
 			<div class="outputThreshold">
 			<h5><span th:value="${alertThreshold}" th:text="${alertThreshold}" style="margin-top: 0px; color: steelblue;"></span><span> 원</span></h5>
 			</div>
-			<a href="@{/bank/withdraw}">
+			<a href="/bank/withdraw">
 				<button type="button" class="next-btn1" th:disabled="${noLocker}">모임통장으로출금</button>
 			</a>
-			<a href="@{/bank/specific}">
+			<a href="/bank/specific">
 				<button type="button" class="next-btn2">자세히</button>
 			</a>
 			<div class="locker-container">

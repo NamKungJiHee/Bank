@@ -1,6 +1,7 @@
 package com.mysite.bank.groupaccounts;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -135,17 +136,23 @@ public class GroupService {
 	    GroupAccount groupAccount = groupAccountRepository.findByAccountInfo(accountInfo)
 	            .orElseThrow(() -> new IllegalArgumentException("Invalid groupAccount"));
 	    
-	    SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
-	    		.orElseThrow(() -> new IllegalArgumentException("Invalid safeLockers"));
+	    Optional<SafeLockers> safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount);
+//	    		.orElseThrow(() -> new IllegalArgumentException("Invalid safeLockers"));
 	    
 	    Map<String, Object> result = new HashMap<>();
+	    
 	    result.put("groupName", groupAccount.getGroupName());
 	    result.put("groupBalance", groupAccount.getBalance());
 	    result.put("safeLockerType", groupAccount.getSafelockerType());
 	    result.put("safeLockerThreshold", groupAccount.getSafelockerThreshold());
 	    result.put("alertThreshold", groupAccount.getAlertThreshold());
 	    result.put("accountNum", accountInfo.getAccountNum());
-	    result.put("currentBalance", safeLockers.getCurrentBalanceWithInterest());
+	    
+	    if (safeLockers.isEmpty()) {
+	    	result.put("currentBalance", 0);
+	    } else {
+	    result.put("currentBalance", safeLockers.get().getCurrentBalanceWithInterest());
+	    }
 	    
 	    return result;
 	}

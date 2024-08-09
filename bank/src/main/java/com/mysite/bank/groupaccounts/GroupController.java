@@ -93,7 +93,13 @@ public class GroupController {
 	@PostMapping("selectlockerType")
 	public String saveLockerType(@RequestParam("lockerType") String lockerType, @SessionAttribute("accountId") Long accountId) {
 		groupService.saveLocker(lockerType, accountId);
-		return "redirect:/bank/setBalance";
+		
+		if (lockerType.equals("None")) {
+			return "redirect:/bank/groupAccountInfo";
+		} else {
+			return "redirect:/bank/setBalance"; 
+		}
+//		return "redirect:/bank/setBalance";
 	}
 	
 	@GetMapping("/setBalance")
@@ -135,6 +141,11 @@ public class GroupController {
 		model.addAttribute("alertThreshold", result.get("alertThreshold"));
 		model.addAttribute("accountNum", result.get("accountNum"));
 		model.addAttribute("currentBalance", result.get("currentBalance"));
+		
+		if (result.get("safeLockerType").equals("None")) {
+			boolean noLocker = true;
+			model.addAttribute("noLocker", noLocker);
+		}
 		
 		return "accountInfo_form";
 	}

@@ -10,4 +10,5 @@ import com.mysite.bank.users.Users;
 
 public interface GroupAccountRepository extends JpaRepository<GroupAccount, Long>{
 	Optional<GroupAccount> findByAccountInfo(AccountInfo accountInfo);
+	
 }

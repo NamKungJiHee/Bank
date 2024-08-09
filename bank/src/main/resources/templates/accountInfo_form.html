@@ -27,6 +27,7 @@
 	<section>
 		<div class="bar"></div>
 		<div class="background"></div>
+		<div class="entire-container" style="height: 50%; overflow-y: scroll;">
 		<div class="groupAccount-container">
 			<img src="/pig.png" alt="pig">
 			<h4 th:value="${groupName}" th:text="${groupName}" style="margin-bottom: 5px;"></h4>
@@ -39,7 +40,7 @@
 			<h5><span th:value="${alertThreshold}" th:text="${alertThreshold}" style="margin-top: 0px; color: steelblue;"></span><span> 원</span></h5>
 			</div>
 			<a href="@{/bank/withdraw}">
-				<button type="button" class="next-btn1">모임통장으로출금</button>
+				<button type="button" class="next-btn1" th:disabled="${noLocker}">모임통장으로출금</button>
 			</a>
 			<a href="@{/bank/specific}">
 				<button type="button" class="next-btn2">자세히</button>
@@ -48,6 +49,7 @@
 			<h5 th:value="${safeLockerType}" th:text="${safeLockerType}" style="margin-top: 0px; transform: translate(13%, -330%);"></h5>
 			<h5 style="margin-top: 0px; transform: translate(42%, -540%);"><span th:value="${currentBalance}" th:text="${currentBalance}" style="margin-top: 0px; color: seagreen;" ></span><span> 원</span></h5>
 			</div>
+		</div>
 		</div>
 	</section>
 	<footer class="bankfooter">

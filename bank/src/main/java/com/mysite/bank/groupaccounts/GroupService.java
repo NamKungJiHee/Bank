@@ -148,13 +148,32 @@ public class GroupService {
 	    result.put("alertThreshold", groupAccount.getAlertThreshold());
 	    result.put("accountNum", accountInfo.getAccountNum());
 	    
-	    if (safeLockers.isEmpty()) {
+	    if (safeLockers.isEmpty()) { // safelocker가 [선택안함]인 경우
 	    	result.put("currentBalance", 0);
-	    } else {
+	    } else { // safelocker가 flex, premium인 경우
 	    result.put("currentBalance", safeLockers.get().getCurrentBalanceWithInterest());
 	    }
 	    
 	    return result;
+	}
+	
+	// TEST: safeLocker값이 locker로 넘어가는 로직
+	public void updateBalance(Long groupBalance, Long currentBalance, Long accountId) {
+		
+		AccountInfo accountInfo = accountInfoRepository.findById(accountId)
+		            .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+		    
+	    GroupAccount groupAccount = groupAccountRepository.findByAccountInfo(accountInfo)
+		            .orElseThrow(() -> new IllegalArgumentException("Invalid groupAccount"));
+		    
+	    SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
+	    		.orElseThrow(() -> new IllegalArgumentException("Invalid safeLockers"));
+	    
+	    groupAccount.setBalance(groupBalance);
+	    safeLockers.setCurrentBalanceWithInterest(currentBalance);
+	    
+	    groupAccountRepository.save(groupAccount);
+	    safeLockersRepository.save(safeLockers);
 	}
 }
 

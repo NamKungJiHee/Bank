@@ -17,12 +17,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "GROUPACCOUNTMEMBERS")
-@SequenceGenerator(name="groupaccountmembers_seq", sequenceName="groupaccountmembers_seq", initialValue=1, allocationSize=1)
+@Table(name = "GROUP_ACCOUNT_MEMBER")
+@SequenceGenerator(name="group_account_member_seq", sequenceName="group_account_member_seq", initialValue=1, allocationSize=1)
 public class GroupAccountMembers {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="groupaccountmembers_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="group_account_member_seq")
     private Long groupAccountMemberId;
 
     @ManyToOne

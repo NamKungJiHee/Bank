@@ -19,12 +19,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "ACCOUNTINFO")
-@SequenceGenerator(name="accountinfo_seq", sequenceName="accountinfo_seq", initialValue=1, allocationSize=1)
+@Table(name = "ACCOUNT_INFO")
+@SequenceGenerator(name="account_info_seq", sequenceName="account_info_seq", initialValue=1, allocationSize=1)
 public class AccountInfo {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="accountinfo_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="account_info_seq")
     private Long accountId;
     
     @Column(unique=true, nullable=false)

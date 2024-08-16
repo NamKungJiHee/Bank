@@ -129,6 +129,28 @@ public class GroupController {
 	}
 	
 	// 내 모임통장 보기
+//	@GetMapping("/groupAccountInfo")
+//	public String groupAccountInfo(Model model, @SessionAttribute("accountId") Long accountId) {
+//		
+//		Map<String, Object> result = groupService.groupAccountInfo(accountId);
+//		
+//		model.addAttribute("groupName", result.get("groupName"));
+//		model.addAttribute("groupBalance", result.get("groupBalance"));
+//		model.addAttribute("safeLockerType", result.get("safeLockerType"));
+//		model.addAttribute("safeLockerThreshold", result.get("safeLockerThreshold"));
+//		model.addAttribute("alertThreshold", result.get("alertThreshold"));
+//		model.addAttribute("accountNum", result.get("accountNum"));
+//		model.addAttribute("currentBalance", result.get("currentBalance"));
+//		
+//		if (result.get("safeLockerType").equals("None")) {
+//			boolean noLocker = true;
+//			model.addAttribute("noLocker", noLocker);
+//		}
+//		
+//		return "accountInfo_form";
+//	}
+	
+	// 위에꺼 테스트
 	@GetMapping("/groupAccountInfo")
 	public String groupAccountInfo(Model model, @SessionAttribute("accountId") Long accountId) {
 		
@@ -146,6 +168,23 @@ public class GroupController {
 			boolean noLocker = true;
 			model.addAttribute("noLocker", noLocker);
 		}
+		
+		// safeLocker값이 locker로 넘어가는 로직
+		if (result.get("safeLockerType").equals("Flex") || (result.get("safeLockerType").equals("Premium"))) {
+			if (result.get("groupBalance").equals(result.get("safeLockerThreshold"))) {
+				Long groupBalance = 0L;
+				Long groupBalanceValue = (Long) result.get("groupBalance");
+				Long currentBalanceValue = (Long) result.get("currentBalance");
+				Object currentBalance = groupBalanceValue + currentBalanceValue;
+				Long currentBalanceDB = groupBalanceValue + currentBalanceValue;
+
+				model.addAttribute("groupBalance", groupBalance);
+				model.addAttribute("currentBalance", currentBalance);
+				
+				groupService.updateBalance(groupBalance, currentBalanceDB, accountId);
+			}
+		}
+
 		
 		return "accountInfo_form";
 	}

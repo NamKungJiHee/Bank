@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "EVENTPARTICIPATION")
+@Table(name = "EVENT_PARTICIPATION")
 @SequenceGenerator(name="event_seq", sequenceName="event_seq", initialValue=1, allocationSize=1)
 public class Event {
 	

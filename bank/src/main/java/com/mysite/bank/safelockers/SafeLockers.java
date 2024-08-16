@@ -20,11 +20,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "SAFELOCKERS")
-@SequenceGenerator(name="safelockers_seq", sequenceName="safelockers_seq", initialValue=1, allocationSize=1)
+@Table(name = "SAFE_LOCKER")
+@SequenceGenerator(name="safe_locker_seq", sequenceName="safe_locker_seq", initialValue=1, allocationSize=1)
 public class SafeLockers {
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="safelockers_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="safe_locker_seq")
     private Long safelockerId;
 
     @ManyToOne

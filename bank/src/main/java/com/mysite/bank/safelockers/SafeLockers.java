@@ -38,6 +38,7 @@ public class SafeLockers {
     @ColumnDefault("0")
     private Long currentBalanceWithInterest = 0L;
     
-    @Column(nullable=false)
+    @Column(name = "interest_rate", nullable = false)
     private Double interestRate;
+
 }

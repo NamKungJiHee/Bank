@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,16 +104,15 @@ public class GroupService {
 	   safeLockers.setUser(user);
 	   safeLockers.setGroupAccountId(groupAccount);
 	   safeLockers.setCurrentBalanceWithInterest(0L);
-
+	   
 	   if (groupAccount.getSafelockerType().equals("Flex")) {
-		   safeLockers.setInterestRate(1.5);
+		   safeLockers.setInterestRate(1.3);
 	   } else if (groupAccount.getSafelockerType().equals("Premium")) {
-		   safeLockers.setInterestRate(2.5);
+		   safeLockers.setInterestRate(2.3);
 	   } else {
 		   safeLockers.setInterestRate(0.0);
 	   }
 	   safeLockersRepository.save(safeLockers);
-	   
    }
    
    public String eventResult(String userName) {
@@ -174,6 +174,33 @@ public class GroupService {
 	    
 	    groupAccountRepository.save(groupAccount);
 	    safeLockersRepository.save(safeLockers);
+	}
+	
+	// 이자율 계산 로직
+	@Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+	//@Scheduled(cron = "0 */1 * * * *") // TEST
+	public void interestRate() {
+	
+	    List<SafeLockers> allLockers = safeLockersRepository.findAll();
+
+	    for (SafeLockers locker : allLockers) {
+	        Double rateType = locker.getInterestRate();
+	        
+	        // GroupAccount groupAccount = locker.getGroupAccountId();
+	        // Long groupBalance = groupAccount.getBalance(); 
+	        Long interestBalance = locker.getCurrentBalanceWithInterest();
+	        
+	        // 이자 계산 및 반영
+	        if (rateType.equals(1.3)) {
+	            Long interest = Math.round(interestBalance * 0.013); // 1.3% 이자 계산
+	            locker.setCurrentBalanceWithInterest(interestBalance + interest); 
+	            safeLockersRepository.save(locker);
+	        } else if (rateType.equals(2.3)) {
+	        	Long interest = Math.round(interestBalance * 0.023); // 2.3% 이자 계산
+	        	locker.setCurrentBalanceWithInterest(interestBalance + interest); 
+	        	safeLockersRepository.save(locker);
+	        }
+	    }
 	}
 }
 

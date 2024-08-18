@@ -157,18 +157,19 @@ public class GroupController {
 		
 		// safeLocker값이 locker로 넘어가는 로직
 		if (result.get("safeLockerType").equals("Flex") || (result.get("safeLockerType").equals("Premium"))) {
-			if (result.get("groupBalance").equals(result.get("safeLockerThreshold"))) {
-				Long groupBalance = 0L;
-				Long groupBalanceValue = (Long) result.get("groupBalance");
-				Long currentBalanceValue = (Long) result.get("currentBalance");
-				Object currentBalance = groupBalanceValue + currentBalanceValue;
-				Long currentBalanceDB = groupBalanceValue + currentBalanceValue;
-
-				model.addAttribute("groupBalance", groupBalance);
-				model.addAttribute("currentBalance", currentBalance);
+			Long groupBalance = (Long) result.get("groupBalance");
+			Long safeLockerThreshold = (Long) result.get("safeLockerThreshold");
+			Long currentBalance = (Long) result.get("currentBalance");
+			
+			if (groupBalance >= safeLockerThreshold) {
+				Long initgroupBalance = 0L;
+				Long updatedBalance = groupBalance + currentBalance;
 				
-				groupService.updateBalance(groupBalance, currentBalanceDB, accountId);
+				model.addAttribute("groupBalance", initgroupBalance);
+				model.addAttribute("currentBalance", updatedBalance);
+				groupService.updateBalance(initgroupBalance, updatedBalance , accountId);
 			}
+			
 		}
 
 		model.addAttribute("noLocker", noLocker);

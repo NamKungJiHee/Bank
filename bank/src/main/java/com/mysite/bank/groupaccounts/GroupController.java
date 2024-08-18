@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class GroupController {
 	private final AccountInfoService accountInfoService;
 	private final GroupService groupService;
+	private boolean noLocker = true;
+    private boolean premiumNoLocker = true; 
 	
 	@GetMapping("/creategroupAccount")
 	public String createGroupAccount() {
@@ -129,28 +132,6 @@ public class GroupController {
 	}
 	
 	// 내 모임통장 보기
-//	@GetMapping("/groupAccountInfo")
-//	public String groupAccountInfo(Model model, @SessionAttribute("accountId") Long accountId) {
-//		
-//		Map<String, Object> result = groupService.groupAccountInfo(accountId);
-//		
-//		model.addAttribute("groupName", result.get("groupName"));
-//		model.addAttribute("groupBalance", result.get("groupBalance"));
-//		model.addAttribute("safeLockerType", result.get("safeLockerType"));
-//		model.addAttribute("safeLockerThreshold", result.get("safeLockerThreshold"));
-//		model.addAttribute("alertThreshold", result.get("alertThreshold"));
-//		model.addAttribute("accountNum", result.get("accountNum"));
-//		model.addAttribute("currentBalance", result.get("currentBalance"));
-//		
-//		if (result.get("safeLockerType").equals("None")) {
-//			boolean noLocker = true;
-//			model.addAttribute("noLocker", noLocker);
-//		}
-//		
-//		return "accountInfo_form";
-//	}
-	
-	// 위에꺼 테스트
 	@GetMapping("/groupAccountInfo")
 	public String groupAccountInfo(Model model, @SessionAttribute("accountId") Long accountId) {
 		
@@ -164,10 +145,15 @@ public class GroupController {
 		model.addAttribute("accountNum", result.get("accountNum"));
 		model.addAttribute("currentBalance", result.get("currentBalance"));
 		
-		if (result.get("safeLockerType").equals("None")) {
-			boolean noLocker = true;
-			model.addAttribute("noLocker", noLocker);
-		}
+		// premium은 매달 1일 출금가능, flex는 매일 출금 가능
+		String lockerType = (String) result.get("safeLockerType");
+        	if ("None".equals(lockerType)) {
+	            noLocker = true;
+	        } else if ("Flex".equals(lockerType)) {
+	            noLocker = false;
+	        } else if ("Premium".equals(lockerType)) {
+	            noLocker = premiumNoLocker;
+        }
 		
 		// safeLocker값이 locker로 넘어가는 로직
 		if (result.get("safeLockerType").equals("Flex") || (result.get("safeLockerType").equals("Premium"))) {
@@ -185,7 +171,17 @@ public class GroupController {
 			}
 		}
 
-		
+		model.addAttribute("noLocker", noLocker);
 		return "accountInfo_form";
 	}
+	
+  @Scheduled(cron = "0 0 0 1 * ?") // 매달 1일에 false로 설정
+  	public void resetNoLockerMonthly() {
+        premiumNoLocker = false;
+    }
+	
+  @Scheduled(cron = "0 0 1 1 * ?") // 매달 1일 1시 이후로 true로 설정
+	public void setNoLockerTrueAfterFirst() {
+        premiumNoLocker = true;
+    }
 }

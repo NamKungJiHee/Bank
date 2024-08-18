@@ -17,6 +17,10 @@ import org.springframework.mail.SimpleMailMessage;
 import com.mysite.bank.users.Users;
 import com.mysite.bank.users.UsersRepository;
 import com.mysite.bank.DataNotFoundException;
+import com.mysite.bank.groupaccounts.GroupAccount;
+import com.mysite.bank.safelockers.SafeLockers;
+import com.mysite.bank.safelockers.SafeLockersRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,13 +29,20 @@ import org.springframework.data.domain.PageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 @Service
+@EnableScheduling
 public class MailService {
 	
 	private final UsersRepository usersRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final SafeLockersRepository safeLockersRepository;
 	
 	// 임시비밀번호로 업데이트
 	public void updatePassword(String pwd, String email) {
@@ -66,7 +77,7 @@ public class MailService {
     @Autowired
     JavaMailSender mailSender;
     
-    public void mailSend(MailDTO mailDTO) {
+    public void mailSend(MailDTO mailDTO) { // 임시비밀번호 & safeLocker알림 서비스
 		 System.out.println("===== 이메일 전송 =====");
 		 SimpleMailMessage message = new SimpleMailMessage();
 		 message.setTo(mailDTO.getAddress());
@@ -105,4 +116,57 @@ public class MailService {
 		user.setUserNickname(userNickname);
 		this.usersRepository.save(user);
 	}
+	
+	
+	// safeLocker에 사용자가 설정한 금액이 모이면 알림(이메일) 보내는 서비스
+	// 주기적으로 조건을 확인하고 이메일 전송
+	 @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+//	@Scheduled(cron = "0 */1 * * * *") // 1분마다 실행 (Test)
+	public void checkAndSendEmails() {
+	    // 모든 SafeLocker 조회
+	    List<SafeLockers> allLockers = safeLockersRepository.findAll();
+
+	    // 조건에 맞는 사용자 필터링
+	    List<Users> usersToAlert = new ArrayList<>();
+
+	    for (SafeLockers locker : allLockers) {
+	        Long alertThreshold = locker.getGroupAccountId().getAlertThreshold();
+	        Long currentBalance = locker.getCurrentBalanceWithInterest();
+
+	       // System.out.println("#alert:: " + alertThreshold);
+	       // System.out.println("#currentBalance:: " + currentBalance);
+
+	        if (currentBalance >= alertThreshold) {
+	            System.out.println("SafeLocker 알림서비스");
+	            Users user = locker.getUser();
+	            usersToAlert.add(user);  // 조건에 맞는 사용자 추가
+	        } else {
+	            System.out.println("SafeLocker 조건 충족 x");
+	        }
+	    }
+
+	    // 필터링된 사용자들에게 이메일 전송
+	    for (Users user : usersToAlert) {
+	        Long userId = user.getUserId();
+	        //System.out.println("#UserId::  " + userId);
+	        // 이메일 내용 생성
+	        MailDTO mailDTO = createMailForThreshold(userId);
+	        // 이메일 전송
+	        mailSend(mailDTO);
+	    }
+	}
+
+	    private MailDTO createMailForThreshold(Long userId) {
+	    	
+	    	Optional<Users> users = this.usersRepository.findById(userId);
+	    	String email = users.get().getEmail();
+	    	// System.out.println("#Email:: " + email);
+	        
+	        String message = "SafeLocker에 설정하신 금액이 모였습니다. 확인해주세요!!";
+	        MailDTO dto = new MailDTO();
+	        dto.setAddress(email);
+	        dto.setTitle("SafeLocker 알림 - 쥬디뱅크");
+	        dto.setMessage(message);
+	        return dto;
+	    }
 }

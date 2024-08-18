@@ -34,7 +34,7 @@
 			<div class="currentBalance" style="transform: translate(46%, 0%);">
 			<h4><span th:value="${currentBalance}" th:text="${currentBalance}" style="margin-top: 0px; color: seagreen;"></span><span> 원</span></h4>
 			</div>
-			<form th:action="@{/bank/updateBalance}" method="post">
+			<form th:action="@{/bank/sendBalance}" method="post">
 				<label for="withdrawBalance" class="withdrawBalance"></label>
 	         	<input type="text" name="withdrawBalance" id="withdrawBalance" placeholder="출금금액 입력" style="width: 45%; height: 4vh; position:absolute; left: 33%;" required>
 				<div class="btn">

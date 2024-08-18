@@ -157,7 +157,7 @@ public class GroupService {
 	    return result;
 	}
 	
-	// TEST: safeLocker값이 locker로 넘어가는 로직
+	// safeLocker값이 locker로 넘어가는 로직
 	public void updateBalance(Long groupBalance, Long currentBalance, Long accountId) {
 		
 		AccountInfo accountInfo = accountInfoRepository.findById(accountId)

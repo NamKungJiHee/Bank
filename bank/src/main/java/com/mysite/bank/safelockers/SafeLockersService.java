@@ -41,4 +41,31 @@ public class SafeLockersService {
  	   
  	   return result;
     }
+    
+    // [내모임통장으로출금] 부분
+    public Long sendBalance(Long withdrawBalance, Long accountId) {
+    	
+    	AccountInfo accountInfo = accountInfoRepository.findById(accountId)
+	            .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+	    
+    	GroupAccount groupAccount = groupAccountRepository.findByAccountInfo(accountInfo)
+	            .orElseThrow(() -> new IllegalArgumentException("Invalid groupAccount"));
+	    
+    	SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
+    		.orElseThrow(() -> new IllegalArgumentException("Invalid safeLockers"));
+    	
+    	Long currentBalance = safeLockers.getCurrentBalanceWithInterest(); // 현재 safelocker에 담겨져있는 금액
+    	Long currentGroupBalance = groupAccount.getBalance(); // 현재 모임통장에 담겨져있는 금액
+    	
+    	Long afterGroupBalance = currentGroupBalance + withdrawBalance; // 출금 후 모임통장 금액
+    	Long afterBalanceInterest = currentBalance - withdrawBalance; // 출금 후 safeLocker 금액
+
+    	groupAccount.setBalance(afterGroupBalance);
+    	safeLockers.setCurrentBalanceWithInterest(afterBalanceInterest);
+    	
+    	groupAccountRepository.save(groupAccount);
+    	safeLockersRepository.save(safeLockers);
+    	
+    	return afterBalanceInterest;
+    }
 }

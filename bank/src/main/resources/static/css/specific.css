@@ -1,0 +1,171 @@
+/* Navbar 설정 */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 100px;
+    background-color: white;
+    padding-top: 15px;
+}
+
+.left, .right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.center {
+    flex: 2;
+    text-align: center;
+}
+
+/* Section 설정 */
+
+.bar {
+	position: absolute;
+	top: 12%;
+	transform: translateX(21.5%);
+    width: 69%; 
+    height: 50px;
+	background-color: lightcyan;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+	position: absolute; 
+	left: 40%; 
+	top: 58%;
+}
+
+.profile-background {
+	position: absolute;
+	width: 45vh;
+	height: 30vh;
+	left: 37%;
+	top: 53%;
+	background: lightgrey;
+}
+
+.invite-btn {
+	position: absolute;
+	top: 88%;
+	width: 5%; 
+	height: 4%;
+	background: cadetblue;
+	color: white; 
+	left: 50%; 
+	transform: translateX(-100%); 
+	border-radius: 45%;
+	border: none; 
+	font-size: 13px;
+}
+
+.active {
+    display: block;
+}
+   
+.inactive {
+	display: none;
+}   
+
+.selected {
+    background-color: lightgrey;
+}
+
+.unselected {
+    background-color: darkgrey;
+}
+
+.underline-fst {
+	border-bottom: 3px solid lightgrey;
+	position: absolute;
+	left: 15%;
+	width: 70%;
+	height: 3%;
+	top: 45%;
+}
+
+.underline-second {
+	border-bottom: 3px solid lightgrey;
+	position: absolute;
+	left: 15%;
+	width: 70%;
+	height: 3%;
+	top: 85%;
+}
+
+.request-btn {
+	position: absolute;
+	top: 90%;
+	width: 5%; 
+	height: 4%;
+	background: cadetblue;
+	color: white; 
+	left: 50%; 
+	transform: translateX(-100%); 
+	border-radius: 45%;
+	border: none; 
+	font-size: 13px;
+}
+
+/* footer */
+
+.bankfooter {
+	background-color: darkgrey;
+	text-align: center;
+	padding: 2px 0;
+	width: 69%;
+	margin: auto;
+	height: 20px;
+	position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+	}
+	
+.bankfooter h5 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	font-size: 15px;
+	margin: 0;
+	text-align: right;
+	padding-right: 5%;
+		}
+
+/* 모바일용 */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .left, .right {
+        flex: none;
+        margin: 5px 0;
+        justify-content: center;
+    }
+
+    .center {
+        flex: none;
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    .centered {
+        flex-direction: column;
+    }
+
+    .judy-text {
+        margin: 10px 0 0 0;
+    }
+}

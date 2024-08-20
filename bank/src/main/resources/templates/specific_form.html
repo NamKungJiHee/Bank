@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/specific.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/}">
+                <img src="/homepic.png" alt="Home" style="height: 50px;">
+            </a>
+        </div>
+		<div class="center">
+            <h1>내 모임통장 보기</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/bank/groupAccountInfo}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+	<section>
+		<div class="bar"></div>
+		<div class="container">
+            <div class="menu-item selectAccount selected" id="memberCheck" style="transform: translateX(155%); position: fixed; top: 22%; padding-top:1%;">
+                <span>
+                    <h4 style="position:absolute; width: 40vh; left: 80%; top:30%; transform: translate(150%, -100%);">멤버조회</h4>
+                </span>
+            </div>
+            <div class="member-info active" id="memberInfo">	
+				<div class="account-container">		
+                <h4 th:value="${groupName}" th:text="${groupName}" style="position: absolute; left: 45%; top: 30%;"></h4>
+				<h4 th:value="${accountNum}" th:text="${accountNum}" style="position: absolute; left: 43%; top: 35%;"></h4>
+				<h4 style="position:absolute; left: 46%; top: 40%;"><span th:value="${groupBalance}" th:text="${groupBalance}" style="margin-top: 0px;"></span><span>  원</span></h4>
+				</div>
+				<div class="member-container">
+					<h4 style="position: absolute; left: 45%; top: 52%; z-index: 1;">참여중 멤버</h4>
+					<div class="profile-background"></div>
+					<div class="profile">
+						<img src="/profile.png" alt="Profile">
+						<h4 th:value="${nickName}" th:text="${nickName}" style="position: absolute; left: 45%; top: 58%;"></h4>
+					</div>
+					<button onclick="sendKakaoMessage()" class="invite-btn">초대</button>
+				</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="menu-item transactionAccount unselected" id="transactionAccount">
+                <span>
+					<h4 style="position:absolute; width: 40vh; left: 89%; top:22%; transform: translate(-115%, -84%);">거래내역</h4>
+                </span>
+            </div>
+            <div class="transaction-info inactive" id="transactionInfo">
+				<div class="account-container">		
+	                <h4 th:value="${groupName}" th:text="${groupName}" style="position: absolute; left: 45%; top: 30%;"></h4>
+					<h4 th:value="${accountNum}" th:text="${accountNum}" style="position: absolute; left: 43%; top: 35%;"></h4>
+					<h4 style="position:absolute; left: 46%; top: 40%;"><span th:value="${groupBalance}" th:text="${groupBalance}" style="margin-top: 0px;"></span><span>  원</span></h4>
+				</div>
+				<div class="underline-fst"></div>
+
+			
+				<table style="width: 70%; margin: 20px auto; border-collapse: collapse; position:absolute; top: 45%; left: 15%;">
+					<thead>
+						<tr>
+							<th style="border-bottom: 2px solid #000; padding: 10px; text-align: middle;">일시</th>
+							<th style="border-bottom: 2px solid #000; padding: 10px; text-align: middle;">이름</th>
+							<th style="border-bottom: 2px solid #000; text-align: middle;">거래구분</th>
+							<th style="border-bottom: 2px solid #000; padding: 10px; text-align: middle;">금액</th>
+							<th style="border-bottom: 2px solid #000; padding: 10px; text-align: middle;">잔액</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="transaction : ${transactions}">
+							<td style="padding: 10px;" th:text="${transaction.date}">2024-08-20</td>
+							<td style="padding: 10px;" th:text="${transaction.name}">홍길동</td>
+							<td style="padding: 10px;" th:text="${transaction.type}">입금</td>
+							<td style="padding: 10px; text-align: right;" th:text="${transaction.amount}">100,000</td>
+							<td style="padding: 10px; text-align: right;" th:text="${transaction.balance}">1,000,000</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="underline-second"></div>
+				<button onclick="requestDue()" class="request-btn">회비요청</button>
+            </div>
+        </div>
+	</section>
+	<footer class="bankfooter">
+		<h5>Judy Bank</h5>
+	</footer>
+	<script src="/js/specific.js"></script>
+</body>
+</html>

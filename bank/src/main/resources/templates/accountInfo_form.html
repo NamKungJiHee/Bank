@@ -5,8 +5,8 @@
     <title>Judy's Bank</title>
     <!-- CSS 파일 추가 -->
     <link rel="stylesheet" th:href="@{/css/groupAccountInfo.css}">
-	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <nav class="navbar">
@@ -15,46 +15,60 @@
                 <img src="/homepic.png" alt="Home" style="height: 50px;">
             </a>
         </div>
-		<div class="center">
+        <div class="center">
             <h1>내 모임통장 보기</h1>
         </div>
         <div class="right">
-            <a th:href="@{/bank/category}">
-                <img src="/list.png" alt="Category" style="height: 50px;">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
             </a>
         </div>
     </nav>
-	<section>
-		<div class="bar"></div>
-		<div class="background"></div>
-		<div class="entire-container" style="height: 50%; overflow-y: scroll;">
-		<div class="groupAccount-container">
-			<img src="/pig.png" alt="pig">
-			<h4 th:value="${groupName}" th:text="${groupName}" style="margin-bottom: 5px;"></h4>
-			<h4 th:value="${accountNum}" th:text="${accountNum}" style="margin-top: 0px; margin-bottom: 0px;"></h4>
-			<h4><span th:value="${groupBalance}" th:text="${groupBalance}" style="margin-top: 0px;"></span><span>  원</span></h4>
-			<div class="inputThreshold">
-			<h5><span th:value="${safeLockerThreshold}" th:text="${safeLockerThreshold}" style="margin-top: 0px; color: seagreen;"></span><span> 원</span></h5>
-			</div>
-			<div class="outputThreshold">
-			<h5><span th:value="${alertThreshold}" th:text="${alertThreshold}" style="margin-top: 0px; color: steelblue;"></span><span> 원</span></h5>
-			</div>
-			<a href="/bank/withdraw">
-				<button type="button" class="next-btn1" th:disabled="${noLocker}">모임통장으로출금</button>
-			</a>
-			<a href="/bank/specific">
-				<button type="button" class="next-btn2">자세히</button>
-			</a>
-			<div class="locker-container">
-			<h5 th:value="${safeLockerType}" th:text="${safeLockerType}" style="margin-top: 0px; transform: translate(13%, -330%);"></h5>
-			<h5 style="margin-top: 0px; transform: translate(42%, -540%);"><span th:value="${currentBalance}" th:text="${currentBalance}" style="margin-top: 0px; color: seagreen;" ></span><span> 원</span></h5>
-			</div>
+    <section>
+        <div class="bar"></div>
+        <div class="background"></div>
+		<div class="entire-container">
+		    <!-- 그룹 통장 정보 리스트를 반복하여 표시 -->
+		    <div th:each="accountInfo : ${groupAccountInfos}" class="groupAccount-container">
+		        <!-- 항목 내용 -->
+		        <img src="/pig.png" alt="pig">
+		        <h4 th:text="${accountInfo.groupName}" style="margin-bottom: 5px;"></h4>
+		        <h4 th:text="${accountInfo.accountNum}" style="margin-top: 0px; margin-bottom: 0px;"></h4>
+		        <h4>
+		            <span th:text="${accountInfo.groupBalance}" style="margin-top: 0px;"></span>
+		            <span> 원</span>
+		        </h4>
+		        <div class="inputThreshold">
+		            <h5>
+		                <span th:text="${accountInfo.safeLockerThreshold}" style="margin-top: 0px; color: seagreen;"></span>
+		                <span> 원</span>
+		            </h5>
+		        </div>
+		        <div class="outputThreshold">
+		            <h5>
+		                <span th:text="${accountInfo.alertThreshold}" style="margin-top: 0px; color: steelblue;"></span>
+		                <span> 원</span>
+		            </h5>
+		        </div>
+		        <a th:href="@{/bank/withdraw(accountId=${accountInfo.accountId})}">
+		            <button type="button" class="next-btn1" th:disabled="${noLocker}">모임통장으로 출금</button>
+		        </a>
+		        <a th:href="@{/bank/specific}">
+		            <button type="button" class="next-btn2">자세히</button>
+		        </a>
+		        <div class="locker-container">
+		            <h5 th:text="${accountInfo.safeLockerType}" style="margin-top: 0px; transform: translate(13%, -330%);"></h5>
+		            <h5 style="margin-top: 0px; transform: translate(42%, -540%);">
+		                <span th:text="${accountInfo.currentBalance}" style="margin-top: 0px; color: seagreen;"></span>
+		                <span> 원</span>
+		            </h5>
+		        </div>
+		    </div>
 		</div>
-		</div>
-	</section>
-	<footer class="bankfooter">
-		<h5>Judy Bank</h5>
-	</footer>
-	<script src="/js/signup.js"></script>
+    </section>
+    <footer class="bankfooter">
+        <h5>Judy Bank</h5>
+    </footer>
+    <script src="/js/signup.js"></script>
 </body>
 </html>

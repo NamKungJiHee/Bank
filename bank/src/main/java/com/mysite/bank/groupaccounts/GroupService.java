@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import com.mysite.bank.groupaccountmembers.GroupAccountMembers;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembersRepository;
 import com.mysite.bank.safelockers.SafeLockers;
 import com.mysite.bank.safelockers.SafeLockersRepository;
+import com.mysite.bank.useraccounts.UserAccounts;
 import com.mysite.bank.useraccounts.UserAccountsRepository;
 import com.mysite.bank.users.Users;
 import com.mysite.bank.users.UsersRepository;
@@ -127,7 +129,7 @@ public class GroupService {
        return eventName;
    }
    
-   // 모임통장에 필요한 모든 정보들 불러오기
+   // 모임통장에 필요한 모든 정보들 불러오기 (단)
 	public Map<String, Object> groupAccountInfo(Long accountId) {
 		
 	    AccountInfo accountInfo = accountInfoRepository.findById(accountId)
@@ -178,7 +180,7 @@ public class GroupService {
 	
 	// 이자율 계산 로직
 	@Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
-	//@Scheduled(cron = "0 */1 * * * *") // TEST
+//	@Scheduled(cron = "0 */1 * * * *") // TEST
 	public void interestRate() {
 	
 	    List<SafeLockers> allLockers = safeLockersRepository.findAll();
@@ -189,6 +191,7 @@ public class GroupService {
 	        // GroupAccount groupAccount = locker.getGroupAccountId();
 	        // Long groupBalance = groupAccount.getBalance(); 
 	        Long interestBalance = locker.getCurrentBalanceWithInterest();
+	        System.out.println("INTERESTBALANCE: " + interestBalance);
 	        
 	        // 이자 계산 및 반영
 	        if (rateType.equals(1.3)) {
@@ -202,6 +205,68 @@ public class GroupService {
 	        }
 	    }
 	}
+	
+	public String userNickName(String userName) {
+		 Optional<Users> optionalUser = usersRepository.findByUserName(userName);
+	       if (!optionalUser.isPresent()) {
+	           throw new RuntimeException("User not found");
+	       }
+	       
+	       Users user = optionalUser.get();
+	       String nickName = user.getUserNickname();
+	       
+	       return nickName;
+	}
+	
+	public Long userId(String userName) {
+		 Optional<Users> optionalUser = usersRepository.findByUserName(userName);
+	       if (!optionalUser.isPresent()) {
+	           throw new RuntimeException("User not found");
+	       }
+	       
+	       Users user = optionalUser.get();
+	       Long userId = user.getUserId();
+	       
+	       return userId;
+	}
+	
+	// 모임통장에 필요한 모든 정보들 불러오기 (복)
+    public List<Map<String, Object>> getGroupAccountInfosByUserId(Long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String userName = user.getUserName();
+
+        List<GroupAccountMembers> members = groupAccountMembersRepository.findByUser_UserName(userName);
+
+        List<GroupAccount> groupAccounts = members.stream()
+            .map(GroupAccountMembers::getGroupAccountId)
+            .distinct()
+            .collect(Collectors.toList());
+
+        return groupAccounts.stream()
+            .map(groupAccount -> {
+                Map<String, Object> result = new HashMap<>();
+                result.put("groupName", groupAccount.getGroupName());
+                result.put("groupBalance", groupAccount.getBalance());
+                result.put("safeLockerType", groupAccount.getSafelockerType());
+                result.put("safeLockerThreshold", groupAccount.getSafelockerThreshold());
+                result.put("alertThreshold", groupAccount.getAlertThreshold());
+                result.put("accountNum", groupAccount.getAccountInfo().getAccountNum());
+                result.put("accountId", groupAccount.getGroupAccountId());
+                
+                SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
+                        .orElse(new SafeLockers()); 
+
+                Long currentBalance = safeLockers.getCurrentBalanceWithInterest();
+
+                result.put("currentBalance", currentBalance != null ? currentBalance : 0L);
+                return result;
+            })
+            .collect(Collectors.toList());
+    }
+    
+
 }
 
 

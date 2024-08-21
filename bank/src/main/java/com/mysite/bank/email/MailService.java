@@ -121,7 +121,7 @@ public class MailService {
 	// safeLocker에 사용자가 설정한 금액이 모이면 알림(이메일) 보내는 서비스
 	// 주기적으로 조건을 확인하고 이메일 전송
 	@Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
-	//@Scheduled(cron = "0 */1 * * * *") // 1분마다 실행 (TEST)
+//	@Scheduled(cron = "0 */1 * * * *") // 1분마다 실행 (TEST)
 	public void checkAndSendEmails() {
 	    // 모든 SafeLocker 조회
 	    List<SafeLockers> allLockers = safeLockersRepository.findAll();

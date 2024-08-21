@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -133,48 +134,46 @@ public class GroupController {
 	
 	// 내 모임통장 보기
 	@GetMapping("/groupAccountInfo")
-	public String groupAccountInfo(Model model, @SessionAttribute("accountId") Long accountId) {
-		
-		Map<String, Object> result = groupService.groupAccountInfo(accountId);
-		
-		model.addAttribute("groupName", result.get("groupName"));
-		model.addAttribute("groupBalance", result.get("groupBalance"));
-		model.addAttribute("safeLockerType", result.get("safeLockerType"));
-		model.addAttribute("safeLockerThreshold", result.get("safeLockerThreshold"));
-		model.addAttribute("alertThreshold", result.get("alertThreshold"));
-		model.addAttribute("accountNum", result.get("accountNum"));
-		model.addAttribute("currentBalance", result.get("currentBalance"));
-		
-		// premium은 매달 1일 출금가능, flex는 매일 출금 가능
-		String lockerType = (String) result.get("safeLockerType");
-        	if ("None".equals(lockerType)) {
+	public String groupAccountInfo(Model model, Principal principal) {
+	    String userName = principal.getName();
+	    Long userId = groupService.userId(userName);
+	    
+	    List<Map<String, Object>> groupAccountInfos = groupService.getGroupAccountInfosByUserId(userId);
+	    
+	    model.addAttribute("groupAccountInfos", groupAccountInfos);
+
+	    for (Map<String, Object> result : groupAccountInfos) {
+	        String lockerType = (String) result.get("safeLockerType");
+	        Long groupBalance = (Long) result.get("groupBalance");
+	        Long safeLockerThreshold = (Long) result.get("safeLockerThreshold");
+	        Long currentBalance = (Long) result.get("currentBalance");
+
+	        if ("None".equals(lockerType)) {
 	            noLocker = true;
 	        } else if ("Flex".equals(lockerType)) {
 	            noLocker = false;
 	        } else if ("Premium".equals(lockerType)) {
-	            noLocker = premiumNoLocker;
-        }
-		
-		// safeLocker값이 locker로 넘어가는 로직
-		if (result.get("safeLockerType").equals("Flex") || (result.get("safeLockerType").equals("Premium"))) {
-			Long groupBalance = (Long) result.get("groupBalance");
-			Long safeLockerThreshold = (Long) result.get("safeLockerThreshold");
-			Long currentBalance = (Long) result.get("currentBalance");
-			
-			if (groupBalance >= safeLockerThreshold) {
-				Long initgroupBalance = 0L;
-				Long updatedBalance = groupBalance + currentBalance;
-				
-				model.addAttribute("groupBalance", initgroupBalance);
-				model.addAttribute("currentBalance", updatedBalance);
-				groupService.updateBalance(initgroupBalance, updatedBalance , accountId);
-			}
-			
-		}
+	            noLocker = premiumNoLocker; 
+	        } 
 
-		model.addAttribute("noLocker", noLocker);
-		return "accountInfo_form";
+	        if ("Flex".equals(lockerType) || "Premium".equals(lockerType)) {
+	            if (groupBalance >= safeLockerThreshold) {
+	                Long updatedBalance = groupBalance + currentBalance;
+	                Long initGroupBalance = 0L;
+
+	                model.addAttribute("groupBalance", initGroupBalance);
+	                model.addAttribute("currentBalance", updatedBalance);
+
+	                groupService.updateBalance(initGroupBalance, updatedBalance, (Long) result.get("accountId"));
+	            }
+	        }
+	    }
+
+	    model.addAttribute("noLocker", noLocker);
+
+	    return "accountInfo_form";
 	}
+
 	
   @Scheduled(cron = "0 0 0 1 * ?") // 매달 1일에 false로 설정
   	public void resetNoLockerMonthly() {
@@ -185,4 +184,21 @@ public class GroupController {
 	public void setNoLockerTrueAfterFirst() {
         premiumNoLocker = true;
     }
+  
+  // 자세히 파트
+	@GetMapping("/specific")
+	public String specific(Model model, Principal principal, @SessionAttribute("accountId") Long accountId) {
+		String userName = principal.getName(); 
+		
+		String nickName = groupService.userNickName(userName);
+		Map<String, Object> result = groupService.groupAccountInfo(accountId);
+		
+		model.addAttribute("groupName", result.get("groupName"));
+		model.addAttribute("groupBalance", result.get("groupBalance"));
+		model.addAttribute("accountNum", result.get("accountNum"));
+		
+		model.addAttribute("nickName", nickName);
+
+		return "specific_form";
+	}
 }

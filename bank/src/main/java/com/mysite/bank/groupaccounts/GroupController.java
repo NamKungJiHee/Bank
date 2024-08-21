@@ -187,7 +187,7 @@ public class GroupController {
   
   // 자세히 파트
 	@GetMapping("/specific")
-	public String specific(Model model, Principal principal, @SessionAttribute("accountId") Long accountId) {
+	public String specific(Model model, Principal principal, @RequestParam("accountId") Long accountId) {
 		String userName = principal.getName(); 
 		
 		String nickName = groupService.userNickName(userName);

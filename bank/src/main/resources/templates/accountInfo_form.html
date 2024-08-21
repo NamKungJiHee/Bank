@@ -53,7 +53,7 @@
 		        <a th:href="@{/bank/withdraw(accountId=${accountInfo.accountId})}">
 		            <button type="button" class="next-btn1" th:disabled="${noLocker}">모임통장으로 출금</button>
 		        </a>
-		        <a th:href="@{/bank/specific}">
+		        <a th:href="@{/bank/specific(accountId=${accountInfo.accountId})}">
 		            <button type="button" class="next-btn2">자세히</button>
 		        </a>
 		        <div class="locker-container">

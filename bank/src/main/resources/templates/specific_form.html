@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/specific.css}">
 	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -45,7 +46,15 @@
 						<img src="/profile.png" alt="Profile">
 						<h4 th:value="${nickName}" th:text="${nickName}" style="position: absolute; left: 45%; top: 58%;"></h4>
 					</div>
-					<button onclick="sendKakaoMessage()" class="invite-btn">초대</button>
+					<form id="inviteMsg" th:action="@{/bank/inviteMsg}" method="post">          
+					    <div class="invite-container">
+							<input type="hidden" name="groupName" value="${groupName}">
+							<input type="hidden" name="accountNum" value="${accountNum}">
+							<input type="hidden" name="groupBalance" value="${groupBalance}">
+							<input type="hidden" name="nickName" value="${nickName}">
+					       <button type="submit" onclick="sendKakaoMessage()" class="invite-btn">초대</button>
+					    </div>
+					</form>
 				</div>
             </div>
         </div>

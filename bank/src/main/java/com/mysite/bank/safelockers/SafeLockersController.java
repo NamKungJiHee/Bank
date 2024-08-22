@@ -1,5 +1,6 @@
 package com.mysite.bank.safelockers;
 
+import java.security.Principal;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -31,9 +32,9 @@ public class SafeLockersController {
     }
     
     @PostMapping("/sendBalance")
-    public String postWithdraw(@RequestParam("withdrawBalance") Long withdrawBalance, @RequestParam("accountId") Long accountId, Model model) {
-       
-        Long afterBalanceInterest = safeLockerService.sendBalance(withdrawBalance, accountId);
+    public String postWithdraw(@RequestParam("withdrawBalance") Long withdrawBalance, @RequestParam("accountId") Long accountId, Model model, Principal principal) {
+    	String userName = principal.getName();
+        Long afterBalanceInterest = safeLockerService.sendBalance(withdrawBalance, accountId, userName);
     
         model.addAttribute("currentBalance", afterBalanceInterest);     
         model.addAttribute("accountId", accountId); 

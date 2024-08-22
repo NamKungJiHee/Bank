@@ -36,3 +36,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
 });
+
+function sendKakaoMessage() {
+    Kakao.init("52c2ca4da9bd16808234404f2c1b87b5"); 
+    Kakao.Link.sendCustom({
+        templateId: 111368, 
+        templateArgs: {
+            'url': 'redirect.html' // 해당파일은 templates이 아닌 static 안에 위치해야함.
+        }
+    });
+}
+
+function submitForm() {
+       var form = document.getElementById('inviteMsg');
+       var formData = new FormData(form);
+
+       fetch(form.action, {
+           method: 'POST',
+           body: formData // hidden시킨 모든 value들이 넘어감.
+       })
+       .then(response => {
+           if (response.ok) {
+               return response.json(); 
+           } else {
+               throw new Error('Error');
+           }
+       })
+       .then(data => {
+           sendKakaoMessage();
+       })
+       .catch(error => {
+           console.log('Error:', error);
+       });
+   }
+
+   document.getElementById('inviteMsg').addEventListener('submit', function(event) {
+       event.preventDefault(); 
+       submitForm(); 
+   });

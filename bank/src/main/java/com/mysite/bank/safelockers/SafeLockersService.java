@@ -24,6 +24,7 @@ public class SafeLockersService {
     private final GroupAccountRepository groupAccountRepository;
     private final AccountInfoRepository accountInfoRepository;
     private final SafeLockersRepository safeLockersRepository;
+    private final EventRepository eventRepository;
     
     public Map<String, Object> getLockerType(Long accountId) {
     	 AccountInfo accountInfo = accountInfoRepository.findById(accountId)
@@ -43,7 +44,9 @@ public class SafeLockersService {
     }
     
     // [내모임통장으로출금] 부분
-    public Long sendBalance(Long withdrawBalance, Long accountId) {
+    public Long sendBalance(Long withdrawBalance, Long accountId, String userName) {
+    	
+    	Long afterGroupBalance;
     	
     	AccountInfo accountInfo = accountInfoRepository.findById(accountId)
 	            .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
@@ -54,12 +57,19 @@ public class SafeLockersService {
     	SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
     		.orElseThrow(() -> new IllegalArgumentException("Invalid safeLockers"));
     	
+    	String eventName = eventRepository.findByUser_UserName(userName).get().getEventName();
+    	
     	Long currentBalance = safeLockers.getCurrentBalanceWithInterest(); // 현재 safelocker에 담겨져있는 금액
     	Long currentGroupBalance = groupAccount.getBalance(); // 현재 모임통장에 담겨져있는 금액
     	
-    	Long afterGroupBalance = currentGroupBalance + withdrawBalance; // 출금 후 모임통장 금액
     	Long afterBalanceInterest = currentBalance - withdrawBalance; // 출금 후 safeLocker 금액
-
+    	
+    	if ("SafeLocker 첫출금시 십만원 추가지급".equals(eventName)) {
+    		afterGroupBalance = currentGroupBalance + withdrawBalance + 100000; // 출금 후 모임통장 금액
+    	} else {
+    		afterGroupBalance = currentGroupBalance + withdrawBalance; // 출금 후 모임통장 금액
+    	}
+    	
     	groupAccount.setBalance(afterGroupBalance);
     	safeLockers.setCurrentBalanceWithInterest(afterBalanceInterest);
     	

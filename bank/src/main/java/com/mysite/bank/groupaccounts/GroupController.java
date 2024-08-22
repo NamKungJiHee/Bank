@@ -185,7 +185,7 @@ public class GroupController {
         premiumNoLocker = true;
     }
   
-  // 자세히 파트
+  	// 자세히 파트
 	@GetMapping("/specific")
 	public String specific(Model model, Principal principal, @RequestParam("accountId") Long accountId) {
 		String userName = principal.getName(); 
@@ -201,4 +201,5 @@ public class GroupController {
 
 		return "specific_form";
 	}
+	
 }

@@ -180,11 +180,12 @@ public class GroupService {
 	
 	// 이자율 계산 로직
 	@Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
-//	@Scheduled(cron = "0 */1 * * * *") // TEST
+	//@Scheduled(cron = "0 */1 * * * *") // TEST
 	public void interestRate() {
 	
 	    List<SafeLockers> allLockers = safeLockersRepository.findAll();
-
+	    Long interest;
+	    
 	    for (SafeLockers locker : allLockers) {
 	        Double rateType = locker.getInterestRate();
 	        
@@ -193,15 +194,32 @@ public class GroupService {
 	        Long interestBalance = locker.getCurrentBalanceWithInterest();
 	        System.out.println("INTERESTBALANCE: " + interestBalance);
 	        
+	        String userId = locker.getUser().getUserName();
+	        
+	        // 이벤트에 따라 혜택 다르게
+	        String eventName = this.eventRepository.findByUser_UserName(userId).get().getEventName();
+	        
 	        // 이자 계산 및 반영
 	        if (rateType.equals(1.3)) {
-	            Long interest = Math.round(interestBalance * 0.013); // 1.3% 이자 계산
-	            locker.setCurrentBalanceWithInterest(interestBalance + interest); 
-	            safeLockersRepository.save(locker);
+	        	  if ("추가이자율 1%지급".equals(eventName)) {
+		            	interest = Math.round(interestBalance * 0.023); // 2.3% 이자 계산
+			            locker.setCurrentBalanceWithInterest(interestBalance + interest); 
+			            safeLockersRepository.save(locker);
+		            } else {
+		            	interest = Math.round(interestBalance * 0.013); // 1.3% 이자 계산
+		 	            locker.setCurrentBalanceWithInterest(interestBalance + interest); 
+		 	            safeLockersRepository.save(locker);
+		            }
 	        } else if (rateType.equals(2.3)) {
-	        	Long interest = Math.round(interestBalance * 0.023); // 2.3% 이자 계산
-	        	locker.setCurrentBalanceWithInterest(interestBalance + interest); 
-	        	safeLockersRepository.save(locker);
+	        	if ("추가이자율 1%지급".equals(eventName)) {
+	        		interest = Math.round(interestBalance * 0.033); // 3.3% 이자 계산
+		        	locker.setCurrentBalanceWithInterest(interestBalance + interest); 
+		        	safeLockersRepository.save(locker);
+	        	} else {
+		        	interest = Math.round(interestBalance * 0.023); // 2.3% 이자 계산
+		        	locker.setCurrentBalanceWithInterest(interestBalance + interest); 
+		        	safeLockersRepository.save(locker);
+	        	}
 	        }
 	    }
 	}

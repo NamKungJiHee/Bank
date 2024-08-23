@@ -198,7 +198,8 @@ public class GroupController {
 		model.addAttribute("accountNum", result.get("accountNum"));
 		
 		model.addAttribute("nickName", nickName);
-
+		model.addAttribute("accountId", accountId);
+		
 		return "specific_form";
 	}
 	

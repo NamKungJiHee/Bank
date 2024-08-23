@@ -6,7 +6,9 @@
     <script type="text/javascript">
         function confirmRedirect() {
             if (confirm("수락하시겠습니까?")) {
-                window.location.href = "http://192.168.219.104:8080";
+               /*  window.location.href = "http://192.168.219.104:8080/bank/login"; */
+			   	var accountId = "<%= accountId %>";
+				window.location.href= "http://192.168.0.6:8080/bank/login?accountId=" + accountId;
             } else {
                 alert("취소되었습니다.");
             }

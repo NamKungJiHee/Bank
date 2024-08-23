@@ -26,7 +26,7 @@ public class FriendController {
 	    }
 	   
 	    @PostMapping("/inviteMsg")
-	    public ResponseEntity<String> inviteFriend(@RequestParam("groupName") String groupName, @RequestParam("accountNum") String accountNum, @RequestParam("groupBalance") String groupBalance, @RequestParam("nickName") String nickName, Model model, Principal principal) {
+	    public ResponseEntity<String> inviteFriend(@RequestParam("groupName") String groupName, @RequestParam("accountNum") String accountNum, @RequestParam("groupBalance") String groupBalance, @RequestParam("nickName") String nickName,@RequestParam("accountId") String accountId,  Model model, Principal principal) {
 	        String userName = principal.getName();
 	        friendService.save(userName);
 

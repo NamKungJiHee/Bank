@@ -43,7 +43,9 @@ public class UsersController {
 	private final MailService mailService;
 	
 	@GetMapping("/login")
-	public String login() {
+	public String login(@RequestParam(value = "accountId", required = false) String accountId, Model model) {
+		model.addAttribute("accountId", accountId); 
+		
 		return "login_form";
 	}
 	

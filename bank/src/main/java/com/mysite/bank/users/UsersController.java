@@ -42,6 +42,7 @@ public class UsersController {
 	private final UserService userService;
 	private final MailService mailService;
 	
+	// 일반 로그인, 카카오 로그인(accountId)
 	@GetMapping("/login")
 	public String login(@RequestParam(value = "accountId", required = false) String accountId, Model model) {
 		model.addAttribute("accountId", accountId); 

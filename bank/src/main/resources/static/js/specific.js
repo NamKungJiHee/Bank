@@ -37,12 +37,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 
+function getAccountId() {
+    var accountIdField = document.querySelector('input[name="accountId"]');
+    return accountIdField ? accountIdField.value : null;
+}
+
 function sendKakaoMessage() {
+    var accountId = getAccountId(); 
     Kakao.init("52c2ca4da9bd16808234404f2c1b87b5"); 
     Kakao.Link.sendCustom({
         templateId: 111368, 
         templateArgs: {
-            'url': 'redirect.html' // 해당파일은 templates이 아닌 static 안에 위치해야함.
+            'url': 'redirect.html?accountId=' + encodeURIComponent(accountId) // 해당파일은 templates이 아닌 static 안에 위치해야함.
         }
     });
 }

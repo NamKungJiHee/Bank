@@ -4,15 +4,24 @@
     <meta charset="UTF-8">
     <title>Redirect Confirmation</title>
     <script type="text/javascript">
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
         function confirmRedirect() {
+            var accountId = getParameterByName('accountId'); // URL에서 accountId 파라미터 가져오기
+
             if (confirm("수락하시겠습니까?")) {
-               /*  window.location.href = "http://192.168.219.104:8080/bank/login"; */
-			   	var accountId = "<%= accountId %>";
-				window.location.href= "http://192.168.0.6:8080/bank/login?accountId=" + accountId;
+			   var redirectUrl = "http://192.168.219.104:8080/bank/login?accountId=" + encodeURIComponent(accountId);
+                window.location.href = redirectUrl;
             } else {
                 alert("취소되었습니다.");
             }
         }
+
         window.onload = confirmRedirect;
     </script>
 </head>

@@ -189,7 +189,7 @@ public class GroupController {
 	@GetMapping("/specific")
 	public String specific(Model model, Principal principal, @RequestParam("accountId") Long accountId) {
 		String userName = principal.getName(); 
-		
+	
 		String nickName = groupService.userNickName(userName);
 		Map<String, Object> result = groupService.groupAccountInfo(accountId);
 		

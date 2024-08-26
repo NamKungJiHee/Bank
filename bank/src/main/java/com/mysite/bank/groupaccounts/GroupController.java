@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoService;
+import com.mysite.bank.friend.Friend;
+import com.mysite.bank.friend.FriendService;
+import com.mysite.bank.users.Users;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class GroupController {
 	private final AccountInfoService accountInfoService;
 	private final GroupService groupService;
+	private final FriendService friendService;
 	private boolean noLocker = true;
     private boolean premiumNoLocker = true; 
 	
@@ -137,6 +142,16 @@ public class GroupController {
 	public String groupAccountInfo(Model model, Principal principal) {
 	    String userName = principal.getName();
 	    Long userId = groupService.userId(userName);
+	    System.out.println("GROUPACCOUNTINFO_USERID: " + userId);
+	    
+	    Optional<Friend> inviteUserId = friendService.findInvitedId(userId);
+
+	    if (inviteUserId.isPresent()) {
+	    	 System.out.println("###########GROUPACCOUNTINFO_inviteUserId: " + inviteUserId.get().getInvitedUserId().getUserId());
+	    } else {
+	    	System.out.println("###########GROUPACCOUNTINFO_inviteUserId is null");
+	    }
+	    
 	    
 	    List<Map<String, Object>> groupAccountInfos = groupService.getGroupAccountInfosByUserId(userId);
 	    

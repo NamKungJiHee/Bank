@@ -11,8 +11,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String root(@RequestParam(value= "accountId", required = false) String accountId, Model model) {
-		
-		System.out.println("#####MainController: " + accountId);
+
 		 if (accountId != null) {
 	            model.addAttribute("accountId", accountId);
 	        }

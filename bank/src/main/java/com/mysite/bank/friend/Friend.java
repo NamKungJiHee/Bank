@@ -2,6 +2,7 @@ package com.mysite.bank.friend;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.mysite.bank.groupaccounts.GroupAccount;
 import com.mysite.bank.users.Users;
 
 import jakarta.persistence.Column;
@@ -38,4 +39,8 @@ public class Friend {
     
     @Column(name = "status", columnDefinition = "VARCHAR2(20) DEFAULT 'PENDING'")
     private String status;
+    
+    @ManyToOne
+    @JoinColumn(name = "group_account_id", nullable = false)
+    private GroupAccount groupAccountId;
 }

@@ -1,5 +1,6 @@
 package com.mysite.bank.friend;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -71,12 +72,12 @@ public class FriendService {
         return friend;
 	}
 
-	public Optional<Friend> findInvitedId(Long userId) {
+	public List<Friend> findInvitedId(Long userId) {
 		Optional<Users> userInfo = usersRepository.findByUserId(userId);
 		Users user = userInfo.get();
-		Optional<Friend> invitedUserId = friendRepository.findByInvitedUserId(user);
+		//List<Friend> invitedUserId = friendRepository.findByInvitedUserId(user);
 		
-		return invitedUserId;
+		return friendRepository.findByInvitedUserId(user);
 	}
 
 

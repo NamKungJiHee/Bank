@@ -147,28 +147,28 @@ public class GroupController {
 	    Long userId = groupService.userId(userName);
 
 	    List<Map<String, Object>> groupAccountInfos = new ArrayList<>();
+	
+	    List<Friend> inviteUsers = friendService.findInvitedId(userId);
 
-	    Optional<Friend> inviteUser = friendService.findInvitedId(userId);
+	    if (!inviteUsers.isEmpty()) {
+	    	for (Friend inviteUser : inviteUsers) {
+	            Long groupAccountId = inviteUser.getGroupAccountId().getGroupAccountId();
 
-	    if (inviteUser.isPresent()) {
-	        Long groupAccountId = inviteUser.get().getGroupAccountId().getGroupAccountId();
+	            GroupAccount invitedAccountInfo = groupService.getGroupAccountInfoByGroupAccountId(groupAccountId);
+	            Long currentBalanceInfo = groupService.getCurrentBalance(invitedAccountInfo);
 
-	        // group_account_id에 해당하는 정보를 가져옴
-	        GroupAccount invitedAccountInfo = groupService.getGroupAccountInfoByGroupAccountId(groupAccountId);
-	        Long currentBalanceInfo = groupService.getCurrentBalance(invitedAccountInfo);
-	        
-	        Map<String, Object> invitedAccountMap = new HashMap<>();
-	        invitedAccountMap.put("safeLockerType", invitedAccountInfo.getSafelockerType());
-	        invitedAccountMap.put("groupBalance", invitedAccountInfo.getBalance());
-	        invitedAccountMap.put("safeLockerThreshold", invitedAccountInfo.getSafelockerThreshold());
-	        invitedAccountMap.put("groupName", invitedAccountInfo.getGroupName());
-	        invitedAccountMap.put("alertThreshold", invitedAccountInfo.getAlertThreshold());
-	        invitedAccountMap.put("accountNum", invitedAccountInfo.getAccountInfo().getAccountNum());
-	        invitedAccountMap.put("accountId", invitedAccountInfo.getAccountInfo().getAccountId());
-	        invitedAccountMap.put("currentBalance", currentBalanceInfo);
-	        
-	        groupAccountInfos.add(invitedAccountMap);
+	            Map<String, Object> invitedAccountMap = new HashMap<>();
+	            invitedAccountMap.put("safeLockerType", invitedAccountInfo.getSafelockerType());
+	            invitedAccountMap.put("groupBalance", invitedAccountInfo.getBalance());
+	            invitedAccountMap.put("safeLockerThreshold", invitedAccountInfo.getSafelockerThreshold());
+	            invitedAccountMap.put("groupName", invitedAccountInfo.getGroupName());
+	            invitedAccountMap.put("alertThreshold", invitedAccountInfo.getAlertThreshold());
+	            invitedAccountMap.put("accountNum", invitedAccountInfo.getAccountInfo().getAccountNum());
+	            invitedAccountMap.put("accountId", invitedAccountInfo.getAccountInfo().getAccountId());
+	            invitedAccountMap.put("currentBalance", currentBalanceInfo);
 
+	            groupAccountInfos.add(invitedAccountMap);
+	        }
 	    } else {
 	        groupAccountInfos = groupService.getGroupAccountInfosByUserId(userId);
 	    }

@@ -2,9 +2,12 @@ package com.mysite.bank.groupaccounts;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -142,19 +145,34 @@ public class GroupController {
 	public String groupAccountInfo(Model model, Principal principal) {
 	    String userName = principal.getName();
 	    Long userId = groupService.userId(userName);
-	    System.out.println("GROUPACCOUNTINFO_USERID: " + userId);
-	    
-	    Optional<Friend> inviteUserId = friendService.findInvitedId(userId);
 
-	    if (inviteUserId.isPresent()) {
-	    	 System.out.println("###########GROUPACCOUNTINFO_inviteUserId: " + inviteUserId.get().getInvitedUserId().getUserId());
+	    List<Map<String, Object>> groupAccountInfos = new ArrayList<>();
+
+	    Optional<Friend> inviteUser = friendService.findInvitedId(userId);
+
+	    if (inviteUser.isPresent()) {
+	        Long groupAccountId = inviteUser.get().getGroupAccountId().getGroupAccountId();
+
+	        // group_account_id에 해당하는 정보를 가져옴
+	        GroupAccount invitedAccountInfo = groupService.getGroupAccountInfoByGroupAccountId(groupAccountId);
+	        Long currentBalanceInfo = groupService.getCurrentBalance(invitedAccountInfo);
+	        
+	        Map<String, Object> invitedAccountMap = new HashMap<>();
+	        invitedAccountMap.put("safeLockerType", invitedAccountInfo.getSafelockerType());
+	        invitedAccountMap.put("groupBalance", invitedAccountInfo.getBalance());
+	        invitedAccountMap.put("safeLockerThreshold", invitedAccountInfo.getSafelockerThreshold());
+	        invitedAccountMap.put("groupName", invitedAccountInfo.getGroupName());
+	        invitedAccountMap.put("alertThreshold", invitedAccountInfo.getAlertThreshold());
+	        invitedAccountMap.put("accountNum", invitedAccountInfo.getAccountInfo().getAccountNum());
+	        invitedAccountMap.put("accountId", invitedAccountInfo.getAccountInfo().getAccountId());
+	        invitedAccountMap.put("currentBalance", currentBalanceInfo);
+	        
+	        groupAccountInfos.add(invitedAccountMap);
+
 	    } else {
-	    	System.out.println("###########GROUPACCOUNTINFO_inviteUserId is null");
+	        groupAccountInfos = groupService.getGroupAccountInfosByUserId(userId);
 	    }
-	    
-	    
-	    List<Map<String, Object>> groupAccountInfos = groupService.getGroupAccountInfosByUserId(userId);
-	    
+
 	    model.addAttribute("groupAccountInfos", groupAccountInfos);
 
 	    for (Map<String, Object> result : groupAccountInfos) {
@@ -168,8 +186,8 @@ public class GroupController {
 	        } else if ("Flex".equals(lockerType)) {
 	            noLocker = false;
 	        } else if ("Premium".equals(lockerType)) {
-	            noLocker = premiumNoLocker; 
-	        } 
+	            noLocker = premiumNoLocker;
+	        }
 
 	        if ("Flex".equals(lockerType) || "Premium".equals(lockerType)) {
 	            if (groupBalance >= safeLockerThreshold) {
@@ -189,6 +207,8 @@ public class GroupController {
 	    return "accountInfo_form";
 	}
 
+
+
 	
   @Scheduled(cron = "0 0 0 1 * ?") // 매달 1일에 false로 설정
   	public void resetNoLockerMonthly() {
@@ -205,14 +225,20 @@ public class GroupController {
 	public String specific(Model model, Principal principal, @RequestParam("accountId") Long accountId) {
 		String userName = principal.getName(); 
 	
-		String nickName = groupService.userNickName(userName);
+		String currentNickName = groupService.userNickName(userName);
 		Map<String, Object> result = groupService.groupAccountInfo(accountId);
 		
+		List<String> originMemberName = groupService.getOriginMember(accountId);
+		List<String> invitedMembers = Arrays.asList(currentNickName);
+	    List<String> allMembers = new ArrayList<>(originMemberName);
+	    allMembers.addAll(invitedMembers);
+	    allMembers = allMembers.stream().distinct().collect(Collectors.toList());
+	
 		model.addAttribute("groupName", result.get("groupName"));
 		model.addAttribute("groupBalance", result.get("groupBalance"));
 		model.addAttribute("accountNum", result.get("accountNum"));
 		
-		model.addAttribute("nickName", nickName);
+		model.addAttribute("members", allMembers);
 		model.addAttribute("accountId", accountId);
 		
 		return "specific_form";

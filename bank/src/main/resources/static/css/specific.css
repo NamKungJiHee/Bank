@@ -38,15 +38,6 @@
 
 }
 
-.profile img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-	position: absolute; 
-	left: 40%; 
-	top: 58%;
-}
-
 .profile-background {
 	position: absolute;
 	width: 45vh;
@@ -117,6 +108,29 @@
 	border: none; 
 	font-size: 13px;
 }
+
+.profile-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; 
+	position: absolute;
+	top: 59%;
+	left: 39%;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px; 
+    border-radius: 50%; 
+}
+
+
 
 /* footer */
 

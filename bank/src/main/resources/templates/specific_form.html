@@ -42,9 +42,11 @@
 				<div class="member-container">
 					<h4 style="position: absolute; left: 45%; top: 52%; z-index: 1;">참여중 멤버</h4>
 					<div class="profile-background"></div>
-					<div class="profile">
-						<img src="/profile.png" alt="Profile">
-						<h4 th:value="${nickName}" th:text="${nickName}" style="position: absolute; left: 45%; top: 58%;"></h4>
+					<div class="profile-container">
+					    <div th:each="member : ${members}" class="member-item">
+					        <img src="/profile.png" alt="Profile" class="profile-img">
+					        <h4 th:text="${member}"></h4>
+					    </div>
 					</div>
 					<form id="inviteMsg" th:action="@{/bank/inviteMsg}" method="post">          
 					    <div class="invite-container">

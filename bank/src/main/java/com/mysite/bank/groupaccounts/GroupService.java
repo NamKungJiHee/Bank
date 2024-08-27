@@ -1,5 +1,6 @@
 package com.mysite.bank.groupaccounts;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +36,16 @@ public class GroupService {
     private final GroupAccountMembersRepository groupAccountMembersRepository;
     private final EventRepository eventRepository;
     private final SafeLockersRepository safeLockersRepository;
+    private final UserAccountsRepository userAccountRepository;
     
-	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository, EventRepository eventRepository, SafeLockersRepository safeLockersRepository) {
+	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository, EventRepository eventRepository, SafeLockersRepository safeLockersRepository, UserAccountsRepository userAccountRepository) {
 	        this.groupAccountRepository = groupAccountRepository;
 	        this.accountInfoRepository = accountInfoRepository;
 	        this.usersRepository = usersRepository;
 	        this.groupAccountMembersRepository = groupAccountMembersRepository;
 	        this.eventRepository = eventRepository;
 	        this.safeLockersRepository = safeLockersRepository;
+	        this.userAccountRepository = userAccountRepository;
 	 }
 
     @Transactional
@@ -284,7 +287,34 @@ public class GroupService {
             .collect(Collectors.toList());
     }
     
+    public GroupAccount getGroupAccountInfoByGroupAccountId(Long groupAccountId) {
+        return groupAccountRepository.findByGroupAccountId(groupAccountId);
+    }
+    
+    public Long getCurrentBalance(GroupAccount groupAccount) { 
+    	SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
+                .orElse(new SafeLockers()); 
+    	 Long currentBalance = safeLockers.getCurrentBalanceWithInterest();
+    	 
+    	 if (currentBalance == null) {
+    		 currentBalance = 0L;
+    	 }
+    	 return currentBalance;
+    }
+    
+    // 기존 모임통장 멤버 가져오기
+    public List<String> getOriginMember(Long accountId) {
+    	UserAccounts accountInfo = userAccountRepository.findByAccountInfo_AccountId(accountId);
+    	Long userId = accountInfo.getUser().getUserId();
 
+    	Optional<Users> userInfo = usersRepository.findByUserId(userId);
+    	String userNickName = userInfo.get().getUserNickname();
+
+    	List<String> nickName = new ArrayList<>();
+    	nickName.add(userNickName);
+    	return nickName;
+    }
+    
 }
 
 

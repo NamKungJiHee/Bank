@@ -1,6 +1,7 @@
 package com.mysite.bank.groupaccounts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoRepository;
 import com.mysite.bank.event.Event;
 import com.mysite.bank.event.EventRepository;
+import com.mysite.bank.friend.Friend;
+import com.mysite.bank.friend.FriendRepository;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembers;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembersRepository;
 import com.mysite.bank.safelockers.SafeLockers;
@@ -37,8 +40,9 @@ public class GroupService {
     private final EventRepository eventRepository;
     private final SafeLockersRepository safeLockersRepository;
     private final UserAccountsRepository userAccountRepository;
+    private final FriendRepository friendRepository;
     
-	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository, EventRepository eventRepository, SafeLockersRepository safeLockersRepository, UserAccountsRepository userAccountRepository) {
+	 public GroupService(GroupAccountRepository groupAccountRepository, AccountInfoRepository accountInfoRepository, UsersRepository usersRepository, GroupAccountMembersRepository groupAccountMembersRepository, EventRepository eventRepository, SafeLockersRepository safeLockersRepository, UserAccountsRepository userAccountRepository, FriendRepository friendRepository) {
 	        this.groupAccountRepository = groupAccountRepository;
 	        this.accountInfoRepository = accountInfoRepository;
 	        this.usersRepository = usersRepository;
@@ -46,6 +50,7 @@ public class GroupService {
 	        this.eventRepository = eventRepository;
 	        this.safeLockersRepository = safeLockersRepository;
 	        this.userAccountRepository = userAccountRepository;
+	        this.friendRepository = friendRepository;
 	 }
 
     @Transactional
@@ -315,6 +320,30 @@ public class GroupService {
     	return nickName;
     }
     
+    public List<String> getGroupAccount(Long accountId) {
+        GroupAccount groupAccountInfo = groupAccountRepository.findByAccountInfo_AccountId(accountId);
+        if (groupAccountInfo == null) {
+            throw new RuntimeException("GroupAccount not found for accountId: " + accountId);
+        }
+        Long groupAccountId = groupAccountInfo.getGroupAccountId();
+
+        Optional<Friend> friendInfoOptional = friendRepository.findByGroupAccountId_GroupAccountId(groupAccountId);
+        if (!friendInfoOptional.isPresent()) {
+           return Collections.emptyList();
+        }
+        
+        Friend friendInfo = friendInfoOptional.get();
+        Users invitedUser = friendInfo.getInvitedUserId();
+        if (invitedUser == null) {
+            return Collections.emptyList();
+        }
+        
+        String userNickName = invitedUser.getUserNickname();
+        List<String> nickNames = new ArrayList<>();
+        nickNames.add(userNickName);
+        return nickNames;
+    }
+
 }
 
 

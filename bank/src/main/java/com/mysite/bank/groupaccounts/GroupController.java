@@ -224,16 +224,18 @@ public class GroupController {
 	@GetMapping("/specific")
 	public String specific(Model model, Principal principal, @RequestParam("accountId") Long accountId) {
 		String userName = principal.getName(); 
-	
 		String currentNickName = groupService.userNickName(userName);
 		Map<String, Object> result = groupService.groupAccountInfo(accountId);
 		
-		List<String> originMemberName = groupService.getOriginMember(accountId);
-		List<String> invitedMembers = Arrays.asList(currentNickName);
+		List<String> inviteMember = groupService.getGroupAccount(accountId); // 모임원(inviter 입장)
+		List<String> originMemberName = groupService.getOriginMember(accountId); // 모임주
+		List<String> invitedMembers = Arrays.asList(currentNickName); // 모임원(invited 입장)
+		
 	    List<String> allMembers = new ArrayList<>(originMemberName);
 	    allMembers.addAll(invitedMembers);
+	    allMembers.addAll(inviteMember);
 	    allMembers = allMembers.stream().distinct().collect(Collectors.toList());
-	
+	    
 		model.addAttribute("groupName", result.get("groupName"));
 		model.addAttribute("groupBalance", result.get("groupBalance"));
 		model.addAttribute("accountNum", result.get("accountNum"));

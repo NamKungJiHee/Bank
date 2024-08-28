@@ -279,7 +279,8 @@ public class GroupService {
                 result.put("safeLockerThreshold", groupAccount.getSafelockerThreshold());
                 result.put("alertThreshold", groupAccount.getAlertThreshold());
                 result.put("accountNum", groupAccount.getAccountInfo().getAccountNum());
-                result.put("accountId", groupAccount.getGroupAccountId());
+//                result.put("accountId", groupAccount.getGroupAccountId());
+                result.put("accountId", groupAccount.getAccountInfo().getAccountId());
                 
                 SafeLockers safeLockers = safeLockersRepository.findByGroupAccountId(groupAccount)
                         .orElse(new SafeLockers()); 

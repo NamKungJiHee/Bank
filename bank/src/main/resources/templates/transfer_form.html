@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/transfer.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/}">
+                <img src="/homepic.png" alt="Home" style="height: 50px;">
+            </a>
+        </div>
+		<div class="center">
+            <h1>이체하기</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/bank/transfer}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+	<section>
+		<div class="bar"></div>
+		<div class="container">
+            <div class="menu-item directInput selected" id="directInput" style="transform: translateX(155%); position: fixed; top: 22%; padding-top:1%;">
+                <span>
+                    <h4 style="position:absolute; width: 40vh; left: 80%; top:30%; transform: translate(150%, -100%);">직접입력</h4>
+                </span>
+            </div>
+            <div class="deposit active" id="directInputInfo">	
+				<form id="transferForm" th:action="@{/bank/transferDirect}" method="post">          
+					<div class="depositNum-container">
+					    <span style="position:absolute; top: 50%; font-weight: bold; left: 28%">입금 계좌번호</span>
+					    <input type="text" name="depositAccountNum" id="depositAccountNum" required>
+					</div>
+				<div class="depositBalance-container">
+					<span style="position:absolute; top: 65%; font-weight: bold; left: 30%">이체 금액</span>
+					<input type="text" name="depositBalance" id="depositBalance" required>
+				</div>
+				<input type="hidden" name="accountId" th:value="${accountId}">
+				<button type="submit" class="send-btn">
+				    확인
+				</button>
+				</form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="menu-item groupAccount unselected" id="groupAccount">
+                <span>
+					<h4 style="position:absolute; width: 40vh; left: 89%; top:22%; transform: translate(-115%, -84%);">모임통장</h4>
+                </span>
+            </div>
+            <div class="transaction-info inactive" id="groupAccountInfo">
+				
+			
+
+            </div>
+        </div>
+	</section>
+	<footer class="bankfooter">
+		<h5>Judy Bank</h5>
+	</footer>
+	<script src="/js/transfer.js"></script>
+</body>
+</html>

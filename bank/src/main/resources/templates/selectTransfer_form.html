@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Judy's Bank</title>
+    <!-- CSS 파일 추가 -->
+    <link rel="stylesheet" th:href="@{/css/selectTransfer.css}">
+	<link rel="shortcut icon" type="image/x-icon" href="/pig.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a th:href="@{/}">
+                <img src="/homepic.png" alt="Home" style="height: 50px;">
+            </a>
+        </div>
+		<div class="center">
+            <h1>이체하기</h1>
+        </div>
+        <div class="right">
+            <a th:href="@{/}">
+                <img src="/close.png" alt="Close" style="height: 50px;">
+            </a>
+        </div>
+    </nav>
+	<section>
+		<div class="bar"></div>
+		<h4 style="position:absolute; top:18%; left: 45%;">출금계좌를 선택해주세요.</h4>
+		<div class="container">
+			<div class="entire-container">
+			    <div th:each="accountInfo : ${Infos}" class="groupAccount-container">
+					<div class="account-info-container">
+					<span><img src="/pig.png" alt="Pig" class="img" style="width:12%; border-radius: 90%; top:-35%; left: 1%; position:absolute;"></span>
+					<span style="font-weight: bold; position: absolute; left: 23%; transform: translateX(-50%); margin-top:2%; top: -30%;">Judy뱅크</span>
+					<h4 th:text="${accountInfo['accountNum']}" style="margin-bottom: 5px; margin-left: 11px;"></h4>
+					<h4 style="position:absolute; right: 5%;">
+					    <span th:text="${accountInfo['balance']}" style="margin-top: 0px;"></span>
+					    <span> 원</span>
+					</h4>
+					<input type="hidden" name="accountId" th:value="${accountInfo['accountId']}">
+					<a th:href="@{/bank/transferMoney(accountId=${accountInfo['accountId']})}">
+					    <button type="button" class="next-btn">확인</button>
+					</a>
+					</div>
+			    </div>
+			</div>
+		</div>
+	</section>
+	<footer class="bankfooter">
+		<h5>Judy Bank</h5>
+	</footer>
+	<script src="/js/specific.js"></script>
+</body>
+</html>

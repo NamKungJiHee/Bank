@@ -206,9 +206,6 @@ public class GroupController {
 
 	    return "accountInfo_form";
 	}
-
-
-
 	
   @Scheduled(cron = "0 0 0 1 * ?") // 매달 1일에 false로 설정
   	public void resetNoLockerMonthly() {

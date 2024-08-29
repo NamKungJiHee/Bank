@@ -37,9 +37,11 @@ public class TransferController {
 	}
 	
 	@PostMapping("/transferDirect")
-	public void transferDirect(Model model, Principal principal, @RequestParam("accountId") Long accountId, @RequestParam("depositAccountNum") String depositAccountNum, @RequestParam("depositBalance") String depositBalance) {
+	public String transferDirect(Model model, Principal principal, @RequestParam("accountId") Long accountId, @RequestParam("depositAccountNum") String depositAccountNum, @RequestParam("depositBalance") String depositBalance) {
 		String userName = principal.getName();
-	
+		
+		transferService.saveTransferInfo(userName, accountId, depositAccountNum, depositBalance);
+		return "transfer_form";
 	}
 	
 }

@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AccountInfoRepository extends JpaRepository<AccountInfo, Long>{
 	AccountInfo findByAccountId(Long accountId);
+	AccountInfo findByAccountNum(String accountNum);
 }

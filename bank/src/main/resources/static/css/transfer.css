@@ -86,6 +86,44 @@
 	transform: translateX(123%);
 }
 
+.groupAccount-container {
+	width: 30%;
+	height: 23vh;
+	background: lightgrey;
+	transform: translateX(107%);
+	display: flex;
+	flex-direction: column;
+	z-index: 1;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.groupAccount-container:nth-child(-n+3) {
+    position: relative;
+    margin-top: 13vh;
+    margin-bottom: -8vh;
+}
+
+.container {
+	margin-top: 50px;	
+}
+
+.select-btn {
+	position: absolute;
+	top: 80%;
+	width: 20%; 
+	height: 15%;
+	background: cadetblue;
+	color: white; 
+	left: 60%; 
+	transform: translateX(-100%); 
+	border-radius: 45%;
+	border: none; 
+	font-size: 13px;
+}
+
 /* footer */
 
 .bankfooter {

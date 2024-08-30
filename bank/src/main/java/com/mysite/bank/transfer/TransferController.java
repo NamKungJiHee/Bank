@@ -31,7 +31,11 @@ public class TransferController {
 	
 	@GetMapping("/transferMoney")
 	public String transfer(Model model, Principal principal, @RequestParam("accountId") Long accountId) {
-		model.addAttribute("accountId", accountId);
+		String userName = principal.getName();
+		List<Map<String, Object>> groupDetails = transferService.groupAccountList(userName);
+
+	    model.addAttribute("accountId", accountId);
+	    model.addAttribute("Infos", groupDetails);
 		
 		return "transfer_form";
 	}

@@ -10,12 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoRepository;
 import com.mysite.bank.event.EventRepository;
+import com.mysite.bank.groupaccountmembers.GroupAccountMembers;
+import com.mysite.bank.groupaccountmembers.GroupAccountMembersRepository;
 import com.mysite.bank.groupaccounts.GroupAccount;
 import com.mysite.bank.groupaccounts.GroupAccountRepository;
 import com.mysite.bank.safelockers.SafeLockersRepository;
@@ -34,6 +37,7 @@ public class TransferService {
 	private final GroupAccountRepository groupAccountRepository;
 	private final UserAccountsRepository userAccountsRepository;
 	private final AccountInfoRepository accountInfoRepository;
+	private final GroupAccountMembersRepository groupAccountMembersRepository;
 	
 	public List<Map<String, Object>> groupAccountInfo(String userName) {
 		Optional<Users> optionalUser = usersRepository.findByUserName(userName);
@@ -191,4 +195,28 @@ public Transfer saveTransferInfo(String userName, Long accountId, String deposit
    }
 	   return transfer;    
 }
+
+public List<Map<String, Object>> groupAccountList(String userName) {
+
+    List<GroupAccountMembers> groupMembers = groupAccountMembersRepository.findByUser_UserName(userName);
+
+    List<Map<String, Object>> groupDetails = groupMembers.stream()
+            .map(groupMember -> {
+                GroupAccount groupAccount = groupMember.getGroupAccountId();
+                String groupName = groupAccount.getGroupName();
+                String accountNum = groupAccount.getAccountInfo().getAccountNum();
+                Long accountId = groupAccount.getAccountInfo().getAccountId(); // 계좌번호
+                Map<String, Object> details = new HashMap<>();
+                details.put("groupName", groupName);
+                details.put("accountNum", accountNum);
+                details.put("accountId", accountId);
+                
+                return details;
+            })
+            .collect(Collectors.toList());
+    
+    return groupDetails;
+}
+
+
 }

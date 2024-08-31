@@ -32,7 +32,7 @@ public class TransferController {
 	@GetMapping("/transferMoney")
 	public String transfer(Model model, Principal principal, @RequestParam("accountId") Long accountId) {
 		String userName = principal.getName();
-		List<Map<String, Object>> groupDetails = transferService.groupAccountList(userName);
+		List<Map<String, Object>> groupDetails = transferService.groupAccountList(userName, accountId);
 
 	    model.addAttribute("accountId", accountId);
 	    model.addAttribute("Infos", groupDetails);

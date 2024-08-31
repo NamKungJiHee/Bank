@@ -197,25 +197,29 @@ public class TransferService {
 		   return transfer;    
 	}
 	
-	public List<Map<String, Object>> groupAccountList(String userName) {
+	public List<Map<String, Object>> groupAccountList(String userName, Long selectAccountId) {
 	
 	    List<GroupAccountMembers> groupMembers = groupAccountMembersRepository.findByUser_UserName(userName);
-	
+	    
 	    List<Map<String, Object>> groupDetails = groupMembers.stream()
 	            .map(groupMember -> {
 	                GroupAccount groupAccount = groupMember.getGroupAccountId();
-	                String groupName = groupAccount.getGroupName();
-	                String accountNum = groupAccount.getAccountInfo().getAccountNum();
 	                Long accountId = groupAccount.getAccountInfo().getAccountId(); // 계좌번호
 	                Map<String, Object> details = new HashMap<>();
-	                details.put("groupName", groupName);
-	                details.put("accountNum", accountNum);
-	                details.put("accountId", accountId);
-	                
-	                return details;
+
+	                if (selectAccountId.longValue() != accountId.longValue()) {
+	                	String groupName = groupAccount.getGroupName();
+	 	                String accountNum = groupAccount.getAccountInfo().getAccountNum();
+	 	                details.put("groupName", groupName);
+	 	                details.put("accountNum", accountNum);
+	 	                details.put("accountId", accountId);
+	                }
+ 	                return details; 
 	            })
 	            .collect(Collectors.toList());
 	    
+	    groupDetails.removeIf(Map::isEmpty);
+
 	    return groupDetails;
 	}
 	

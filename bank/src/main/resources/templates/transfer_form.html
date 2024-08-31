@@ -56,25 +56,27 @@
                     <h4 style="position:absolute; width: 40vh; left: 89%; top:22%; transform: translate(-115%, -84%);">모임통장</h4>
                 </span>
             </div>
-            <div class="transaction-info inactive" id="groupAccountInfo">
-                <form id="transferGroupAccountForm" th:action="@{/bank/transferGroupAccount}" method="post">          
-                     <div class="entire-container" style="max-height: 40vh; overflow-y: auto;">
-                        <div th:each="accountInfo : ${Infos}" class="groupAccount-container">
-                            <div class="account-info-container">
-                                <span><img src="/pig.png" alt="Pig" class="img" style="width:12%; border-radius: 90%; position:absolute; top: 10%; right:45%;"></span>
-                                <h4 th:text="${accountInfo.groupName}" style="position: relative; transform: translate(44%, 7vh);"></h4>
-                                <h4>
-                                    <span th:text="${accountInfo.accountNum}" style="position:absolute; transform: translate(21vh, 5vh);"></span>
-                                </h4>
-								<input type="hidden" name="accountId" th:value="${accountInfo.accountId}">
-								<button type="submit" class="select-btn">선택</button>
-                            </div>
-                        </div>
-                    </div>
+			<div class="transaction-info inactive" id="groupAccountInfo">
+              <form id="transferGroupAccountForm" th:action="@{/bank/transferGroupAccount}" method="post">          
+                  <div class="entire-container" style="max-height: 40vh; overflow-y: auto;">
+                      <div th:each="accountInfo : ${Infos}" class="groupAccount-container">
+                          <div class="account-info-container">
+                              <input type="radio" name="selectedAccountId" th:value="${accountInfo.accountId}" id="account_${accountInfo.accountId}" required>
+                              <label for="account_${accountInfo.accountId}">
+                                  <span><img src="/pig.png" alt="Pig" class="img" style="width:12%; border-radius: 90%; position:absolute; top: 10%; right:45%;"></span>
+                                  <h4 th:text="${accountInfo.groupName}" style="position: relative; transform: translate(44%, 7vh);"></h4>
+                                  <h4>
+                                      <span th:text="${accountInfo.accountNum}" style="position:absolute; transform: translate(21vh, 5vh);"></span>
+                                  </h4>
+                              </label>
+                          </div>
+                      </div>
+                  </div>
                     <div class="depositBalance-container">
                         <span style="position:absolute; top: 65%; font-weight: bold; left: 30%">이체 금액</span>
                         <input type="text" name="depositBalance" id="depositBalance" required>
                     </div>
+					<input type="hidden" name="accountId" th:value="${accountId}">
                     <button type="submit" class="send-btn" onclick="return confirm('완료되었습니다!!')">
                         확인
                     </button>

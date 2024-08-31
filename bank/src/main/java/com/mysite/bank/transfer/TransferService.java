@@ -92,131 +92,232 @@ public class TransferService {
 	       return resultList;
 	   }
 	
-public Transfer saveTransferInfo(String userName, Long accountId, String depositAccountNum, String depositBalance) {
-	Long balance;	
-	Long updateBalance;
-	String transactionType;
-	
-	Optional<Users> optionalUser = usersRepository.findByUserName(userName);
-    if (!optionalUser.isPresent()) {
-        throw new RuntimeException("User not found");
-    }
-    Users user = optionalUser.get();
-    
-    // 현재 날짜 및 시간
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 a HH시 mm분");
-    LocalDateTime nowLocalDateTime = LocalDateTime.now();
-  
-    Long addBalance = Long.parseLong(depositBalance); // amount(거래금액)
-    
-    Transfer transfer = new Transfer();
-    
-	// 출금계좌 확인(일반통장인지, 모임통장인지)
-    GroupAccount groupAccountInfoInput = groupAccountRepository.findByAccountInfo_AccountId(accountId); // 모임통장 엔티티
-    AccountInfo accountInfo = accountInfoRepository.findByAccountId(accountId); // 일반통장 엔티티
-	AccountInfo selectAccount = accountInfoRepository.findByAccountId(accountId);
-	Long selectAccountIsGroupAccount = selectAccount.getIsGroupaccount(); // 0,1
-	transactionType = "출금";
-	
-	if (selectAccountIsGroupAccount == 1) { // 모임통장일 경우
-		transfer.setUser(user);
-		transfer.setGroupAccountId(groupAccountInfoInput);
-		transfer.setAccountInfo(accountInfo);
-		transfer.setAmount(addBalance);
-		transfer.setTransactionType(transactionType);
-		transfer.setTransactionTime(nowLocalDateTime);
+	// 직접입력 이체
+	public Transfer saveTransferInfo(String userName, Long accountId, String depositAccountNum, String depositBalance) {
+		Long balance;	
+		Long updateBalance;
+		String transactionType;
 		
-		balance = groupAccountInfoInput.getBalance();  
-		updateBalance = balance - addBalance;
-		groupAccountInfoInput.setBalance(updateBalance);
-		groupAccountRepository.save(groupAccountInfoInput);
-		transferRepository.save(transfer); 
-	} else {
-		transfer.setUser(user);
-		transfer.setGroupAccountId(null);
-		transfer.setAccountInfo(accountInfo);
-		transfer.setAmount(addBalance);
-		transfer.setTransactionType(transactionType);
-		transfer.setTransactionTime(nowLocalDateTime);
+		Optional<Users> optionalUser = usersRepository.findByUserName(userName);
+	    if (!optionalUser.isPresent()) {
+	        throw new RuntimeException("User not found");
+	    }
+	    Users user = optionalUser.get();
+	    
+	    // 현재 날짜 및 시간
+	    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 a HH시 mm분");
+	    LocalDateTime nowLocalDateTime = LocalDateTime.now();
+	  
+	    Long addBalance = Long.parseLong(depositBalance); // amount(거래금액)
+	    
+	    Transfer transfer = new Transfer();
+	    
+		// 출금계좌 확인(일반통장인지, 모임통장인지)
+	    GroupAccount groupAccountInfoInput = groupAccountRepository.findByAccountInfo_AccountId(accountId); // 모임통장 엔티티
+	    AccountInfo accountInfo = accountInfoRepository.findByAccountId(accountId); // 일반통장 엔티티
+		AccountInfo selectAccount = accountInfoRepository.findByAccountId(accountId);
+		Long selectAccountIsGroupAccount = selectAccount.getIsGroupaccount(); // 0,1
+		transactionType = "출금";
 		
-		balance = accountInfo.getBalance();
-		updateBalance = balance - addBalance;
-		accountInfo.setBalance(updateBalance);
-		accountInfoRepository.save(accountInfo);
-		transferRepository.save(transfer); 
+		if (selectAccountIsGroupAccount == 1) { // 모임통장일 경우
+			transfer.setUser(user);
+			transfer.setGroupAccountId(groupAccountInfoInput);
+			transfer.setAccountInfo(accountInfo);
+			transfer.setAmount(addBalance);
+			transfer.setTransactionType(transactionType);
+			transfer.setTransactionTime(nowLocalDateTime);
+			
+			balance = groupAccountInfoInput.getBalance();  
+			updateBalance = balance - addBalance;
+			groupAccountInfoInput.setBalance(updateBalance);
+			groupAccountRepository.save(groupAccountInfoInput);
+			transferRepository.save(transfer); 
+		} else {
+			transfer.setUser(user);
+			transfer.setGroupAccountId(null);
+			transfer.setAccountInfo(accountInfo);
+			transfer.setAmount(addBalance);
+			transfer.setTransactionType(transactionType);
+			transfer.setTransactionTime(nowLocalDateTime);
+			
+			balance = accountInfo.getBalance();
+			updateBalance = balance - addBalance;
+			accountInfo.setBalance(updateBalance);
+			accountInfoRepository.save(accountInfo);
+			transferRepository.save(transfer); 
+		}
+		
+		// 입금계좌 확인(일반통장인지, 모임통장인지)  
+		// 존재하는 계좌번호인지 확인, 입금계좌가 모임통장인지 일반통장인지 확인
+	   AccountInfo accountNum = accountInfoRepository.findByAccountNum(depositAccountNum); // 계좌 엔티티
+	   AccountInfo originAccountInfo = accountInfoRepository.findByAccountNum(depositAccountNum); // 일반 통장 엔티티
+	   GroupAccount groupAccountInfo = null;
+	
+	   if (accountNum.getIsGroupaccount() == 1) {
+		   groupAccountInfo = groupAccountRepository.findByAccountInfo_AccountId(accountNum.getAccountId()); // 모임통장 엔티티
+	   } else {
+		   groupAccountInfo = null;
+	   }
+	   
+	   if (accountNum != null) {
+		   if (accountNum.getIsGroupaccount() == 1) { // 모임통장에 입금하는 경우
+			 balance = groupAccountInfo.getBalance();  
+			 updateBalance = balance + addBalance;
+			 transactionType = "입금";
+			 
+			 Transfer depositTransfer = new Transfer();
+			 depositTransfer.setUser(user);
+			 depositTransfer.setGroupAccountId(groupAccountInfo);
+			 depositTransfer.setAccountInfo(originAccountInfo);
+			 depositTransfer.setAmount(addBalance);
+			 depositTransfer.setTransactionType(transactionType);
+			 depositTransfer.setTransactionTime(nowLocalDateTime);
+			 groupAccountInfo.setBalance(updateBalance);
+			 groupAccountRepository.save(groupAccountInfo);
+			 transferRepository.save(depositTransfer);
+		   } else { // 일반통장에 입금하는 경우
+			   balance = accountNum.getBalance();
+			   updateBalance = balance + addBalance;
+			   transactionType = "입금";
+			   
+			   Transfer depositTransfer = new Transfer();
+			   depositTransfer.setUser(user);
+			   depositTransfer.setGroupAccountId(groupAccountInfo);
+			   depositTransfer.setAccountInfo(originAccountInfo);
+			   depositTransfer.setAmount(addBalance);
+			   depositTransfer.setTransactionType(transactionType);
+			   depositTransfer.setTransactionTime(nowLocalDateTime);
+			   accountNum.setBalance(updateBalance);
+			   accountInfoRepository.save(accountNum);
+			   transferRepository.save(depositTransfer);
+		   }
+	   } else {
+		   throw new RuntimeException("존재하지 않는 계좌번호입니다.");
+	   }
+		   return transfer;    
 	}
 	
-	// 입금계좌 확인(일반통장인지, 모임통장인지)  
-	// 존재하는 계좌번호인지 확인, 입금계좌가 모임통장인지 일반통장인지 확인
-   AccountInfo accountNum = accountInfoRepository.findByAccountNum(depositAccountNum); // 계좌 엔티티
-   AccountInfo originAccountInfo = accountInfoRepository.findByAccountNum(depositAccountNum); // 일반 통장 엔티티
-   GroupAccount groupAccountInfo = null;
+	public List<Map<String, Object>> groupAccountList(String userName) {
+	
+	    List<GroupAccountMembers> groupMembers = groupAccountMembersRepository.findByUser_UserName(userName);
+	
+	    List<Map<String, Object>> groupDetails = groupMembers.stream()
+	            .map(groupMember -> {
+	                GroupAccount groupAccount = groupMember.getGroupAccountId();
+	                String groupName = groupAccount.getGroupName();
+	                String accountNum = groupAccount.getAccountInfo().getAccountNum();
+	                Long accountId = groupAccount.getAccountInfo().getAccountId(); // 계좌번호
+	                Map<String, Object> details = new HashMap<>();
+	                details.put("groupName", groupName);
+	                details.put("accountNum", accountNum);
+	                details.put("accountId", accountId);
+	                
+	                return details;
+	            })
+	            .collect(Collectors.toList());
+	    
+	    return groupDetails;
+	}
+	
+	// 모임통장 이체
+	public Transfer saveGroupTransferInfo(String userName, Long selectAccountId, String depositBalance, Long accountId) {
+		Long balance;	
+		Long updateBalance;
+		String transactionType;
+		
+		Optional<Users> optionalUser = usersRepository.findByUserName(userName);
+	    if (!optionalUser.isPresent()) {
+	        throw new RuntimeException("User not found");
+	    }
+	    Users user = optionalUser.get();
+	    
+	    // 현재 날짜 및 시간
+	    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 a HH시 mm분");
+	    LocalDateTime nowLocalDateTime = LocalDateTime.now();
+	  
+	    Long addBalance = Long.parseLong(depositBalance); // amount(거래금액)
+	    
+	    Transfer transfer = new Transfer();
+	 // 출금계좌 확인(일반통장인지, 모임통장인지)
+	    GroupAccount groupAccountInfoInput = groupAccountRepository.findByAccountInfo_AccountId(accountId); // 모임통장 엔티티
+	    AccountInfo accountInfo = accountInfoRepository.findByAccountId(accountId); // 일반통장 엔티티
+		AccountInfo selectAccount = accountInfoRepository.findByAccountId(accountId);
+		Long selectAccountIsGroupAccount = selectAccount.getIsGroupaccount(); // 0,1
+		transactionType = "출금";
+		
+		if (selectAccountIsGroupAccount == 1) { // 모임통장일 경우
+			transfer.setUser(user);
+			transfer.setGroupAccountId(groupAccountInfoInput);
+			transfer.setAccountInfo(accountInfo);
+			transfer.setAmount(addBalance);
+			transfer.setTransactionType(transactionType);
+			transfer.setTransactionTime(nowLocalDateTime);
+			
+			balance = groupAccountInfoInput.getBalance();  
+			updateBalance = balance - addBalance;
+			groupAccountInfoInput.setBalance(updateBalance);
+			groupAccountRepository.save(groupAccountInfoInput);
+			transferRepository.save(transfer); 
+		} else {
+			transfer.setUser(user);
+			transfer.setGroupAccountId(null);
+			transfer.setAccountInfo(accountInfo);
+			transfer.setAmount(addBalance);
+			transfer.setTransactionType(transactionType);
+			transfer.setTransactionTime(nowLocalDateTime);
+			
+			balance = accountInfo.getBalance();
+			updateBalance = balance - addBalance;
+			accountInfo.setBalance(updateBalance);
+			accountInfoRepository.save(accountInfo);
+			transferRepository.save(transfer); 
+		}
+		
+		// 입금계좌 확인(일반통장인지, 모임통장인지)  
+		// 입금계좌가 모임통장인지 일반통장인지 확인
+	   Long isGroupAccount = accountInfoRepository.findByAccountId(selectAccountId).getIsGroupaccount(); // 선택된 계좌의 모임통장 여부
+	   
+	   AccountInfo originAccountInfo = accountInfoRepository.findByAccountId(selectAccountId); // 일반 통장 엔티티
+	   GroupAccount groupAccountInfo = null;
 
-   if (accountNum.getIsGroupaccount() == 1) {
-	   groupAccountInfo = groupAccountRepository.findByAccountInfo_AccountId(accountNum.getAccountId()); // 모임통장 엔티티
-   } else {
-	   groupAccountInfo = null;
-   }
-   
-   if (accountNum != null) {
-	   if (accountNum.getIsGroupaccount() == 1) { // 모임통장에 입금하는 경우
-		 balance = groupAccountInfo.getBalance();  
-		 updateBalance = balance + addBalance;
-		 transactionType = "입금";
-		 
-		 Transfer depositTransfer = new Transfer();
-		 depositTransfer.setUser(user);
-		 depositTransfer.setGroupAccountId(groupAccountInfo);
-		 depositTransfer.setAccountInfo(originAccountInfo);
-		 depositTransfer.setAmount(addBalance);
-		 depositTransfer.setTransactionType(transactionType);
-		 depositTransfer.setTransactionTime(nowLocalDateTime);
-		 groupAccountInfo.setBalance(updateBalance);
-		 groupAccountRepository.save(groupAccountInfo);
-		 transferRepository.save(depositTransfer);
-	   } else { // 일반통장에 입금하는 경우
-		   balance = accountNum.getBalance();
-		   updateBalance = balance + addBalance;
-		   transactionType = "입금";
-		   
-		   Transfer depositTransfer = new Transfer();
-		   depositTransfer.setUser(user);
-		   depositTransfer.setGroupAccountId(groupAccountInfo);
-		   depositTransfer.setAccountInfo(originAccountInfo);
-		   depositTransfer.setAmount(addBalance);
-		   depositTransfer.setTransactionType(transactionType);
-		   depositTransfer.setTransactionTime(nowLocalDateTime);
-		   accountNum.setBalance(updateBalance);
-		   accountInfoRepository.save(accountNum);
-		   transferRepository.save(depositTransfer);
+	   if (isGroupAccount == 1) {
+		   groupAccountInfo = groupAccountRepository.findByAccountInfo_AccountId(selectAccountId); // 모임통장 엔티티
+	   } else {
+		   groupAccountInfo = null;
 	   }
-   } else {
-	   throw new RuntimeException("존재하지 않는 계좌번호입니다.");
-   }
-	   return transfer;    
-}
-
-public List<Map<String, Object>> groupAccountList(String userName) {
-
-    List<GroupAccountMembers> groupMembers = groupAccountMembersRepository.findByUser_UserName(userName);
-
-    List<Map<String, Object>> groupDetails = groupMembers.stream()
-            .map(groupMember -> {
-                GroupAccount groupAccount = groupMember.getGroupAccountId();
-                String groupName = groupAccount.getGroupName();
-                String accountNum = groupAccount.getAccountInfo().getAccountNum();
-                Long accountId = groupAccount.getAccountInfo().getAccountId(); // 계좌번호
-                Map<String, Object> details = new HashMap<>();
-                details.put("groupName", groupName);
-                details.put("accountNum", accountNum);
-                details.put("accountId", accountId);
-                
-                return details;
-            })
-            .collect(Collectors.toList());
-    
-    return groupDetails;
-}
-
-
+	   
+	   // 모임통장에 입금하는 경우
+	   if (isGroupAccount==1) {
+		   	balance = groupAccountInfo.getBalance();  
+		   	updateBalance = balance + addBalance;
+		   	transactionType = "입금";
+			 
+		   	Transfer depositTransfer = new Transfer();
+		   	depositTransfer.setUser(user);
+		   	depositTransfer.setGroupAccountId(groupAccountInfo);
+	   		depositTransfer.setAccountInfo(originAccountInfo);
+	   		depositTransfer.setAmount(addBalance);
+   			depositTransfer.setTransactionType(transactionType);
+			depositTransfer.setTransactionTime(nowLocalDateTime);
+			groupAccountInfo.setBalance(updateBalance);
+			groupAccountRepository.save(groupAccountInfo);
+			transferRepository.save(depositTransfer);
+   		} else { // 일반통장에 입금하는 경우
+			   balance = originAccountInfo.getBalance();
+			   updateBalance = balance + addBalance;
+			   transactionType = "입금";
+			   
+			   Transfer depositTransfer = new Transfer();
+			   depositTransfer.setUser(user);
+			   depositTransfer.setGroupAccountId(groupAccountInfo);
+			   depositTransfer.setAccountInfo(originAccountInfo);
+			   depositTransfer.setAmount(addBalance);
+			   depositTransfer.setTransactionType(transactionType);
+			   depositTransfer.setTransactionTime(nowLocalDateTime);
+			   originAccountInfo.setBalance(updateBalance);
+			   accountInfoRepository.save(originAccountInfo);
+			   transferRepository.save(depositTransfer);
+		   }
+		   return transfer;    
+	}
 }

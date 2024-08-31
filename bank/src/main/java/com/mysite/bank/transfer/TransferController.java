@@ -48,4 +48,11 @@ public class TransferController {
 		return "transfer_form";
 	}
 	
+	@PostMapping("/transferGroupAccount")
+	public String transferGroupAccount(Model model, Principal principal, @RequestParam("selectedAccountId") Long selectedAccountId, @RequestParam("depositBalance") String depositBalance, @RequestParam("accountId") Long accountId) {
+		String userName = principal.getName();
+		
+		transferService.saveGroupTransferInfo(userName, selectedAccountId, depositBalance, accountId);
+		return "transfer_form";
+	}
 }

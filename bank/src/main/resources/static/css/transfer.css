@@ -124,6 +124,13 @@
 	font-size: 13px;
 }
 
+.account-info-container input {
+	position: absolute;
+	width: 30%;
+	height: 13%;
+	transform: translate(9vh, 13vh);
+}
+
 /* footer */
 
 .bankfooter {

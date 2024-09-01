@@ -2,6 +2,7 @@ package com.mysite.bank.event;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,10 +28,24 @@ public class EventController {
 	@GetMapping("/roulette")
 	public String roulette(Principal principal, Model model) {
 		String userName = principal.getName();
-
+		String eventName = null;
+		
 		 boolean hasParticipated = eventInfoService.hasUserParticipated(userName);
+		 System.out.println("hasParticipated: " + hasParticipated);
+		 
+		 Optional<Event> event = eventInfoService.eventName(userName);
+		 System.out.println("getEventName: " + event);
+		 
+		 if (!event.isEmpty()) {
+			 eventName = event.get().getEventName();
+			 System.out.println("EventName: " + eventName);
+		 } else {
+			 eventName = null;
+			 System.out.println("EventName1: " + eventName);
+		 }
 		 
 		 model.addAttribute("hasParticipated", hasParticipated);
+		 model.addAttribute("eventName", eventName);
 		
 		return "roulette_form";
 	}

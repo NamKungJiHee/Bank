@@ -43,4 +43,10 @@ public class EventService {
 	        return eventRepository.findByUser_UserName(userName).isPresent();
 	    }
 	
+	 // 이벤트 당첨 기록
+	 public Optional<Event> eventName(String userName) {
+		 return eventRepository.findByUser_UserName(userName);
+		 
+	 }
+	 
 }

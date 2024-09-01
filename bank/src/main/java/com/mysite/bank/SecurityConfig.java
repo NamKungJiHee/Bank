@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("/bank/accountInfo").authenticated()
                 .requestMatchers("/bank/checkingAccount").authenticated()
                 .requestMatchers("/bank/roulette").authenticated()
+                .requestMatchers("/bank/transfer").authenticated()
                 .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers

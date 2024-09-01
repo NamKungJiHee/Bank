@@ -13,7 +13,6 @@
 .center {
     display: flex; 
     align-items: center; 
-    transform: translateX(80vh);
 }
 
 .center img {
@@ -26,6 +25,10 @@
 
 .right img{
 	transform: translateX(-390%);
+}
+
+.left img{
+	transform: translateX(300%);
 }
 
 /* Section 설정 */
@@ -46,7 +49,7 @@ button {
   border-radius: 5px;
   transition: .2s;
   cursor: pointer;
-  bottom: 13%;
+  bottom: 5%;
   position: absolute;
 }
 

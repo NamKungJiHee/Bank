@@ -129,6 +129,7 @@ public class TransferService {
 			
 			balance = groupAccountInfoInput.getBalance();  
 			updateBalance = balance - addBalance;
+			transfer.setLeftBalance(updateBalance); // 잔액
 			groupAccountInfoInput.setBalance(updateBalance);
 			groupAccountRepository.save(groupAccountInfoInput);
 			transferRepository.save(transfer); 
@@ -142,6 +143,7 @@ public class TransferService {
 			
 			balance = accountInfo.getBalance();
 			updateBalance = balance - addBalance;
+			transfer.setLeftBalance(updateBalance); // 잔액
 			accountInfo.setBalance(updateBalance);
 			accountInfoRepository.save(accountInfo);
 			transferRepository.save(transfer); 
@@ -172,6 +174,7 @@ public class TransferService {
 			 depositTransfer.setAmount(addBalance);
 			 depositTransfer.setTransactionType(transactionType);
 			 depositTransfer.setTransactionTime(nowLocalDateTime);
+			 depositTransfer.setLeftBalance(updateBalance); // 잔액
 			 groupAccountInfo.setBalance(updateBalance);
 			 groupAccountRepository.save(groupAccountInfo);
 			 transferRepository.save(depositTransfer);
@@ -187,6 +190,7 @@ public class TransferService {
 			   depositTransfer.setAmount(addBalance);
 			   depositTransfer.setTransactionType(transactionType);
 			   depositTransfer.setTransactionTime(nowLocalDateTime);
+			   depositTransfer.setLeftBalance(updateBalance); // 잔액
 			   accountNum.setBalance(updateBalance);
 			   accountInfoRepository.save(accountNum);
 			   transferRepository.save(depositTransfer);
@@ -259,6 +263,7 @@ public class TransferService {
 			
 			balance = groupAccountInfoInput.getBalance();  
 			updateBalance = balance - addBalance;
+			transfer.setLeftBalance(updateBalance); // 잔액
 			groupAccountInfoInput.setBalance(updateBalance);
 			groupAccountRepository.save(groupAccountInfoInput);
 			transferRepository.save(transfer); 
@@ -272,6 +277,7 @@ public class TransferService {
 			
 			balance = accountInfo.getBalance();
 			updateBalance = balance - addBalance;
+			transfer.setLeftBalance(updateBalance); // 잔액
 			accountInfo.setBalance(updateBalance);
 			accountInfoRepository.save(accountInfo);
 			transferRepository.save(transfer); 
@@ -303,6 +309,7 @@ public class TransferService {
 	   		depositTransfer.setAmount(addBalance);
    			depositTransfer.setTransactionType(transactionType);
 			depositTransfer.setTransactionTime(nowLocalDateTime);
+			depositTransfer.setLeftBalance(updateBalance); // 잔액
 			groupAccountInfo.setBalance(updateBalance);
 			groupAccountRepository.save(groupAccountInfo);
 			transferRepository.save(depositTransfer);
@@ -318,10 +325,37 @@ public class TransferService {
 			   depositTransfer.setAmount(addBalance);
 			   depositTransfer.setTransactionType(transactionType);
 			   depositTransfer.setTransactionTime(nowLocalDateTime);
+			   depositTransfer.setLeftBalance(updateBalance); // 잔액
 			   originAccountInfo.setBalance(updateBalance);
 			   accountInfoRepository.save(originAccountInfo);
 			   transferRepository.save(depositTransfer);
 		   }
 		   return transfer;    
+	}
+	
+	// 거래내역 가져오기
+	public List<Map<String, Object>> transactionHistory(Long accountId) {
+		List<Transfer> transferList = transferRepository.findByAccountInfo_AccountId(accountId);
+		
+		if (transferList.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		
+		for(Transfer transfer: transferList) {
+			Long userId = transfer.getUser().getUserId();
+			String userName = usersRepository.getById(userId).getUserName();
+			Long balance = transfer.getLeftBalance();
+			
+			Map<String, Object> result = new HashMap<>();
+			result.put("transactionTime", transfer.getTransactionTime());
+			result.put("name", userName);
+			result.put("transactionType", transfer.getTransactionType());
+			result.put("transactionAmount", transfer.getAmount());
+			result.put("balance", balance);
+			resultList.add(result);
+		}
+		 return resultList;
 	}
 }

@@ -23,6 +23,7 @@ import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoService;
 import com.mysite.bank.friend.Friend;
 import com.mysite.bank.friend.FriendService;
+import com.mysite.bank.transfer.TransferService;
 import com.mysite.bank.users.Users;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ public class GroupController {
 	private final AccountInfoService accountInfoService;
 	private final GroupService groupService;
 	private final FriendService friendService;
+	private final TransferService transferService;
 	private boolean noLocker = true;
     private boolean premiumNoLocker = true; 
 	
@@ -239,6 +241,10 @@ public class GroupController {
 		
 		model.addAttribute("members", allMembers);
 		model.addAttribute("accountId", accountId);
+		
+		// specific 거래내역
+		List<Map<String, Object>>  history = transferService.transactionHistory(accountId);
+		model.addAttribute("transactions", history);
 		
 		return "specific_form";
 	}

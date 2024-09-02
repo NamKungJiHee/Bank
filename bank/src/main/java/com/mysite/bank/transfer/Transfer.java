@@ -52,4 +52,7 @@ public class Transfer {
     
     private LocalDateTime transactionTime;
     
+    @ColumnDefault("0")
+    private Long leftBalance = 0L;
+    
 }

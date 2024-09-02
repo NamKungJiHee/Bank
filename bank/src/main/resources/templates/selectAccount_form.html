@@ -26,17 +26,25 @@
 </head>
 <body>
     <nav class="navbar">
+		<div class="left">
+		    <a th:href="@{/}">
+		        <img src="/homepic.png" alt="Home" style="height: 50px;">
+		    </a>
+		</div>
         <div class="center">
-            <img src="/glass.png" alt="Glass" style="height: 50px;">
-            <h1>내 계좌정보</h1>
+            <h1>계좌조회</h1>
         </div>
         <div class="right">
-            <a th:href="@{/}">
-                <img src="/close.png" alt="Close" style="height: 50px;">
+            <a th:href="@{/bank/category}">
+                <img src="/list.png" alt="Category" style="height: 50px;">
             </a>
         </div>
     </nav>
     <section>
+		<div class="glass">
+		    <img src="/glass.png" alt="Glass">
+		    <h1>내 계좌정보</h1>
+		</div>
         <div class="bar"></div>
         <div class="login-container">
             <span th:if="${#authorization.expression('isAuthenticated()')}">
@@ -56,9 +64,9 @@
                             <div class="accountNumber" th:text="${accountInfo.accountNum}"></div>
                             <div class="balance" th:text="${accountInfo.balance}"></div>
                             <h4 style="font-weight:bold; position:absolute; top:207%; left: 90%;">원</h4>
-                            <h4 style="position: absolute; top: 78%; left: 50%;">모임통장여부: </h4>
-                            <div class="isGroupAccount" th:text="${accountInfo.isGroupaccount == 1 ? '예' : '아니요'}"></div>
-                            <button type="submit" class="select-btn" th:disabled="${showBtn}">확인하기</button>
+							<div class="isGroupAccountShape"></div>
+                            <div class="isGroupAccount" th:text="${accountInfo.isGroupaccount == 1 ? '모임통장' : '일반통장'}"></div>
+                            <button type="submit" class="select-btn" th:disabled="${showBtn}">선택하기</button>
                         </form>
                     </div>
                 </div>

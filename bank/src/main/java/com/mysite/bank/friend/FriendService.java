@@ -80,5 +80,4 @@ public class FriendService {
 		return friendRepository.findByInvitedUserId(user);
 	}
 
-
 }

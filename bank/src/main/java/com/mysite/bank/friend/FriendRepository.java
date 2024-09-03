@@ -12,4 +12,5 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 	Friend findByGroupAccountId(GroupAccount groupAccountId);
 	List<Friend> findByInvitedUserId(Users invitedUserId);
 	Optional<Friend> findByGroupAccountId_GroupAccountId(Long groupAccountId);
+	List<Friend> findByInvitedUserId_UserId(Long userId);
 }

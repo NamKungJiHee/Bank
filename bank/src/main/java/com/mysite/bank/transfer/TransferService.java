@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoRepository;
 import com.mysite.bank.event.EventRepository;
+import com.mysite.bank.friend.Friend;
+import com.mysite.bank.friend.FriendRepository;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembers;
 import com.mysite.bank.groupaccountmembers.GroupAccountMembersRepository;
 import com.mysite.bank.groupaccounts.GroupAccount;
@@ -38,6 +40,7 @@ public class TransferService {
 	private final UserAccountsRepository userAccountsRepository;
 	private final AccountInfoRepository accountInfoRepository;
 	private final GroupAccountMembersRepository groupAccountMembersRepository;
+	private final FriendRepository friendRepository;
 	
 	public List<Map<String, Object>> groupAccountInfo(String userName) {
 		Optional<Users> optionalUser = usersRepository.findByUserName(userName);
@@ -205,13 +208,40 @@ public class TransferService {
 	
 	    List<GroupAccountMembers> groupMembers = groupAccountMembersRepository.findByUser_UserName(userName);
 	    
-	    List<Map<String, Object>> groupDetails = groupMembers.stream()
+	    Long userId = usersRepository.findByUserName(userName).get().getUserId(); // 사용자Id
+	    List<Friend> invitedFriends = friendRepository.findByInvitedUserId_UserId(userId);
+
+	    List<Map<String, Object>> groupDetails = new ArrayList<>();
+	    
+	    List<GroupAccount> groupAccountIds = invitedFriends.stream()
+        .filter(friend -> friend.getInvitedUserId().getUserId().equals(userId) && "ACCEPTED".equals(friend.getStatus())) // invited_user_id에 해당하고, status가 accepted인 경우의 group_account_id만 추출
+        .map(Friend::getGroupAccountId)
+        .collect(Collectors.toList());
+
+	    List<Map<String, Object>> invitedGroupDetails = groupAccountIds.stream()
+	    	.map(groupInfo -> {
+	    		GroupAccount groupAccount = groupAccountRepository.findByAccountInfo_AccountId(groupInfo.getAccountInfo().getAccountId());
+	    		Long accountId = groupAccount.getAccountInfo().getAccountId(); // 계좌번호
+                Map<String, Object> details = new HashMap<>();
+
+                String groupName = groupAccount.getGroupName();
+                String accountNum = groupAccount.getAccountInfo().getAccountNum();
+                
+                details.put("groupName", groupName);
+                details.put("accountNum", accountNum);
+                details.put("accountId", accountId);
+            	return details;
+	    		
+	    	}).collect(Collectors.toList());
+	    groupDetails.addAll(invitedGroupDetails);
+	    
+	    List<Map<String, Object>> groupAccountGroupDetails = groupMembers.stream()
 	            .map(groupMember -> {
 	                GroupAccount groupAccount = groupMember.getGroupAccountId();
 	                Long accountId = groupAccount.getAccountInfo().getAccountId(); // 계좌번호
 	                Map<String, Object> details = new HashMap<>();
 
-	                if (selectAccountId.longValue() != accountId.longValue()) {
+	                if (selectAccountId.longValue() != accountId.longValue()) { // 입출금 통장이 같으면 안뜨도록
 	                	String groupName = groupAccount.getGroupName();
 	 	                String accountNum = groupAccount.getAccountInfo().getAccountNum();
 	 	                details.put("groupName", groupName);
@@ -222,8 +252,9 @@ public class TransferService {
 	            })
 	            .collect(Collectors.toList());
 	    
+	    groupDetails.addAll(groupAccountGroupDetails);
 	    groupDetails.removeIf(Map::isEmpty);
-
+	  
 	    return groupDetails;
 	}
 	
@@ -242,7 +273,7 @@ public class TransferService {
 	    // 현재 날짜 및 시간
 	    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 a HH시 mm분");
 	    LocalDateTime nowLocalDateTime = LocalDateTime.now();
-	  
+	    
 	    Long addBalance = Long.parseLong(depositBalance); // amount(거래금액)
 	    
 	    Transfer transfer = new Transfer();
@@ -345,7 +376,7 @@ public class TransferService {
 		
 		for(Transfer transfer: transferList) {
 			Long userId = transfer.getUser().getUserId();
-			String userName = usersRepository.getById(userId).getUserName();
+			String userName = usersRepository.getById(userId).getUserNickname();
 			Long balance = transfer.getLeftBalance();
 			
 			Map<String, Object> result = new HashMap<>();
@@ -358,4 +389,5 @@ public class TransferService {
 		}
 		 return resultList;
 	}
+
 }

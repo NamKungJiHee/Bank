@@ -23,6 +23,7 @@ import com.mysite.bank.accountinfo.AccountInfo;
 import com.mysite.bank.accountinfo.AccountInfoService;
 import com.mysite.bank.friend.Friend;
 import com.mysite.bank.friend.FriendService;
+import com.mysite.bank.groupaccountmembers.GroupAccountMembers;
 import com.mysite.bank.transfer.TransferService;
 import com.mysite.bank.users.Users;
 
@@ -151,8 +152,10 @@ public class GroupController {
 	    List<Map<String, Object>> groupAccountInfos = new ArrayList<>();
 	
 	    List<Friend> inviteUsers = friendService.findInvitedId(userId);
+	    List<GroupAccountMembers> groupAccountMembers = groupService.findGroupAccountMembers(userName);
 
-	    if (!inviteUsers.isEmpty()) {
+	    if ((!inviteUsers.isEmpty()) && (groupAccountMembers != null)) {
+	    	
 	    	for (Friend inviteUser : inviteUsers) {
 	            Long groupAccountId = inviteUser.getGroupAccountId().getGroupAccountId();
 
@@ -170,7 +173,12 @@ public class GroupController {
 	            invitedAccountMap.put("currentBalance", currentBalanceInfo);
 
 	            groupAccountInfos.add(invitedAccountMap);
+
 	        }
+            
+            List<Map<String, Object>> additionalGroupAccounts = groupService.getGroupAccountInfosByUserId(userId);
+            groupAccountInfos.addAll(additionalGroupAccounts);
+            
 	    } else {
 	        groupAccountInfos = groupService.getGroupAccountInfosByUserId(userId);
 	    }

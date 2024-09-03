@@ -24,7 +24,7 @@ public class FriendController {
 	    public FriendController(FriendService friendService) {
 	        this.friendService = friendService;
 	    }
-	   
+	    // 친구초대
 	    @PostMapping("/inviteMsg")
 	    public ResponseEntity<String> inviteFriend(@RequestParam("groupName") String groupName, @RequestParam("accountNum") String accountNum, @RequestParam("groupBalance") String groupBalance, @RequestParam("nickName") String nickName,@RequestParam("accountId") Long accountId,  Model model, Principal principal) {
 	        String userName = principal.getName();
@@ -32,4 +32,5 @@ public class FriendController {
 
 	        return ResponseEntity.ok("Success");
 	    }
+	    
 }

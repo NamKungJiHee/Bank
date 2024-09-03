@@ -80,3 +80,14 @@ function submitForm() {
        event.preventDefault(); 
        submitForm(); 
    });
+   
+   // 회비요청
+   function requestDue() {
+       Kakao.init("2bb0162fcb6b2743b0378328b1317cbb"); 
+       Kakao.Link.sendCustom({
+           templateId: 111796, 
+		   templateArgs: {
+               'url': 'bank/login'
+           }
+       });
+   }

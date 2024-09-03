@@ -344,7 +344,11 @@ public class GroupService {
         nickNames.add(userNickName);
         return nickNames;
     }
-
+    
+    public List<GroupAccountMembers> findGroupAccountMembers(String userName) {
+    	return groupAccountMembersRepository.findByUser_UserName(userName);
+ 
+    }
 }
 
 

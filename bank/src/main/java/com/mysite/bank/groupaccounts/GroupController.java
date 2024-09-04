@@ -39,9 +39,9 @@ public class GroupController {
 	private final GroupService groupService;
 	private final FriendService friendService;
 	private final TransferService transferService;
-	private boolean noLocker = true;
+//	private boolean noLocker = true;
     private boolean premiumNoLocker = true; 
-	
+
 	@GetMapping("/creategroupAccount")
 	public String createGroupAccount() {
 		
@@ -184,13 +184,17 @@ public class GroupController {
 	    }
 
 	    model.addAttribute("groupAccountInfos", groupAccountInfos);
-
+	    
+	    Map<Long, Boolean> noLockerStatus = new HashMap<>(); 
+	    
+	    boolean noLocker = false;
 	    for (Map<String, Object> result : groupAccountInfos) {
 	        String lockerType = (String) result.get("safeLockerType");
 	        Long groupBalance = (Long) result.get("groupBalance");
 	        Long safeLockerThreshold = (Long) result.get("safeLockerThreshold");
 	        Long currentBalance = (Long) result.get("currentBalance");
-
+	        Long accountId = (Long) result.get("accountId");
+	        
 	        if ("None".equals(lockerType)) {
 	            noLocker = true;
 	        } else if ("Flex".equals(lockerType)) {
@@ -198,7 +202,9 @@ public class GroupController {
 	        } else if ("Premium".equals(lockerType)) {
 	            noLocker = premiumNoLocker;
 	        }
-
+		    
+	        noLockerStatus.put(accountId, noLocker);
+	        
 	        if ("Flex".equals(lockerType) || "Premium".equals(lockerType)) {
 	            if (groupBalance >= safeLockerThreshold) {
 	                Long updatedBalance = groupBalance + currentBalance;
@@ -211,9 +217,7 @@ public class GroupController {
 	            }
 	        }
 	    }
-
-	    model.addAttribute("noLocker", noLocker);
-
+	    model.addAttribute("noLockerStatus", noLockerStatus);
 	    return "accountInfo_form";
 	}
 	

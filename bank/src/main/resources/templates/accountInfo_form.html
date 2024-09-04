@@ -30,7 +30,6 @@
 		<div class="entire-container">
 		    <!-- 그룹 통장 정보 리스트를 반복하여 표시 -->
 		    <div th:each="accountInfo : ${groupAccountInfos}" class="groupAccount-container">
-		        <!-- 항목 내용 -->
 		        <img src="/pig.png" alt="pig">
 				<h4 th:text="${accountInfo['groupName']}" style="margin-bottom: 5px;"></h4>
 				<h4 th:text="${accountInfo['accountNum']}" style="margin-top: 0px; margin-bottom: 0px;"></h4>
@@ -51,7 +50,7 @@
 				    </h5>
 				</div>
 				<a th:href="@{/bank/withdraw(accountId=${accountInfo['accountId']})}">
-				    <button type="button" class="next-btn1" th:disabled="${noLocker}">모임통장으로 출금</button>
+		           <button type="button" class="next-btn1" th:disabled="${noLockerStatus[accountInfo['accountId']]}">모임통장으로 출금</button>
 				</a>
 				<a th:href="@{/bank/specific(accountId=${accountInfo['accountId']})}">
 				    <button type="button" class="next-btn2">자세히</button>

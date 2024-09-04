@@ -21,12 +21,7 @@ function checkAnswers() {
         alert("신분증을 등록해주세요.");
         return false;
     }
+	alert('계좌 개설이 완료되었습니다.');
 	return true
-	
-// 계좌 생성 로직 추가
-
 }
-	var button = document.getElementById('next');
-   	button.addEventListener('click', () => {
-   	alert('계좌 개설이 완료되었습니다.');
-})
+
